@@ -1,0 +1,3 @@
+node_modules/
+# output from the end-to-end test (README screenshots live in docs/screenshots)
+/screenshots/
