@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>About Movie Night Matcher</title>
+  <meta name="description" content="How Movie Night Matcher works and how it was built with AI.">
+  <meta name="theme-color" content="#2a0b1c">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main id="app" class="about">
+    <p><a class="btn-link" href="./">Back to the app</a></p>
+    <h1 class="results-title">How this app was made</h1>
+    <p class="lead">Movie Night Matcher is a student project for DAVE3625 (Introduction to AI) at OsloMet. It was built by "vibe coding": describing what I wanted in plain language and letting an AI assistant write, test and fix the code.</p>
+
+    <h2>The problem</h2>
+    <p>Choosing a movie together takes longer than watching one. Streaming apps show you endless rows, but they don't help a group agree. This app borrows the swipe-to-match idea from dating apps: everyone swipes the same stack in private, and only the movies <em>everyone</em> said yes to come out the other end.</p>
+
+    <h2>How to play</h2>
+    <ol>
+      <li>Add 2 to 6 people, pick a vibe and any filters, and choose how many movies to swipe.</li>
+      <li>Swipe right for yes, left to skip, and up for <em>must watch</em> (3 per person, so they mean something). Tap a ticket to flip it for the director, cast, trailer and where to stream.</li>
+      <li>Pass the phone, or send a link so each person swipes on their own phone. The whole game is stored in the link, so there is no server and no account.</li>
+      <li>See the matches, then draw tonight's movie (must-watch picks get extra tickets) or settle it with a head-to-head showdown.</li>
+    </ol>
+
+    <h2>Built with AI</h2>
+    <p>I used Claude (Anthropic) as my coding partner. I chose the idea, the direction and what to keep; the AI wrote the code and the tests. Along the way the automated tests caught real bugs, and I caught some myself while trying the app, like a scrollbar that flickered every time a card was swiped. The full log is in <a href="https://github.com/kegun8344/IntroTilKI/blob/main/PROCESS.md">PROCESS.md</a>.</p>
+
+    <h2>The movie data</h2>
+    <p>The 570 movies were hand-picked from around the world, including 20 Norwegian films. Titles, years, runtimes, directors and cast are public facts; the one-line pitches are written for this app. A script checks every line, and another cross-checks the facts against two open datasets (Wikipedia movie data and vega-datasets). That check found a real mistake, and it also showed that the reference data itself had errors, so every flag was reviewed by a person. No posters or images are used.</p>
+
+    <h2>Privacy</h2>
+    <p>No accounts, no tracking, no API keys. Names, settings, history and your "seen" list stay in your own browser. A share link contains the names and answers of the people in that game, so only send it to them.</p>
+
+    <h2>Credits</h2>
+    <p>Fonts: Bungee and Figtree (SIL Open Font License). Trailer and streaming buttons open a YouTube or JustWatch search. Not affiliated with any streaming service or app.</p>
+
+    <p><a class="btn btn-primary" href="./" style="display:block;text-align:center;text-decoration:none">Start a movie night</a></p>
+  </main>
+</body>
+</html>
