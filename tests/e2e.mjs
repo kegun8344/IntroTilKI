@@ -59,14 +59,23 @@ async function vote(kind, how) {
     await page.mouse.move(cx, cy);
     await page.mouse.down();
     for (let s = 1; s <= 8; s++) await page.mouse.move(cx + dx * s / 8, cy + dy * s / 8);
+    await sampleOverflow();
     await page.mouse.up();
   } else if (how === "key") {
     await page.keyboard.press({ yes: "ArrowRight", no: "ArrowLeft", super: "ArrowUp" }[kind]);
   } else {
     await page.click(`.actions [data-vote="${kind}"]`);
   }
-  await page.waitForTimeout(450);
+  for (let t = 0; t < 4; t++) { await page.waitForTimeout(60); await sampleOverflow(); }
+  await page.waitForTimeout(210);
 }
+
+// Swiped cards fly off-screen; the page must never get wider than the viewport.
+let maxOverflow = 0;
+const sampleOverflow = async () => {
+  const extra = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  maxOverflow = Math.max(maxOverflow, extra);
+};
 
 async function playTurn(player, rule) {
   const name = await page.textContent("#turn-name");
@@ -127,6 +136,7 @@ check(await page.inputValue("#name-a") === "Kevin", "names remembered after relo
 check(await page.getAttribute('[data-genre="Comedy"]', "aria-pressed") === "true", "genre remembered after reload");
 await page.screenshot({ path: path.join(shots, "6-setup-with-history.png"), fullPage: true });
 
+check(maxOverflow === 0, "no horizontal scrollbar while swiping (extra width " + maxOverflow + "px)");
 check(errors.length === 0, "no JavaScript errors" + (errors.length ? ": " + errors.join(" | ") : ""));
 await browser.close();
 console.log(failures ? `\n${failures} check(s) failed` : "\nAll checks passed");
