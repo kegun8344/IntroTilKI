@@ -60,8 +60,10 @@ I asked for a much bigger app. Claude's plan, which I let it carry out:
 | 12 | Screenshot review (v2) | On computers without a share menu, "Copy link" looked like a secondary button | It becomes the main button there |
 | 13 | **Me, testing with two phones** | Only the last person saw the results, and each phone could draw a different movie | A "Send results to Kåre" step at the top of the results. The link now includes the drawn movie, so both phones show the same pick (tested with two browser profiles) |
 | 14 | **Me** | The "Admit all" text on the winner ticket was upside down | It now reads top to bottom, with a test |
+| 15 | Code review | In link mode, reloading the page on the results screen went back to "Your turn", so the last person had to swipe everything again | The results are kept in the address bar, the reload doesn't add a second history entry, and it still offers to send the results back. Reproduced first, then covered by browser checks |
+| 16 | Code review | Pressing "New stack" while the draw was still spinning let the old movie land later, with confetti over the next screen | Leaving the results screen cancels a running draw, with a browser check |
 
-Final result: **23/23 unit tests, 72/72 browser checks**, 570/570 movie lines valid, 0 unreviewed fact-check flags, and no JavaScript errors.
+Final result: **23/23 unit tests, 77/77 browser checks**, 570/570 movie lines valid, 0 unreviewed fact-check flags, and no JavaScript errors.
 
 ## 6. My reflection
 <!-- Write a few sentences in your own words, for example:

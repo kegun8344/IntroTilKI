@@ -79,6 +79,7 @@
   function countryName(code) { return COUNTRIES[code] || code; }
   function show(screenId) {
     stopConfetti();
+    cancelDraw();
     document.querySelectorAll(".screen").forEach(function (s) {
       if (s.id === screenId) s.setAttribute("data-active", "");
       else s.removeAttribute("data-active");
@@ -395,6 +396,7 @@
     var deck = fresh.length >= state.deckSize ? L.buildDeck(MOVIES, currentFilter(state.recent), state.deckSize)
       : L.buildDeck(MOVIES, currentFilter(), state.deckSize);
     if (deck.length === 0) { show("screen-setup"); filtersChanged(); return; }
+    if (/^#s=/.test(location.hash)) history.replaceState(null, "", location.pathname + location.search);
     state.deck = deck;
     deck.forEach(function (m) { state.recent[m.id] = true; });
     state.votes = state.names.map(function () { return {}; });
@@ -437,6 +439,14 @@
     $("sendback-btn").textContent = "Send results to " + who;
     $("sendback-link").value = resultsLink();
   }
+  // Keep the results in the address bar, so a reload shows them again instead of the old turn.
+  function rememberResultsInUrl() {
+    if (state.mode !== "link") return;
+    var url = resultsLink();
+    try { history.replaceState(null, "", url); } catch (e) { /* not allowed on file:// */ }
+    // remember that these are our own results, so a reload still offers to send them on
+    if (!state.resultsFromLink) try { sessionStorage.setItem("mnm.own", url.split("#s=")[1]); } catch (e) { /* ignore */ }
+  }
   function linkFor(session) {
     return location.href.split("#")[0] + "#s=" + L.encodeSession(session);
   }
@@ -459,7 +469,9 @@
 
     if (done >= s.players.length) {
       state.player = s.players.length - 1;
-      state.resultsFromLink = true;
+      var own = null;
+      try { own = sessionStorage.getItem("mnm.own"); } catch (e) { /* ignore */ }
+      state.resultsFromLink = own !== m[1];
       state.redrawn = false;
       showResults();
       if (s.winner) {
@@ -854,6 +866,7 @@
 
     show("screen-results");
     updateSendback();
+    rememberResultsInUrl();
     addHistory();
     if (m > 0) feedback("win");
   }
@@ -890,13 +903,28 @@
     updateLastHistory(item.movie.title);
     if (!quiet && state.resultsFromLink) state.redrawn = true;
     updateSendback();
+    rememberResultsInUrl();
     if (!quiet) { feedback("win"); confetti(); }
+  }
+
+  // Leaving the results while the draw spins cancels it, so the old pick can't land on another screen.
+  var drawRun = 0, drawing = false;
+  function cancelDraw() {
+    drawRun++;
+    if (!drawing) return;
+    drawing = false;
+    var admit = $("admit");
+    admit.classList.remove("is-spinning");
+    if (state.winner) landWinner(state.winner, true);
+    else admit.hidden = true;
+    $("draw-btn").disabled = false;
   }
 
   function draw() {
     var pool = state.pool;
     if (!pool.length) return;
     var winner = L.pickWinner(pool);
+    var run = ++drawRun;
     var admit = $("admit");
     admit.hidden = false;
     admit.classList.remove("is-landed");
@@ -904,14 +932,16 @@
     $("draw-btn").disabled = true;
 
     if (reduceMotion || pool.length === 1) { landWinner(winner); return; }
+    drawing = true;
     admit.classList.add("is-spinning");
     $("admit-who").textContent = "Drawing…";
     $("admit-meta").textContent = "";
     var steps = 16, i = 0, k = Math.floor(Math.random() * pool.length);
     (function tick() {
+      if (run !== drawRun) return;
       $("admit-title").textContent = pool[(k + i) % pool.length].movie.title;
       i++;
-      if (i >= steps) { landWinner(winner); return; }
+      if (i >= steps) { drawing = false; landWinner(winner); return; }
       setTimeout(tick, 50 + i * i * 1.6);
     })();
   }
@@ -962,7 +992,10 @@
   // ---------- history ----------
   function addHistory() {
     var list = load(KEYS.history, []);
-    list.unshift({ date: new Date().toISOString(), names: state.names.slice(), matches: state.results.matches.length, winner: null });
+    // the same game (e.g. a reload of a results link) is only listed once
+    var key = state.names.join("|") + "#" + state.deck.map(function (m) { return m.id; }).join(".");
+    if (list.length && list[0].key === key) { renderHistory(); return; }
+    list.unshift({ date: new Date().toISOString(), names: state.names.slice(), matches: state.results.matches.length, winner: null, key: key });
     save(KEYS.history, list.slice(0, 10));
     renderHistory();
   }

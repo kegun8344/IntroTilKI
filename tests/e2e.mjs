@@ -281,6 +281,12 @@ try {
     check(/Tell Kåre what you're watching/.test(await guest.page.textContent("#sendback-title")), "after the draw the panel says to tell Kåre");
   }
   await guest.page.screenshot({ path: path.join(shots, "10-send-results.png"), fullPage: true });
+  await guest.page.reload();
+  await guest.page.waitForTimeout(400);
+  check(await guest.page.isVisible("#screen-results"), "a reload keeps the results (no swiping again)");
+  if (guestWinner) check((await guest.page.textContent("#admit-title")) === guestWinner, "and keeps the drawn movie");
+  check(await guest.page.isVisible("#sendback"), "and still offers to send the results to Kåre");
+  check((await guest.page.evaluate(() => JSON.parse(localStorage.getItem("mnm.history.v1")).length)) === 1, "the reload doesn't add the same night to history twice");
   const resultsLink = await guest.page.inputValue("#sendback-link");
   await host.page.goto(resultsLink);
   await host.page.waitForTimeout(400);
@@ -290,6 +296,14 @@ try {
   check(await host.page.isHidden("#sendback"), "the host isn't asked to send the results back again");
   check(await host.page.$eval(".admit", a => getComputedStyle(a, "::before").writingMode === "vertical-rl" && getComputedStyle(a, "::before").transform === "none"), "'Admit all' reads top to bottom (not rotated upside down)");
   await host.page.screenshot({ path: path.join(shots, "11-host-results.png"), fullPage: true });
+  if (guestWinner) {
+    await guest.page.click("#draw-btn");
+    await guest.page.waitForTimeout(200);
+    await guest.page.click("#rematch-btn"); // leave while the draw is still spinning
+    await guest.page.waitForTimeout(3000);
+    check(await guest.page.isVisible("#screen-setup") && await guest.page.$eval("#confetti", c => getComputedStyle(c).display === "none"),
+      "leaving during a draw cancels it (no confetti on the next screen)");
+  }
 
   const broken = await newPhone();
   await broken.page.goto(BASE + "#s=thisIsNotAValidGame");
