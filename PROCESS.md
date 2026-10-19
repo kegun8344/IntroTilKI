@@ -21,6 +21,7 @@ Version 1 had 80 movies and 2 players on one phone.
 - **"Work in the folder I gave you."** Claude first drafted files in its own workspace; I asked it to work directly in my repo folder.
 - **"You have to commit along the way."** From then on, every step became its own git commit.
 - **"Every time I swipe a card, a horizontal scrollbar appears."** I found this while trying the app (see bug 7 below).
+- **"Can it really work with two players, one on each phone?"** Yes. The game travels inside the link. Claude explained the honest limit: it takes turns, not real time, because there is no server.
 - **"Shouldn't we have several pages instead of everything in index.html?"** Claude explained why a single-page app suits this (shared state between screens, no reloads, no peeking), and suggested a separate About page instead. That page was added in version 2.
 
 ## 4. Version 2: "cook as hard as you can, and at least 500 movies"
@@ -57,8 +58,10 @@ I asked for a much bigger app. Claude's plan, which I let it carry out:
 | 10 | Screenshot review (v2) | Confetti from a draw kept falling into the showdown screen | Stop the confetti on every screen change, with a test |
 | 11 | Screenshot review (v2) | The must-watch badge said a cryptic "★ ×1" | It now names who picked it ("★ Kevin's must watch") |
 | 12 | Screenshot review (v2) | On computers without a share menu, "Copy link" looked like a secondary button | It becomes the main button there |
+| 13 | **Me, testing with two phones** | Only the last person saw the results, and each phone could draw a different movie | A "Send results to Kåre" step at the top of the results. The link now includes the drawn movie, so both phones show the same pick (tested with two browser profiles) |
+| 14 | **Me** | The "Admit all" text on the winner ticket was upside down | It now reads top to bottom, with a test |
 
-Final result: **22/22 unit tests, 64/64 browser checks**, 570/570 movie lines valid, 0 unreviewed fact-check flags, and no JavaScript errors.
+Final result: **23/23 unit tests, 72/72 browser checks**, 570/570 movie lines valid, 0 unreviewed fact-check flags, and no JavaScript errors.
 
 ## 6. My reflection
 <!-- Write a few sentences in your own words, for example:
