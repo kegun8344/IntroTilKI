@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Movie Night Matcher</title>
+  <meta name="description" content="Two people swipe the same stack of movies on one phone. The app shows only the movies you both said yes to, and draws tonight's pick.">
+  <meta name="theme-color" content="#2a0b1c">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='14' width='52' height='36' rx='6' fill='%23ffcf4a'/%3E%3Ccircle cx='6' cy='32' r='7' fill='%232a0b1c'/%3E%3Ccircle cx='58' cy='32' r='7' fill='%232a0b1c'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main id="app">
+
+    <!-- 1. Setup -->
+    <section class="screen" id="screen-setup" data-active>
+      <header class="marquee">
+        <h1>Movie Night Matcher</h1>
+      </header>
+      <p class="lead">Both of you swipe through the same stack of movies on this phone. Only movies you both said yes to show up, and then the app draws tonight's pick.</p>
+
+      <form id="setup-form" class="setup" novalidate>
+        <fieldset class="field">
+          <legend>Who's watching?</legend>
+          <div class="names">
+            <label>
+              <span class="sr-only">First person</span>
+              <input id="name-a" name="nameA" type="text" maxlength="16" placeholder="First person" autocomplete="off">
+            </label>
+            <span class="amp" aria-hidden="true">&amp;</span>
+            <label>
+              <span class="sr-only">Second person</span>
+              <input id="name-b" name="nameB" type="text" maxlength="16" placeholder="Second person" autocomplete="off">
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="field">
+          <legend>In the mood for <span class="hint">(pick none for anything)</span></legend>
+          <div class="chips" id="genre-chips"></div>
+        </fieldset>
+
+        <div class="field-row">
+          <label class="field">
+            <span class="label">Max length</span>
+            <select id="max-runtime">
+              <option value="0">Any length</option>
+              <option value="150">Under 2½ hours</option>
+              <option value="120">Under 2 hours</option>
+              <option value="105">Under 1¾ hours</option>
+            </select>
+          </label>
+          <fieldset class="field">
+            <legend class="label">Stack size</legend>
+            <div class="segmented" id="deck-size">
+              <button type="button" data-size="10">10</button>
+              <button type="button" data-size="20" aria-pressed="true">20</button>
+              <button type="button" data-size="30">30</button>
+            </div>
+          </fieldset>
+        </div>
+
+        <label class="toggle">
+          <input type="checkbox" id="norwegian-only">
+          <span>Norwegian films only</span>
+        </label>
+
+        <p class="pool" id="pool-count" aria-live="polite"></p>
+        <button type="submit" class="btn btn-primary" id="start-btn">Start swiping</button>
+      </form>
+
+      <section class="history" id="history" hidden>
+        <div class="history-head">
+          <h2>Past movie nights</h2>
+          <button type="button" class="btn-link" id="clear-history">Clear</button>
+        </div>
+        <ol id="history-list"></ol>
+      </section>
+    </section>
+
+    <!-- 2. Swiping -->
+    <section class="screen" id="screen-swipe">
+      <header class="swipe-head">
+        <p class="turn"><strong id="turn-name"></strong> is choosing</p>
+        <p class="count" id="turn-count"></p>
+        <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+      </header>
+
+      <div class="stack" id="stack" aria-live="polite"></div>
+
+      <div class="actions" role="group" aria-label="Your answer">
+        <button type="button" class="round round-no" data-vote="no" aria-label="Skip">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          <span>Skip</span>
+        </button>
+        <button type="button" class="round round-super" data-vote="super" aria-label="Must watch">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>
+          <span>Must watch</span>
+        </button>
+        <button type="button" class="round round-yes" data-vote="yes" aria-label="Yes">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+          <span>Yes</span>
+        </button>
+      </div>
+
+      <div class="swipe-foot">
+        <button type="button" class="btn-link" id="undo-btn" disabled>Undo last answer</button>
+        <p class="keys">Swipe or use the arrow keys: left skip, right yes, up must watch.</p>
+      </div>
+    </section>
+
+    <!-- 3. Hand-off -->
+    <section class="screen screen-center" id="screen-handoff">
+      <div class="handoff">
+        <p class="handoff-done"><span id="handoff-from"></span> is done.</p>
+        <h2>Pass the phone to <span id="handoff-to"></span></h2>
+        <p>No peeking. You'll get the same movies in a different order.</p>
+        <button type="button" class="btn btn-primary" id="handoff-btn"></button>
+      </div>
+    </section>
+
+    <!-- 4. Results -->
+    <section class="screen" id="screen-results">
+      <h2 class="results-title" id="results-title"></h2>
+      <p class="lead" id="results-lead"></p>
+
+      <div class="draw" id="draw-area">
+        <article class="admit" id="admit" hidden>
+          <p class="admit-who" id="admit-who"></p>
+          <h3 class="admit-title" id="admit-title"></h3>
+          <p class="admit-meta" id="admit-meta"></p>
+        </article>
+        <button type="button" class="btn btn-primary" id="draw-btn">Draw tonight's movie</button>
+      </div>
+
+      <section class="list-block" id="matches-block">
+        <h3>You both said yes</h3>
+        <ul class="result-list" id="matches-list"></ul>
+      </section>
+
+      <section class="list-block" id="maybes-block">
+        <h3>Only one of you said yes</h3>
+        <ul class="result-list result-list-quiet" id="maybes-list"></ul>
+      </section>
+
+      <div class="results-actions">
+        <button type="button" class="btn btn-primary" id="rematch-btn">New stack, same settings</button>
+        <button type="button" class="btn btn-ghost" id="copy-btn">Copy results</button>
+        <button type="button" class="btn btn-ghost" id="settings-btn">Change settings</button>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/movies.js"></script>
+  <script src="js/logic.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
