@@ -1,63 +1,76 @@
 # Movie Night Matcher
 
-**Stop scrolling, start watching.** Two people swipe through the same stack of movies on one phone. The app only shows the movies you *both* said yes to, and then draws tonight's pick.
+**Stop scrolling, start watching.** 2 to 6 people swipe through the same stack of movies, on one phone or each on their own. Only the movies *everyone* said yes to make it through, and then the app draws tonight's pick or settles it with a head-to-head showdown.
 
-**Live app:** https://YOUR-GITHUB-USERNAME.github.io/IntroTilKI/  <!-- replace after enabling GitHub Pages -->
+**Live app:** https://kegun8344.github.io/IntroTilKI/
 
-Made for *Mandatory Assignment 3: Vibe Coding* in DAVE3625, approach **C: recreate or improve an existing app**. It borrows the swipe-to-match idea from dating apps and uses it on the classic "what should we watch tonight?" problem that every streaming service leaves you with.
+Made for *Mandatory Assignment 3: Vibe Coding* in DAVE3625, approach **C: recreate or improve an existing app**. It takes the swipe-to-match idea from dating apps and uses it on a problem every streaming service leaves you with: agreeing on what to watch.
 
-| Setup | Swiping | Hand-off | Results |
-|---|---|---|---|
-| ![Setup screen](docs/screenshots/1-setup.png) | ![A movie ticket card](docs/screenshots/2-swipe.png) | ![Pass the phone](docs/screenshots/3-handoff.png) | ![Matches and the drawn winner](docs/screenshots/4-results.png) |
+| Setup | Swiping | Ticket details |
+|---|---|---|
+| ![Setup with vibes and filters](docs/screenshots/1-setup.png) | ![A movie ticket card](docs/screenshots/2-swipe.png) | ![The back of a ticket](docs/screenshots/3-details.png) |
+| **Own phones** | **Showdown** | **Results** |
+| ![Send the link to the next person](docs/screenshots/4-send-link.png) | ![Head-to-head showdown](docs/screenshots/5-showdown.png) | ![Matches and tonight's movie](docs/screenshots/6-results.png) |
 
 ## Short description (for Canvas)
 
-Movie Night Matcher is a small web app for two people who can't agree on a movie. You enter both names, choose genres, maximum length and how many movies to swipe. Each person then swipes the same stack of movies on the same phone (in a different order, with a "pass the phone, no peeking" screen in between). Swipe right for yes, left to skip, or up for "must watch". The results screen lists the movies you both said yes to, plus the ones only one of you liked, and a weighted draw picks tonight's movie (a "must watch" gives a movie extra tickets in the draw). Past movie nights are saved in the browser. I built it with AI (Claude) through vibe coding: describing what I wanted, letting the AI write the code, and testing and improving it with automated tests.
+Movie Night Matcher is a web app for groups who can't agree on a movie. Add 2–6 people, pick a vibe (feel-good, scary, date night and more) and optional filters, and everyone swipes the same stack from a catalogue of 570 movies: right for yes, left to skip, up for "must watch" (max 3 each). Tap a ticket to flip it for the director, cast, a trailer and where to stream it. Play by passing one phone, or each on your own phone: the whole game is stored in a link you send to the next person, so there's no server or account. The results show what everyone said yes to and what almost made it, plus fun facts about the group. A weighted draw picks tonight's movie, or a head-to-head showdown decides it. The app can be installed on a phone and works offline. I built it with AI (Claude) through vibe coding. It is tested with 22 unit tests and a 64-check browser test, and the movie facts are checked automatically against two open datasets.
 
 ## Features
 
-1. **Swipe to vote.** Drag the ticket card (touch or mouse), use the buttons, or use the arrow keys. Undo your last answer.
-2. **Match and draw.** Both players vote on the same movies. Matches are ranked (must watch + must watch on top), and "Draw tonight's movie" does a weighted random draw with a short spin animation.
-3. **Filters and history.** Filter by genre, max length and Norwegian films only. The app warns you if no movies fit. Names, settings and the last 10 movie nights are remembered in the browser.
+**Core**
+1. **Swipe to vote.** Drag the ticket (touch or mouse), use the buttons or the arrow keys, and undo your last answer. "Must watch" is limited to 3 per person, so it means something.
+2. **Match, draw or showdown.** Matches need a yes from everyone, and "almost" shows what all but one person liked. The draw is weighted (must-watch picks get extra tickets), and the showdown is a knockout bracket of your top 8.
+3. **Two ways to play.** Pass one phone with a "no peeking" hand-off screen, or each person uses their own phone and passes on a link that holds the game.
 
-Extras: copy results to the clipboard (to send in a chat), works offline, keyboard accessible, and respects "reduce motion".
+**Extras**
+- 570 hand-picked movies from 27 countries, including 20 Norwegian films.
+- Filters: vibe, genres, made in (Norway, Nordic, Asia and more), from/to decade, max length, and hiding movies you have seen.
+- Flip a ticket to see the director, cast, a trailer search and where to stream (JustWatch Norway), and mark it "Seen it".
+- Fun facts: the pickiest person, the easiest to please, and who is most in sync.
+- History of past movie nights, "We watched it", and sharing or copying results.
+- Installable as an app (PWA), works offline, optional sound and vibration, confetti for the winner.
+- Accessible: keyboard controls, screen-reader labels, visible focus, and "reduce motion" respected.
+- An [About page](about.html) explaining how the app was made.
 
 ## How to run it
 
-It is a static site with no build step and no server code.
+It is a static site: no build step, no server code, no API keys.
 
-- **Online:** open the GitHub Pages link above.
-- **Locally:** double-click `index.html`, or run a tiny server in the folder: `python -m http.server 8000` and open http://localhost:8000.
+- **Online:** open the live link above.
+- **Locally:** run `python -m http.server 8000` in the folder and open http://localhost:8000. You can also double-click `index.html`, but offline mode only works over http.
 
 ### Publish on GitHub Pages
-1. Commit and push the repo with GitHub Desktop.
-2. On GitHub: **Settings → Pages → Build and deployment → Source: Deploy from a branch**, Branch: `main`, folder `/ (root)`, then **Save**.
-3. After about a minute the link appears at the top of the Pages settings. Paste it into the "Live app" line above.
+On GitHub go to **Settings → Pages → Deploy from a branch**, choose `main` and `/ (root)`, and click **Save**. The site updates about a minute after each push.
 
-## Tests
+## Tests and checks
 
-| What | Command | Checks |
+| What | Command | What it checks |
 |---|---|---|
-| Unit tests (game logic) | `node --test tests/logic.test.js` | 11 tests: movie data is valid, shuffling, filters, match scoring, weighted draw, text export |
-| End-to-end (real browser, phone size) | `npm install`, `npx playwright install chromium`, `npm run test:e2e` | 19 checks: plays a full movie night with drag, buttons and keyboard, tests undo, checks that no horizontal scrollbar appears while swiping, checks that matches on screen equal the expected matches, the winner, history, settings after reload, and that there are no JavaScript errors |
+| Unit tests | `npm test` | 22 tests: catalogue validity, every vibe and region has movies, shuffling, all filters, must-watch limit, results for 2 and 4 players, weighted draw, fun facts, showdown brackets of every size, share links (incl. æøå and broken links), and the data build tool |
+| Browser test | `npm install`, `npx playwright install chromium`, `npm run test:e2e` | 64 checks in a phone-sized Chromium: filters, 3 people on one phone (flip, undo, must-watch limit, seen it), results compared with expected answers, draw, showdown, saved settings, 2 phones via a share link, broken link, offline reload, About page, no horizontal scrollbar, no JavaScript errors |
+| Data build | `npm run build:movies` | Every line of `data/movies.txt`: fields, year, runtime, genres, country, pitch length and duplicates. It then regenerates `js/movies.js` |
+| Fact check | `npm run check:facts` | Cross-checks year, cast, runtime and director against Wikipedia movie data and vega-datasets. Flags are reviewed by a person (`data/reviewed-flags.txt`) |
 
-See [PROCESS.md](PROCESS.md) for how AI was used and which bugs the tests found.
+See [PROCESS.md](PROCESS.md) for how AI was used and which bugs were found.
 
 ## How it's built
 
 | File | Job |
 |---|---|
-| `index.html` | The four screens: setup, swipe, hand-off, results |
-| `styles.css` | Cinema look: velvet background, marquee sign, movies as coloured raffle tickets (colour = genre) |
-| `js/movies.js` | 80 hand-picked movies (incl. 6 Norwegian) with year, length, genres and a one-line pitch |
-| `js/logic.js` | Pure game rules (filter, shuffle, scoring, weighted draw). No DOM, so it can be unit tested in Node |
-| `js/app.js` | UI: rendering, swipe gestures, screen flow, localStorage |
+| `index.html` | The screens: setup, invite, swipe, hand-off, send link, results, showdown |
+| `styles.css` | Cinema look: velvet curtain, marquee sign, movies as raffle tickets coloured by genre |
+| `js/logic.js` | Pure game rules (filters, scoring, draw, showdown, share links). No DOM, so it can be unit tested |
+| `js/app.js` | UI: rendering, swipe gestures, card flip, screen flow, storage, sharing, sound and confetti |
+| `data/movies.txt` → `js/movies.js` | The catalogue: one movie per line, built and checked by `tools/build-movies.mjs` |
+| `sw.js`, `manifest.webmanifest`, `icons/` | Offline support and "Add to home screen" |
+| `about.html` | About page |
 | `fonts/` | Bungee and Figtree (SIL Open Font License), bundled so the app works offline |
 
-Plain HTML, CSS and JavaScript with no framework, so it runs anywhere.
+Plain HTML, CSS and JavaScript with no framework.
 
 ## Notes
 
-- No posters or images from movies are used. Titles, years, lengths and genres are public facts, and the one-line pitches are written for this app. Runtimes are approximate.
-- Not affiliated with any streaming service or dating app.
-- No accounts, no API keys, no tracking. Everything you enter stays in your own browser (localStorage).
+- No posters or images from movies are used. Titles, years, runtimes, directors and cast are public facts, and the one-line pitches are written for this app. Runtimes are approximate.
+- Not affiliated with any streaming service or app. Trailer and streaming buttons only open a YouTube or JustWatch search.
+- Privacy: no accounts and no tracking. Names, settings, history and the seen list stay in your browser. A share link contains the names and answers of that game, so only send it to the people playing.
