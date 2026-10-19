@@ -212,10 +212,13 @@ try {
     const titles = await page.$$eval("#matches-list .r-title", n => n.map(x => x.textContent));
     check(titles.includes(winner), "drawn winner is one of the matches: " + winner);
     check(await page.$("#matches-list li.is-winner") !== null, "winner highlighted in the list");
+    const badges = await page.$$eval("#matches-list .r-badge", n => n.map(x => x.textContent));
+    check(badges.some(b => /Kevin's must watch|★ Kevin/.test(b)) || !badges.some(b => b.startsWith("★")), "must-watch badges name who picked it");
   }
   if (exp.matches.length >= 3) {
     await page.click("#showdown-btn");
     check(await page.isVisible("#screen-showdown"), "showdown starts");
+    check(await page.$eval("#confetti", c => getComputedStyle(c).display === "none"), "confetti from the draw stops when the showdown opens");
     await page.screenshot({ path: path.join(shots, "6-showdown.png") });
     let picks = 0;
     const expectedPicks = Math.min(exp.matches.length, 8) - 1;

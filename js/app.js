@@ -78,6 +78,7 @@
   }
   function countryName(code) { return COUNTRIES[code] || code; }
   function show(screenId) {
+    stopConfetti();
     document.querySelectorAll(".screen").forEach(function (s) {
       if (s.id === screenId) s.setAttribute("data-active", "");
       else s.removeAttribute("data-active");
@@ -129,8 +130,15 @@
   }
 
   // ---------- confetti (one celebratory moment) ----------
+  var confettiRun = 0;
+  function stopConfetti() {
+    confettiRun++;
+    var c = $("confetti");
+    if (c && c.getContext) { c.getContext("2d").clearRect(0, 0, c.width, c.height); c.style.display = "none"; }
+  }
   function confetti() {
     if (reduceMotion) return;
+    var run = ++confettiRun;
     var c = $("confetti"), ctx = c.getContext && c.getContext("2d");
     if (!ctx) return;
     var w = c.width = window.innerWidth, h = c.height = window.innerHeight;
@@ -147,6 +155,7 @@
     c.style.display = "block";
     var start = performance.now();
     (function frame(now) {
+      if (run !== confettiRun) return; // a newer screen or burst took over
       var t = now - start;
       ctx.clearRect(0, 0, w, h);
       bits.forEach(function (b) {
@@ -434,7 +443,7 @@
     $("invite-from").textContent = s.players[0] + " started a movie night";
     $("invite-title").textContent = "Your turn, " + s.players[done];
     renderProgressPlayers($("invite-players"), done);
-    $("invite-text").textContent = "Swipe through " + s.deck.length + " movies. Your answers stay hidden until everyone is done.";
+    $("invite-text").textContent = "Swipe through " + s.deck.length + " movies. Nobody sees the results until everyone is done.";
     $("invite-start").textContent = "I'm " + s.players[done] + ", start swiping";
     show("screen-invite");
     return true;
@@ -689,6 +698,7 @@
       $("link-box").value = url;
       $("here-btn").textContent = next + " is here: swipe on this phone instead";
       $("share-btn").hidden = !navigator.share;
+      $("copy-link-btn").className = "btn " + (navigator.share ? "btn-ghost" : "btn-primary");
       show("screen-send");
     } else {
       $("handoff-from").textContent = state.names[state.player];
@@ -750,7 +760,9 @@
   function matchBadge(item) {
     var n = state.names.length;
     if (item.perfect) return n === 2 ? "Both: must watch" : "Everyone: must watch";
-    if (item.supers.length) return "★ ×" + item.supers.length;
+    if (item.supers.length) {
+      return "★ " + item.supers.map(function (i) { return state.names[i]; }).join(", ") + (item.supers.length === 1 ? "'s must watch" : "");
+    }
     return n === 2 ? "Both: yes" : "All yes";
   }
   function almostBadge(item) {
