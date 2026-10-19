@@ -411,10 +411,10 @@ select {
 .admit::before {
   content: "Admit all";
   position: absolute; left: 0; top: 0; bottom: 0; width: 44px;
-  writing-mode: vertical-rl; transform: rotate(180deg);
+  writing-mode: vertical-rl;
   display: flex; align-items: center; justify-content: center;
   font-family: var(--display); font-size: .85rem;
-  border-left: 2.5px dashed rgba(43,21,32,.35);
+  border-right: 2.5px dashed rgba(43,21,32,.35);
 }
 .admit-who { margin: 0 0 6px; font-weight: 700; color: var(--ink-soft); }
 .admit-title { font-family: var(--display); font-size: clamp(1.5rem, 7vw, 2rem); line-height: 1.08; overflow-wrap: anywhere; }
@@ -424,6 +424,15 @@ select {
 .admit.is-spinning .admit-title { opacity: .75; }
 .admit.is-landed { animation: land .5s cubic-bezier(.2,.9,.3,1.4); }
 @keyframes land { 0% { transform: scale(.94); } 100% { transform: scale(1); } }
+
+.sendback {
+  margin: 4px 0 24px; padding: 16px;
+  border: 2px solid var(--bulb); border-radius: var(--radius-ticket);
+  background: var(--velvet-deep);
+}
+.sendback h3 { font-weight: 700; font-size: 1.05rem; color: var(--bulb); margin-bottom: 4px; }
+.sendback p { margin: 0 0 12px; color: var(--text-muted); font-size: .95rem; }
+.sendback .link-box { margin: 10px 0 0; }
 
 .list-block { margin-bottom: 26px; }
 .list-block h3, .facts h3 { font-weight: 700; font-size: 1.05rem; margin-bottom: 10px; }

@@ -247,7 +247,7 @@
 
   // ---------------------------------------------------------------- share links
   // A whole game fits in a URL, so friends can swipe on their own phones without a server.
-  // Session: { players: [names], deck: [ids], votes: [ {id: "y"|"n"|"s"} per finished player ], limit }
+  // Session: { players: [names], deck: [ids], votes: [ {id: "y"|"n"|"s"} per finished player ], limit, winner? }
   function toBase64Url(str) {
     var bytes = typeof TextEncoder !== "undefined" ? new TextEncoder().encode(str) : Buffer.from(str, "utf8");
     var bin = "";
@@ -279,7 +279,8 @@
       p: session.players,
       d: session.deck.join("."),
       a: session.votes.map(function (votes) { return votesToString(session.deck, votes); }),
-      l: session.limit
+      l: session.limit,
+      w: session.winner || undefined
     }));
   }
 
@@ -302,7 +303,9 @@
         return kept;
       });
       var limit = Number(o.l);
-      return { players: players, deck: deck, votes: votes, limit: limit >= 0 && limit <= 50 ? limit : 3 };
+      var session = { players: players, deck: deck, votes: votes, limit: limit >= 0 && limit <= 50 ? limit : 3 };
+      if (typeof o.w === "string" && deck.indexOf(o.w) !== -1) session.winner = o.w; // tonight's pick, if drawn
+      return session;
     } catch (e) {
       return null;
     }

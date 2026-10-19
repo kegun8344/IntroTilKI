@@ -165,6 +165,14 @@ test("session link round-trips players, deck and answers (incl. æøå in names)
   assert.deepEqual(back, session);
 });
 
+test("the drawn winner travels in the results link, but only if it is in the deck", () => {
+  const d = L.buildDeck(MOVIES, {}, 10, L.makeRng(3)).map(m => m.id);
+  const base = { players: ["A", "B"], deck: d, votes: [{}, {}], limit: 3 };
+  assert.equal(L.decodeSession(L.encodeSession({ ...base, winner: d[4] }), MOVIES).winner, d[4]);
+  assert.equal(L.decodeSession(L.encodeSession({ ...base, winner: "zzzzzzz" }), MOVIES).winner, undefined);
+  assert.equal(L.decodeSession(L.encodeSession(base), MOVIES).winner, undefined);
+});
+
 test("decodeSession rejects garbage and drops unknown movie ids", () => {
   assert.equal(L.decodeSession("not-a-real-code", MOVIES), null);
   assert.equal(L.decodeSession("", MOVIES), null);

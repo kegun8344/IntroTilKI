@@ -271,6 +271,25 @@ try {
   check(sameSet(Object.keys(hostVotes), Object.keys(guestVotes)), "both phones had the same movies");
   const exp2 = expected(Object.keys(hostVotes), [hostVotes, guestVotes]);
   check(sameSet(await listIds(guest.page, "#matches-list"), exp2.matches), `matches across two phones are correct (${exp2.matches.length})`);
+  check(/Send results to Kåre/.test(await guest.page.textContent("#sendback-btn")), "the last person is asked to send the results back to Kåre");
+  check(/send the results back to you/.test(await host.page.textContent("#send-text")), "the host is told the results come back to them");
+  let guestWinner = null;
+  if (!(await guest.page.isHidden("#draw-btn"))) {
+    await guest.page.click("#draw-btn");
+    await guest.page.waitForTimeout(3000);
+    guestWinner = await guest.page.textContent("#admit-title");
+    check(/Tell Kåre what you're watching/.test(await guest.page.textContent("#sendback-title")), "after the draw the panel says to tell Kåre");
+  }
+  await guest.page.screenshot({ path: path.join(shots, "10-send-results.png"), fullPage: true });
+  const resultsLink = await guest.page.inputValue("#sendback-link");
+  await host.page.goto(resultsLink);
+  await host.page.waitForTimeout(400);
+  check(await host.page.isVisible("#screen-results"), "the results link opens the results on the host's phone");
+  check(sameSet(await listIds(host.page, "#matches-list"), exp2.matches), "both phones show the same matches");
+  if (guestWinner) check((await host.page.textContent("#admit-title")) === guestWinner, `both phones show the same movie: ${guestWinner}`);
+  check(await host.page.isHidden("#sendback"), "the host isn't asked to send the results back again");
+  check(await host.page.$eval(".admit", a => getComputedStyle(a, "::before").writingMode === "vertical-rl" && getComputedStyle(a, "::before").transform === "none"), "'Admit all' reads top to bottom (not rotated upside down)");
+  await host.page.screenshot({ path: path.join(shots, "11-host-results.png"), fullPage: true });
 
   const broken = await newPhone();
   await broken.page.goto(BASE + "#s=thisIsNotAValidGame");

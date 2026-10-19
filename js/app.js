@@ -415,6 +415,28 @@
       limit: SUPER_LIMIT
     };
   }
+  function resultsLink() {
+    return linkFor({
+      players: state.names, deck: state.deck.map(function (m) { return m.id; }), votes: state.votes,
+      limit: SUPER_LIMIT, winner: state.winner ? state.winner.movie.id : null
+    });
+  }
+  // In link mode the phones can't talk to each other, so whoever sees the results sends them on.
+  function updateSendback() {
+    var box = $("sendback");
+    // Someone who opened finished results only needs this if they draw a new movie themselves.
+    if (state.mode !== "link" || (state.resultsFromLink && !state.redrawn)) { box.hidden = true; return; }
+    var me = state.player;
+    var others = state.names.filter(function (_, i) { return i !== me; });
+    var who = state.resultsFromLink || others.length !== 1 ? "the others" : others[0];
+    box.hidden = false;
+    $("sendback-title").textContent = state.winner ? "Tell " + who + " what you're watching" : "Send the results to " + who;
+    $("sendback-text").textContent = state.winner
+      ? "The link shows the same results and the same movie on their phone."
+      : "Their phone can't see your answers until you send this link. Draw tonight's movie first if you want them to get the same pick.";
+    $("sendback-btn").textContent = "Send results to " + who;
+    $("sendback-link").value = resultsLink();
+  }
   function linkFor(session) {
     return location.href.split("#")[0] + "#s=" + L.encodeSession(session);
   }
@@ -429,6 +451,7 @@
     }
     state.mode = "link";
     state.joined = true;
+    state.resultsFromLink = false;
     state.names = s.players;
     state.deck = s.deck.map(function (id) { return BY_ID[id]; });
     state.votes = s.players.map(function (_, i) { return s.votes[i] || {}; });
@@ -436,7 +459,13 @@
 
     if (done >= s.players.length) {
       state.player = s.players.length - 1;
+      state.resultsFromLink = true;
+      state.redrawn = false;
       showResults();
+      if (s.winner) {
+        var item = state.pool.filter(function (it) { return it.movie.id === s.winner; })[0];
+        if (item) landWinner(item, true);
+      }
       return true;
     }
     state.player = done;
@@ -694,6 +723,9 @@
     if (state.mode === "link") {
       var url = linkFor(sessionFromState());
       $("send-to").textContent = next;
+      $("send-text").textContent = state.player + 2 >= state.names.length
+        ? next + " opens the link and swipes the same movies. When " + next + " is done, " + next + " gets a button to send the results back to you."
+        : next + " opens the link, swipes the same movies, and sends it on. The last person sends the results back to everyone.";
       renderProgressPlayers($("send-players"), state.player + 1);
       $("link-box").value = url;
       $("here-btn").textContent = next + " is here: swipe on this phone instead";
@@ -821,11 +853,12 @@
     $("rematch-btn").textContent = state.joined ? "Plan your own movie night" : "New stack, same people";
 
     show("screen-results");
+    updateSendback();
     addHistory();
     if (m > 0) feedback("win");
   }
 
-  function landWinner(item) {
+  function landWinner(item, quiet) {
     var admit = $("admit");
     state.winner = item;
     admit.classList.remove("is-spinning");
@@ -855,8 +888,9 @@
       li.classList.toggle("is-winner", li.dataset.id === item.movie.id);
     });
     updateLastHistory(item.movie.title);
-    feedback("win");
-    confetti();
+    if (!quiet && state.resultsFromLink) state.redrawn = true;
+    updateSendback();
+    if (!quiet) { feedback("win"); confetti(); }
   }
 
   function draw() {
@@ -1002,10 +1036,17 @@
     $("link-box").addEventListener("focus", function () { this.select(); });
 
     $("draw-btn").addEventListener("click", draw);
+    $("sendback-btn").addEventListener("click", function () {
+      var text = state.winner
+        ? "Movie night: we're watching " + state.winner.movie.title + "! See our matches:"
+        : "Movie night results are in! See our matches:";
+      shareOrCopy("Movie night results", text, resultsLink(), "Results link copied. Paste it in your chat.");
+    });
+    $("sendback-link").addEventListener("focus", function () { this.select(); });
     $("showdown-btn").addEventListener("click", startShowdown);
     $("sd-cancel").addEventListener("click", function () { show("screen-results"); });
     $("share-results-btn").addEventListener("click", function () {
-      var url = linkFor({ players: state.names, deck: state.deck.map(function (m) { return m.id; }), votes: state.votes, limit: SUPER_LIMIT });
+      var url = resultsLink();
       shareOrCopy("Movie night results", L.resultsToText(state.names, state.results, state.winner), url, "Results copied");
     });
     $("rematch-btn").addEventListener("click", function () {
