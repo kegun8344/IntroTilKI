@@ -1,0 +1,573 @@
+# Movie Night Matcher catalogue. One movie per line, fields separated by |
+# title|year|runtime (min)|genres (comma)|country (ISO code)|director(s)|cast (semicolon, "-" = none)|one-line pitch
+# Edit this file, then run:  node tools/build-movies.mjs   (rebuilds js/movies.js and checks every line)
+The Dark Knight|2008|152|Action,Crime|US|Christopher Nolan|Christian Bale;Heath Ledger|Batman versus a villain who just wants chaos.
+Batman Begins|2005|140|Action,Crime|US|Christopher Nolan|Christian Bale;Michael Caine|Bruce Wayne learns how to become Batman.
+The Dark Knight Rises|2012|164|Action,Crime|US|Christopher Nolan|Christian Bale;Tom Hardy|Batman comes out of hiding to face Bane.
+Inception|2010|148|Sci-Fi,Action|US|Christopher Nolan|Leonardo DiCaprio;Joseph Gordon-Levitt|A heist inside a dream inside a dream.
+Interstellar|2014|169|Sci-Fi,Drama|US|Christopher Nolan|Matthew McConaughey;Anne Hathaway|A father leaves Earth to find humanity a new home.
+Memento|2000|113|Mystery,Thriller|US|Christopher Nolan|Guy Pearce;Carrie-Anne Moss|A man with no short-term memory hunts his wife's killer.
+The Prestige|2006|130|Mystery,Drama,Thriller|US|Christopher Nolan|Christian Bale;Hugh Jackman|Two rival magicians go way too far to beat each other.
+Dunkirk|2017|106|War,History,Thriller|GB|Christopher Nolan|Fionn Whitehead;Tom Hardy|Soldiers trapped on a beach wait for a rescue that might not come.
+Tenet|2020|150|Action,Sci-Fi|US|Christopher Nolan|John David Washington;Robert Pattinson|A secret agent learns to move through time in reverse.
+Oppenheimer|2023|180|Drama,History|US|Christopher Nolan|Cillian Murphy;Emily Blunt|The physicist behind the first atomic bomb.
+The Matrix|1999|136|Sci-Fi,Action|US|Lana Wachowski, Lilly Wachowski|Keanu Reeves;Laurence Fishburne|A hacker learns the world is a simulation.
+Mad Max: Fury Road|2015|120|Action,Adventure|AU|George Miller|Tom Hardy;Charlize Theron|Two hours of a desert car chase. Glorious.
+Furiosa: A Mad Max Saga|2024|148|Action,Adventure|AU|George Miller|Anya Taylor-Joy;Chris Hemsworth|The young Furiosa's long road to revenge in the Wasteland.
+Jurassic Park|1993|127|Adventure,Sci-Fi|US|Steven Spielberg|Sam Neill;Laura Dern|A theme park with cloned dinosaurs. What could go wrong?
+Jaws|1975|124|Thriller,Adventure|US|Steven Spielberg|Roy Scheider;Robert Shaw|A shark terrorises a beach town. You'll need a bigger boat.
+E.T. the Extra-Terrestrial|1982|115|Sci-Fi,Family|US|Steven Spielberg|Henry Thomas;Drew Barrymore|A boy hides a lost alien in his closet.
+Raiders of the Lost Ark|1981|115|Adventure,Action|US|Steven Spielberg|Harrison Ford;Karen Allen|An archaeologist in a fedora races to find a holy relic.
+Indiana Jones and the Last Crusade|1989|127|Adventure,Action|US|Steven Spielberg|Harrison Ford;Sean Connery|Indy and his dad chase the Holy Grail.
+Saving Private Ryan|1998|169|War,Drama|US|Steven Spielberg|Tom Hanks;Matt Damon|A squad goes behind enemy lines to bring one soldier home.
+Schindler's List|1993|195|History,Drama,War|US|Steven Spielberg|Liam Neeson;Ben Kingsley|A businessman saves over a thousand Jews during the Holocaust.
+Catch Me If You Can|2002|141|Crime,Comedy,Drama|US|Steven Spielberg|Leonardo DiCaprio;Tom Hanks|A teen con man poses as a pilot and a doctor while the FBI gives chase.
+Minority Report|2002|145|Sci-Fi,Thriller|US|Steven Spielberg|Tom Cruise;Colin Farrell|A cop who arrests people before their crimes is accused himself.
+Ready Player One|2018|140|Sci-Fi,Adventure|US|Steven Spielberg|Tye Sheridan;Olivia Cooke|A gamer hunts for a hidden prize inside a giant virtual world.
+Star Wars|1977|121|Sci-Fi,Adventure|US|George Lucas|Mark Hamill;Harrison Ford|A farm boy, a smuggler and a princess take on an empire.
+The Empire Strikes Back|1980|124|Sci-Fi,Adventure|US|Irvin Kershner|Mark Hamill;Harrison Ford|The rebels are on the run, and Luke meets a strange little teacher.
+Return of the Jedi|1983|131|Sci-Fi,Adventure|US|Richard Marquand|Mark Hamill;Harrison Ford|One last stand against the Empire, with teddy-bear allies.
+Star Wars: The Force Awakens|2015|138|Sci-Fi,Adventure|US|J. J. Abrams|Daisy Ridley;John Boyega|A scavenger and a runaway stormtrooper find a droid with a secret.
+Rogue One: A Star Wars Story|2016|133|Sci-Fi,Action|US|Gareth Edwards|Felicity Jones;Diego Luna|A ragtag crew tries to steal the Death Star plans.
+The Terminator|1984|107|Sci-Fi,Action|US|James Cameron|Arnold Schwarzenegger;Linda Hamilton|A robot from the future hunts a waitress in 1980s LA.
+Terminator 2: Judgment Day|1991|137|Sci-Fi,Action|US|James Cameron|Arnold Schwarzenegger;Linda Hamilton|A reprogrammed killer robot protects the boy who will save humanity.
+Aliens|1986|137|Sci-Fi,Action,Horror|US|James Cameron|Sigourney Weaver;Michael Biehn|Ripley goes back, this time with marines. It goes badly.
+Alien|1979|117|Horror,Sci-Fi|US|Ridley Scott|Sigourney Weaver;Tom Skerritt|A space crew picks up an unwanted passenger.
+Titanic|1997|194|Romance,Drama|US|James Cameron|Leonardo DiCaprio;Kate Winslet|Love across classes on an unsinkable ship.
+Avatar|2009|162|Sci-Fi,Adventure|US|James Cameron|Sam Worthington;Zoe Saldaña|A marine in a borrowed alien body falls for the world he came to conquer.
+Avatar: The Way of Water|2022|192|Sci-Fi,Adventure|US|James Cameron|Sam Worthington;Zoe Saldaña|The Sully family flees to the ocean clans of Pandora.
+Gladiator|2000|155|Action,Drama,History|US|Ridley Scott|Russell Crowe;Joaquin Phoenix|A betrayed general fights his way back through the arena.
+Gladiator II|2024|148|Action,Drama,History|US|Ridley Scott|Paul Mescal;Pedro Pascal|A new hero fights his way through the Roman arena.
+The Martian|2015|144|Sci-Fi,Adventure|US|Ridley Scott|Matt Damon;Jessica Chastain|Stranded on Mars, an astronaut science-es his way home.
+Blade Runner|1982|117|Sci-Fi,Thriller|US|Ridley Scott|Harrison Ford;Rutger Hauer|A cop hunts runaway androids in a rainy future LA.
+Blade Runner 2049|2017|164|Sci-Fi,Mystery|US|Denis Villeneuve|Ryan Gosling;Harrison Ford|A new blade runner digs up a secret that could change everything.
+Dune|2021|155|Sci-Fi,Adventure|US|Denis Villeneuve|Timothée Chalamet;Rebecca Ferguson|A noble family takes over a desert planet full of giant worms.
+Dune: Part Two|2024|166|Sci-Fi,Adventure|US|Denis Villeneuve|Timothée Chalamet;Zendaya|Paul joins the desert people and rides into war.
+Arrival|2016|116|Sci-Fi,Drama|US|Denis Villeneuve|Amy Adams;Jeremy Renner|A linguist learns to talk to visitors from space.
+Sicario|2015|121|Thriller,Crime|US|Denis Villeneuve|Emily Blunt;Benicio del Toro|An FBI agent is pulled into a murky war on the cartels.
+Prisoners|2013|153|Thriller,Crime,Mystery|US|Denis Villeneuve|Hugh Jackman;Jake Gyllenhaal|A desperate father takes the search for his daughter into his own hands.
+John Wick|2014|101|Action,Crime|US|Chad Stahelski|Keanu Reeves;Michael Nyqvist|Never, ever hurt a retired hitman's dog.
+John Wick: Chapter 4|2023|169|Action,Crime|US|Chad Stahelski|Keanu Reeves;Donnie Yen|John Wick fights across the world for his freedom.
+Top Gun|1986|110|Action,Drama|US|Tony Scott|Tom Cruise;Kelly McGillis|Hotshot navy pilots compete at an elite flight school.
+Top Gun: Maverick|2022|130|Action,Drama|US|Joseph Kosinski|Tom Cruise;Miles Teller|An ace pilot trains a new generation for one impossible mission.
+Mission: Impossible|1996|110|Action,Thriller|US|Brian De Palma|Tom Cruise;Jon Voight|A framed spy breaks into the CIA to clear his name.
+Mission: Impossible – Fallout|2018|147|Action,Thriller|US|Christopher McQuarrie|Tom Cruise;Henry Cavill|Ethan Hunt races to recover stolen plutonium, with very real stunts.
+Edge of Tomorrow|2014|113|Sci-Fi,Action|US|Doug Liman|Tom Cruise;Emily Blunt|A soldier dies, wakes up, and fights the same battle again.
+The Bourne Identity|2002|119|Action,Thriller|US|Doug Liman|Matt Damon;Franka Potente|A man with amnesia and lethal skills tries to find out who he is.
+Die Hard|1988|132|Action,Thriller|US|John McTiernan|Bruce Willis;Alan Rickman|One cop, one skyscraper, a gang of thieves. On Christmas Eve.
+Speed|1994|116|Action,Thriller|US|Jan de Bont|Keanu Reeves;Sandra Bullock|A bus that blows up if it drops below 50 mph.
+Heat|1995|170|Crime,Thriller|US|Michael Mann|Al Pacino;Robert De Niro|A master thief and the detective obsessed with catching him.
+The Fugitive|1993|130|Thriller,Action|US|Andrew Davis|Harrison Ford;Tommy Lee Jones|A doctor wrongly convicted of murder runs to find the real killer.
+Casino Royale|2006|144|Action,Thriller|GB|Martin Campbell|Daniel Craig;Eva Green|A brand-new James Bond plays high-stakes poker with a terrorist banker.
+Skyfall|2012|143|Action,Thriller|GB|Sam Mendes|Daniel Craig;Javier Bardem|Bond's loyalty to M is tested when her past comes back for her.
+Goldfinger|1964|110|Action,Adventure|GB|Guy Hamilton|Sean Connery;Gert Fröbe|Bond versus a gold-obsessed tycoon with a plan for Fort Knox.
+The Avengers|2012|143|Action,Sci-Fi|US|Joss Whedon|Robert Downey Jr.;Chris Evans|Earth's mightiest heroes have to learn to work together.
+Avengers: Infinity War|2018|149|Action,Sci-Fi|US|Anthony Russo, Joe Russo|Robert Downey Jr.;Josh Brolin|Thanos wants six stones and half the universe.
+Avengers: Endgame|2019|181|Action,Sci-Fi,Adventure|US|Anthony Russo, Joe Russo|Robert Downey Jr.;Chris Evans|The heroes who are left try to undo the snap.
+Iron Man|2008|126|Action,Sci-Fi|US|Jon Favreau|Robert Downey Jr.;Gwyneth Paltrow|A billionaire weapons maker builds a suit and changes his ways.
+Guardians of the Galaxy|2014|121|Sci-Fi,Comedy,Action|US|James Gunn|Chris Pratt;Zoe Saldaña|A team of misfits saves the galaxy to a 70s mixtape.
+Black Panther|2018|134|Action,Sci-Fi|US|Ryan Coogler|Chadwick Boseman;Michael B. Jordan|The new king of Wakanda faces a challenger with a grudge.
+Thor: Ragnarok|2017|130|Action,Comedy,Fantasy|US|Taika Waititi|Chris Hemsworth;Tessa Thompson|Thor, minus his hammer, has to escape a gladiator planet.
+Spider-Man 2|2004|127|Action,Sci-Fi|US|Sam Raimi|Tobey Maguire;Alfred Molina|Peter Parker juggles college, love and Doctor Octopus.
+Spider-Man: No Way Home|2021|148|Action,Sci-Fi|US|Jon Watts|Tom Holland;Zendaya|A spell to hide Spider-Man's identity cracks open the multiverse.
+Logan|2017|137|Action,Drama|US|James Mangold|Hugh Jackman;Dafne Keen|A worn-out Wolverine protects a girl with powers like his own.
+Deadpool|2016|108|Action,Comedy|US|Tim Miller|Ryan Reynolds;Morena Baccarin|A foul-mouthed mercenary who can't die wants revenge.
+Wonder Woman|2017|141|Action,Fantasy|US|Patty Jenkins|Gal Gadot;Chris Pine|An Amazon princess enters World War I to end all wars.
+The Batman|2022|176|Crime,Mystery,Action|US|Matt Reeves|Robert Pattinson;Zoë Kravitz|A young Batman hunts a killer who leaves riddles.
+Joker|2019|122|Crime,Drama,Thriller|US|Todd Phillips|Joaquin Phoenix;Robert De Niro|A failed comedian slowly becomes a symbol of chaos.
+Pirates of the Caribbean: The Curse of the Black Pearl|2003|143|Adventure,Fantasy,Action|US|Gore Verbinski|Johnny Depp;Orlando Bloom|A drunk pirate, a blacksmith and a cursed crew of skeletons.
+Gravity|2013|91|Sci-Fi,Thriller|US|Alfonso Cuarón|Sandra Bullock;George Clooney|Two astronauts adrift in orbit after their shuttle is destroyed.
+Children of Men|2006|109|Sci-Fi,Thriller|GB|Alfonso Cuarón|Clive Owen;Julianne Moore|In a world without babies, one pregnant woman needs protection.
+Independence Day|1996|145|Sci-Fi,Action|US|Roland Emmerich|Will Smith;Jeff Goldblum|Aliens attack, and humanity fights back on the 4th of July.
+Men in Black|1997|98|Sci-Fi,Comedy,Action|US|Barry Sonnenfeld|Will Smith;Tommy Lee Jones|Secret agents police the aliens living on Earth.
+The Fifth Element|1997|126|Sci-Fi,Action|FR|Luc Besson|Bruce Willis;Milla Jovovich|A cab driver has to save the world with a mysterious woman.
+Léon: The Professional|1994|110|Crime,Thriller,Drama|FR|Luc Besson|Jean Reno;Natalie Portman|A lonely hitman takes in a girl whose family was murdered.
+Kill Bill: Volume 1|2003|111|Action,Crime|US|Quentin Tarantino|Uma Thurman;Lucy Liu|A bride wakes from a coma with a list of names.
+Pulp Fiction|1994|154|Crime|US|Quentin Tarantino|John Travolta;Samuel L. Jackson|Hitmen, a boxer and a briefcase, told out of order.
+Reservoir Dogs|1992|99|Crime,Thriller|US|Quentin Tarantino|Harvey Keitel;Tim Roth|After a robbery goes wrong, the thieves suspect a rat.
+Inglourious Basterds|2009|153|War,Drama,Action|US|Quentin Tarantino|Brad Pitt;Christoph Waltz|A squad of Jewish-American soldiers hunts Nazis in occupied France.
+Django Unchained|2012|165|Western,Drama|US|Quentin Tarantino|Jamie Foxx;Christoph Waltz|A freed slave and a bounty hunter set out to rescue his wife.
+Once Upon a Time in Hollywood|2019|161|Comedy,Drama|US|Quentin Tarantino|Leonardo DiCaprio;Brad Pitt|A fading actor and his stunt double in 1969 Los Angeles.
+The Good, the Bad and the Ugly|1966|178|Western|IT|Sergio Leone|Clint Eastwood;Eli Wallach|Three gunslingers race to find buried Confederate gold.
+Unforgiven|1992|130|Western,Drama|US|Clint Eastwood|Clint Eastwood;Gene Hackman|A retired gunfighter takes one last bounty job.
+True Grit|2010|110|Western,Drama|US|Joel Coen, Ethan Coen|Jeff Bridges;Hailee Steinfeld|A determined girl hires a drunk marshal to find her father's killer.
+No Country for Old Men|2007|122|Crime,Thriller|US|Joel Coen, Ethan Coen|Josh Brolin;Javier Bardem|A hunter finds drug money, and a killer comes looking for it.
+Fargo|1996|98|Crime,Comedy,Thriller|US|Joel Coen, Ethan Coen|Frances McDormand;William H. Macy|A pregnant police chief investigates a kidnapping gone very wrong.
+The Big Lebowski|1998|117|Comedy,Crime|US|Joel Coen, Ethan Coen|Jeff Bridges;John Goodman|A slacker called the Dude gets mixed up in a kidnapping.
+The Shawshank Redemption|1994|142|Drama|US|Frank Darabont|Tim Robbins;Morgan Freeman|A banker in prison plays the very long game.
+The Green Mile|1999|189|Drama,Fantasy,Crime|US|Frank Darabont|Tom Hanks;Michael Clarke Duncan|A death-row guard meets a gentle giant with a strange gift.
+The Godfather|1972|175|Crime,Drama|US|Francis Ford Coppola|Marlon Brando;Al Pacino|A reluctant son becomes head of the family business.
+The Godfather Part II|1974|202|Crime,Drama|US|Francis Ford Coppola|Al Pacino;Robert De Niro|Michael tightens his grip while young Vito builds the empire.
+Apocalypse Now|1979|147|War,Drama|US|Francis Ford Coppola|Martin Sheen;Marlon Brando|A captain travels upriver in Vietnam to find a rogue colonel.
+Goodfellas|1990|145|Crime,Drama|US|Martin Scorsese|Ray Liotta;Robert De Niro|Three decades inside the mob, told by one of its own.
+Taxi Driver|1976|114|Crime,Drama|US|Martin Scorsese|Robert De Niro;Jodie Foster|A lonely night-shift cabbie in New York slowly comes apart.
+The Departed|2006|151|Crime,Thriller|US|Martin Scorsese|Leonardo DiCaprio;Matt Damon|A cop undercover in the mob, and a mobster undercover in the police.
+The Wolf of Wall Street|2013|180|Comedy,Crime,Drama|US|Martin Scorsese|Leonardo DiCaprio;Jonah Hill|The wild rise and fall of a stockbroker who loved excess.
+Shutter Island|2010|138|Mystery,Thriller|US|Martin Scorsese|Leonardo DiCaprio;Mark Ruffalo|A marshal investigates a disappearance at an island asylum.
+Casino|1995|178|Crime,Drama|US|Martin Scorsese|Robert De Niro;Sharon Stone|Las Vegas, the mob, and a casino boss who loses control.
+Killers of the Flower Moon|2023|206|Crime,Drama,History|US|Martin Scorsese|Leonardo DiCaprio;Lily Gladstone|A string of murders among the oil-rich Osage Nation in the 1920s.
+Raging Bull|1980|129|Drama,Sport|US|Martin Scorsese|Robert De Niro;Joe Pesci|A boxer whose rage wins fights and ruins everything else.
+Fight Club|1999|139|Drama,Thriller|US|David Fincher|Brad Pitt;Edward Norton|An office worker with insomnia meets a soap salesman.
+Se7en|1995|127|Crime,Thriller|US|David Fincher|Brad Pitt;Morgan Freeman|Two detectives hunt a killer inspired by the seven deadly sins.
+Zodiac|2007|157|Crime,Mystery,Thriller|US|David Fincher|Jake Gyllenhaal;Robert Downey Jr.|A cartoonist becomes obsessed with an unsolved serial killer case.
+Gone Girl|2014|149|Thriller,Mystery|US|David Fincher|Ben Affleck;Rosamund Pike|A wife disappears and the husband looks guilty.
+The Social Network|2010|120|Drama|US|David Fincher|Jesse Eisenberg;Andrew Garfield|A dorm-room website turns friends into rivals.
+The Girl with the Dragon Tattoo|2011|158|Crime,Mystery,Thriller|US|David Fincher|Daniel Craig;Rooney Mara|A journalist and a hacker dig into a wealthy family's dark past.
+Forrest Gump|1994|142|Drama,Romance|US|Robert Zemeckis|Tom Hanks;Robin Wright|One kind man wanders through decades of history.
+Cast Away|2000|143|Drama,Adventure|US|Robert Zemeckis|Tom Hanks;Helen Hunt|A FedEx manager is stranded on an island with only a volleyball.
+Back to the Future|1985|116|Sci-Fi,Comedy,Adventure|US|Robert Zemeckis|Michael J. Fox;Christopher Lloyd|A teen in a time machine meets his parents as teenagers.
+Back to the Future Part II|1989|108|Sci-Fi,Comedy,Adventure|US|Robert Zemeckis|Michael J. Fox;Christopher Lloyd|Marty and Doc visit 2015, and mess up the timeline.
+Philadelphia|1993|125|Drama|US|Jonathan Demme|Tom Hanks;Denzel Washington|A lawyer fired for having AIDS sues his old law firm.
+The Silence of the Lambs|1991|118|Thriller,Crime,Horror|US|Jonathan Demme|Jodie Foster;Anthony Hopkins|An FBI trainee asks a brilliant cannibal for help.
+American Beauty|1999|122|Drama,Comedy|US|Sam Mendes|Kevin Spacey;Annette Bening|A suburban dad in a midlife crisis blows up his own life.
+1917|2019|119|War,Drama|GB|Sam Mendes|George MacKay;Dean-Charles Chapman|Two soldiers race across enemy land to deliver a message.
+Good Will Hunting|1997|126|Drama,Romance|US|Gus Van Sant|Matt Damon;Robin Williams|A janitor with a genius brain needs a therapist who won't give up.
+Dead Poets Society|1989|128|Drama|US|Peter Weir|Robin Williams;Ethan Hawke|An unusual teacher inspires his students to seize the day.
+The Truman Show|1998|103|Comedy,Drama|US|Peter Weir|Jim Carrey;Laura Linney|A man slowly realises his whole life is a TV show.
+One Flew Over the Cuckoo's Nest|1975|133|Drama|US|Miloš Forman|Jack Nicholson;Louise Fletcher|A rebel in a mental hospital takes on the strict head nurse.
+Amadeus|1984|160|Drama,History,Musical|US|Miloš Forman|F. Murray Abraham;Tom Hulce|A jealous composer tells the story of the genius Mozart.
+The Shining|1980|146|Horror|US|Stanley Kubrick|Jack Nicholson;Shelley Duvall|A winter caretaker job at an empty hotel. All work, no play.
+2001: A Space Odyssey|1968|149|Sci-Fi,Adventure|US|Stanley Kubrick|Keir Dullea;Gary Lockwood|From apes to a space mission with a computer that won't open the door.
+A Clockwork Orange|1971|136|Crime,Sci-Fi,Drama|GB|Stanley Kubrick|Malcolm McDowell;Patrick Magee|A violent young thug is "cured" by a disturbing experiment.
+Full Metal Jacket|1987|116|War,Drama|US|Stanley Kubrick|Matthew Modine;R. Lee Ermey|From a brutal boot camp to the streets of Vietnam.
+Dr. Strangelove|1964|95|Comedy,War|US|Stanley Kubrick|Peter Sellers;George C. Scott|A dark comedy about accidentally starting a nuclear war.
+Psycho|1960|109|Horror,Thriller,Mystery|US|Alfred Hitchcock|Anthony Perkins;Janet Leigh|A woman on the run checks into a quiet motel.
+Rear Window|1954|112|Mystery,Thriller|US|Alfred Hitchcock|James Stewart;Grace Kelly|A photographer stuck at home thinks a neighbour committed murder.
+Vertigo|1958|128|Mystery,Thriller,Romance|US|Alfred Hitchcock|James Stewart;Kim Novak|A detective afraid of heights becomes obsessed with a woman.
+North by Northwest|1959|136|Thriller,Adventure|US|Alfred Hitchcock|Cary Grant;Eva Marie Saint|An ad man is mistaken for a spy and chased across America.
+Casablanca|1942|102|Romance,Drama,War|US|Michael Curtiz|Humphrey Bogart;Ingrid Bergman|Of all the bars in the world, she walks into his.
+Citizen Kane|1941|119|Drama,Mystery|US|Orson Welles|Orson Welles;Joseph Cotten|A reporter tries to decode a tycoon's last word.
+Some Like It Hot|1959|121|Comedy,Romance|US|Billy Wilder|Marilyn Monroe;Tony Curtis|Two musicians hide from the mob by joining an all-women band.
+Sunset Boulevard|1950|110|Drama|US|Billy Wilder|William Holden;Gloria Swanson|A broke writer gets tangled up with a forgotten silent-film star.
+12 Angry Men|1957|96|Drama,Crime|US|Sidney Lumet|Henry Fonda;Lee J. Cobb|One juror refuses to go along with the other eleven.
+To Kill a Mockingbird|1962|129|Drama,Crime|US|Robert Mulligan|Gregory Peck;Mary Badham|A lawyer in the Deep South defends a Black man, seen through his daughter's eyes.
+Lawrence of Arabia|1962|222|Adventure,History,War|GB|David Lean|Peter O'Toole;Omar Sharif|A British officer leads an Arab revolt in the desert.
+The Sound of Music|1965|172|Musical,Family,Romance|US|Robert Wise|Julie Andrews;Christopher Plummer|A nun becomes governess to seven children and their strict father.
+Singin' in the Rain|1952|103|Musical,Comedy,Romance|US|Gene Kelly, Stanley Donen|Gene Kelly;Debbie Reynolds|Silent-film stars struggle with the arrival of talking pictures.
+The Wizard of Oz|1939|102|Fantasy,Family,Musical|US|Victor Fleming|Judy Garland;Ray Bolger|A tornado sends a Kansas girl over the rainbow.
+Gone with the Wind|1939|238|Romance,Drama,History|US|Victor Fleming|Vivien Leigh;Clark Gable|A headstrong Southern woman survives the Civil War and its aftermath.
+It's a Wonderful Life|1946|130|Drama,Family,Fantasy|US|Frank Capra|James Stewart;Donna Reed|An angel shows a desperate man what the world would be like without him.
+Rocky|1976|120|Drama,Sport|US|John G. Avildsen|Sylvester Stallone;Talia Shire|A small-time boxer gets a shot at the heavyweight champion.
+Creed|2015|133|Drama,Sport|US|Ryan Coogler|Michael B. Jordan;Sylvester Stallone|Apollo Creed's son asks Rocky to train him.
+Million Dollar Baby|2004|132|Drama,Sport|US|Clint Eastwood|Hilary Swank;Clint Eastwood|An old boxing trainer reluctantly takes on a determined woman.
+Gran Torino|2008|116|Drama|US|Clint Eastwood|Clint Eastwood;Bee Vang|A grumpy widower befriends the Hmong boy next door.
+The Pianist|2002|150|War,Drama,History|FR|Roman Polanski|Adrien Brody;Thomas Kretschmann|A Jewish pianist struggles to survive in Nazi-occupied Warsaw.
+Chinatown|1974|130|Mystery,Crime,Drama|US|Roman Polanski|Jack Nicholson;Faye Dunaway|A private eye uncovers a scandal about water in 1930s LA.
+The Usual Suspects|1995|106|Crime,Mystery,Thriller|US|Bryan Singer|Kevin Spacey;Gabriel Byrne|Five crooks, one police lineup, and a legend named Keyser Söze.
+L.A. Confidential|1997|138|Crime,Mystery|US|Curtis Hanson|Russell Crowe;Guy Pearce|Three very different cops untangle corruption in 1950s LA.
+Mystic River|2003|138|Crime,Drama,Mystery|US|Clint Eastwood|Sean Penn;Tim Robbins|A murder pulls three childhood friends back together.
+The Revenant|2015|156|Adventure,Drama|US|Alejandro G. Iñárritu|Leonardo DiCaprio;Tom Hardy|Left for dead after a bear attack, a fur trapper crawls back for revenge.
+Birdman|2014|119|Comedy,Drama|US|Alejandro G. Iñárritu|Michael Keaton;Edward Norton|A washed-up superhero actor tries to stage a serious Broadway play.
+There Will Be Blood|2007|158|Drama|US|Paul Thomas Anderson|Daniel Day-Lewis;Paul Dano|An oilman's greed takes over his whole life.
+Boogie Nights|1997|155|Drama|US|Paul Thomas Anderson|Mark Wahlberg;Burt Reynolds|A young man becomes a star in the 1970s adult film business.
+Magnolia|1999|188|Drama|US|Paul Thomas Anderson|Tom Cruise;Julianne Moore|Many lives cross in the San Fernando Valley on one strange day.
+Whiplash|2014|106|Drama,Musical|US|Damien Chazelle|Miles Teller;J. K. Simmons|A young drummer and a teacher who pushes far too hard.
+La La Land|2016|128|Romance,Musical,Drama|US|Damien Chazelle|Ryan Gosling;Emma Stone|A jazz pianist and an actress chase their dreams in LA.
+Moonlight|2016|111|Drama|US|Barry Jenkins|Trevante Rhodes;Mahershala Ali|Three chapters in the life of a young man growing up in Miami.
+12 Years a Slave|2013|134|Drama,History|US|Steve McQueen|Chiwetel Ejiofor;Michael Fassbender|A free man in New York is kidnapped and sold into slavery.
+Spotlight|2015|129|Drama,History|US|Tom McCarthy|Mark Ruffalo;Michael Keaton|Boston reporters uncover a scandal in the Catholic Church.
+The King's Speech|2010|118|Drama,History|GB|Tom Hooper|Colin Firth;Geoffrey Rush|A king with a stammer works with an unusual speech therapist.
+Slumdog Millionaire|2008|120|Drama,Romance|GB|Danny Boyle|Dev Patel;Freida Pinto|A boy from Mumbai's slums is one question from winning a fortune.
+Trainspotting|1996|94|Drama,Comedy,Crime|GB|Danny Boyle|Ewan McGregor;Robert Carlyle|A group of friends in Edinburgh, and their bad choices.
+127 Hours|2010|94|Adventure,Drama|US|Danny Boyle|James Franco;Kate Mara|A climber gets his arm trapped under a boulder in a canyon.
+Green Book|2018|130|Comedy,Drama|US|Peter Farrelly|Viggo Mortensen;Mahershala Ali|A bouncer drives a famous pianist on a tour of the Deep South.
+The Help|2011|146|Drama|US|Tate Taylor|Viola Davis;Emma Stone|A young writer tells the stories of Black maids in 1960s Mississippi.
+Hidden Figures|2016|127|Drama,History|US|Theodore Melfi|Taraji P. Henson;Octavia Spencer|Three Black women do the maths that sends NASA into space.
+The Pursuit of Happyness|2006|117|Drama|US|Gabriele Muccino|Will Smith;Jaden Smith|A struggling single dad fights for a spot at a stock brokerage.
+A Beautiful Mind|2001|135|Drama|US|Ron Howard|Russell Crowe;Jennifer Connelly|A brilliant mathematician battles his own mind.
+Apollo 13|1995|140|Drama,History,Adventure|US|Ron Howard|Tom Hanks;Kevin Bacon|Houston, we have a problem. Three astronauts need to get home.
+Rush|2013|123|Drama,Sport|GB|Ron Howard|Chris Hemsworth;Daniel Brühl|The fierce Formula 1 rivalry between James Hunt and Niki Lauda.
+Ford v Ferrari|2019|152|Drama,Sport|US|James Mangold|Matt Damon;Christian Bale|Two car guys build a Ford to beat Ferrari at Le Mans.
+Moneyball|2011|133|Drama,Sport|US|Bennett Miller|Brad Pitt;Jonah Hill|A baseball manager uses statistics to build a team on a budget.
+The Blind Side|2009|129|Drama,Sport|US|John Lee Hancock|Sandra Bullock;Quinton Aaron|A family takes in a homeless teen who becomes a football star.
+Remember the Titans|2000|113|Drama,Sport|US|Boaz Yakin|Denzel Washington;Will Patton|A newly integrated high school football team learns to play as one.
+Training Day|2001|122|Crime,Thriller|US|Antoine Fuqua|Denzel Washington;Ethan Hawke|A rookie cop's first day with a very corrupt detective.
+The Equalizer|2014|132|Action,Crime,Thriller|US|Antoine Fuqua|Denzel Washington;Chloë Grace Moretz|A quiet man with a past steps in to protect a young girl.
+Toy Story|1995|81|Animation,Comedy,Family|US|John Lasseter|Tom Hanks;Tim Allen|A cowboy toy is jealous of the new space ranger.
+Toy Story 2|1999|92|Animation,Comedy,Family|US|John Lasseter|Tom Hanks;Tim Allen|Woody is stolen by a toy collector, and the gang mounts a rescue.
+Toy Story 3|2010|103|Animation,Comedy,Family|US|Lee Unkrich|Tom Hanks;Tim Allen|Andy leaves for college, and the toys end up at a daycare.
+Finding Nemo|2003|100|Animation,Family|US|Andrew Stanton|Albert Brooks;Ellen DeGeneres|A nervous clownfish crosses the ocean for his son.
+WALL-E|2008|98|Animation,Sci-Fi,Family|US|Andrew Stanton|Ben Burtt;Elissa Knight|A lonely cleaning robot on an empty Earth falls in love.
+Up|2009|96|Animation,Adventure,Family|US|Pete Docter|Ed Asner;Jordan Nagai|An old man ties balloons to his house and flies away.
+Monsters, Inc.|2001|92|Animation,Comedy,Family|US|Pete Docter|Billy Crystal;John Goodman|Two monsters who scare kids for a living find a little girl in their world.
+Inside Out|2015|95|Animation,Family,Comedy|US|Pete Docter|Amy Poehler;Phyllis Smith|The emotions inside a girl's head lose control.
+Inside Out 2|2024|96|Animation,Family,Comedy|US|Kelsey Mann|Amy Poehler;Maya Hawke|Riley turns thirteen, and Anxiety moves into headquarters.
+Soul|2020|100|Animation,Family,Fantasy|US|Pete Docter|Jamie Foxx;Tina Fey|A jazz teacher's soul gets lost on the way to his big break.
+Coco|2017|105|Animation,Family,Musical|US|Lee Unkrich|Anthony Gonzalez;Gael García Bernal|A boy who loves music ends up in the Land of the Dead.
+Ratatouille|2007|111|Animation,Comedy,Family|US|Brad Bird|Patton Oswalt;Lou Romano|A rat with talent wants to cook in Paris.
+The Incredibles|2004|115|Animation,Action,Family|US|Brad Bird|Craig T. Nelson;Holly Hunter|A family of superheroes is forced into a quiet suburban life.
+Cars|2006|117|Animation,Family,Comedy|US|John Lasseter|Owen Wilson;Paul Newman|A cocky race car gets stuck in a forgotten desert town.
+Shrek|2001|90|Animation,Comedy,Family|US|Andrew Adamson, Vicky Jenson|Mike Myers;Eddie Murphy|An ogre just wants his swamp back.
+Shrek 2|2004|93|Animation,Comedy,Family|US|Andrew Adamson|Mike Myers;Eddie Murphy|Shrek meets the in-laws in the kingdom of Far Far Away.
+How to Train Your Dragon|2010|98|Animation,Adventure,Family|US|Dean DeBlois, Chris Sanders|Jay Baruchel;Gerard Butler|A Viking boy befriends the dragon he was supposed to kill.
+Kung Fu Panda|2008|92|Animation,Action,Comedy|US|Mark Osborne, John Stevenson|Jack Black;Dustin Hoffman|A clumsy panda is chosen as the legendary Dragon Warrior.
+Madagascar|2005|86|Animation,Comedy,Family|US|Eric Darnell, Tom McGrath|Ben Stiller;Chris Rock|Four spoiled zoo animals end up in the wild.
+Despicable Me|2010|95|Animation,Comedy,Family|US|Pierre Coffin, Chris Renaud|Steve Carell;Jason Segel|A supervillain adopts three girls as part of a plan to steal the moon.
+The Lego Movie|2014|100|Animation,Comedy,Family|US|Phil Lord, Christopher Miller|Chris Pratt;Elizabeth Banks|An ordinary Lego figure is mistaken for the chosen one.
+Spider-Man: Into the Spider-Verse|2018|117|Animation,Action,Family|US|Bob Persichetti, Peter Ramsey, Rodney Rothman|Shameik Moore;Hailee Steinfeld|A Brooklyn teen meets Spider-People from other dimensions.
+Spider-Man: Across the Spider-Verse|2023|140|Animation,Action,Adventure|US|Joaquim Dos Santos, Kemp Powers, Justin K. Thompson|Shameik Moore;Hailee Steinfeld|Miles swings across the multiverse and meets a whole society of Spider-People.
+The Lion King|1994|88|Animation,Family,Musical|US|Roger Allers, Rob Minkoff|Matthew Broderick;Jeremy Irons|A lion cub runs from his past and must return as king.
+Aladdin|1992|90|Animation,Family,Musical|US|Ron Clements, John Musker|Scott Weinger;Robin Williams|A street kid finds a lamp with a very chatty genie inside.
+Beauty and the Beast|1991|84|Animation,Family,Musical|US|Gary Trousdale, Kirk Wise|Paige O'Hara;Robby Benson|A book-loving girl is held in an enchanted castle by a beast.
+The Little Mermaid|1989|83|Animation,Family,Musical|US|Ron Clements, John Musker|Jodi Benson;Pat Carroll|A mermaid trades her voice for a chance on land.
+Mulan|1998|88|Animation,Family,Action|US|Tony Bancroft, Barry Cook|Ming-Na Wen;Eddie Murphy|A young woman disguises herself as a man to fight in her father's place.
+Frozen|2013|102|Animation,Family,Musical|US|Chris Buck, Jennifer Lee|Kristen Bell;Idina Menzel|A princess goes after her sister, who froze the kingdom.
+Moana|2016|107|Animation,Adventure,Family|US|Ron Clements, John Musker|Auliʻi Cravalho;Dwayne Johnson|A chief's daughter sails across the ocean with a demigod.
+Zootopia|2016|108|Animation,Comedy,Family|US|Byron Howard, Rich Moore|Ginnifer Goodwin;Jason Bateman|A rookie bunny cop and a con-artist fox crack a conspiracy.
+Tangled|2010|100|Animation,Family,Musical|US|Nathan Greno, Byron Howard|Mandy Moore;Zachary Levi|A girl with magic hair escapes her tower with a charming thief.
+Encanto|2021|102|Animation,Family,Musical|US|Byron Howard, Jared Bush|Stephanie Beatriz;María Cecilia Botero|The only member of a magical family without a gift tries to save them.
+Spirited Away|2001|125|Animation,Fantasy|JP|Hayao Miyazaki|Rumi Hiiragi;Miyu Irino|A girl works in a bathhouse for spirits to save her parents.
+My Neighbor Totoro|1988|86|Animation,Fantasy,Family|JP|Hayao Miyazaki|Noriko Hidaka;Chika Sakamoto|Two sisters meet a big, fluffy forest spirit in the countryside.
+Princess Mononoke|1997|134|Animation,Fantasy,Adventure|JP|Hayao Miyazaki|Yōji Matsuda;Yuriko Ishida|A cursed prince is caught in a war between a mining town and the forest gods.
+Howl's Moving Castle|2004|119|Animation,Fantasy,Romance|JP|Hayao Miyazaki|Chieko Baisho;Takuya Kimura|A young hatter cursed into an old woman joins a wizard's walking castle.
+Kiki's Delivery Service|1989|103|Animation,Fantasy,Family|JP|Hayao Miyazaki|Minami Takayama;Rei Sakuma|A young witch starts a flying delivery service in a seaside town.
+The Boy and the Heron|2023|124|Animation,Fantasy|JP|Hayao Miyazaki|Soma Santoki;Masaki Suda|A grieving boy follows a talking heron into a strange other world.
+Your Name|2016|106|Animation,Romance,Fantasy|JP|Makoto Shinkai|Ryunosuke Kamiki;Mone Kamishiraishi|A city boy and a country girl start waking up in each other's bodies.
+Grave of the Fireflies|1988|89|Animation,War,Drama|JP|Isao Takahata|Tsutomu Tatsumi;Ayano Shiraishi|Two siblings try to survive in Japan at the end of World War II.
+Akira|1988|124|Animation,Sci-Fi,Action|JP|Katsuhiro Otomo|Mitsuo Iwata;Nozomu Sasaki|A biker gang member gains terrifying powers in Neo-Tokyo.
+Wallace & Gromit: The Curse of the Were-Rabbit|2005|85|Animation,Comedy,Family|GB|Nick Park, Steve Box|Peter Sallis;Ralph Fiennes|An inventor and his clever dog protect a town's giant vegetables.
+Chicken Run|2000|84|Animation,Comedy,Family|GB|Peter Lord, Nick Park|Mel Gibson;Julia Sawalha|Chickens plan a great escape from a farm before they become pies.
+Paddington|2014|95|Family,Comedy|GB|Paul King|Ben Whishaw;Hugh Bonneville|A polite bear from Peru looks for a home in London.
+Paddington 2|2017|103|Family,Comedy|GB|Paul King|Ben Whishaw;Hugh Grant|A polite bear is framed for theft. Pure comfort.
+Wonka|2023|116|Fantasy,Musical,Family|GB|Paul King|Timothée Chalamet;Calah Lane|A young chocolatier with big dreams takes on a cartel of rivals.
+Harry Potter and the Philosopher's Stone|2001|152|Fantasy,Family,Adventure|GB|Chris Columbus|Daniel Radcliffe;Emma Watson|An orphan finds out he's a wizard on his eleventh birthday.
+Harry Potter and the Prisoner of Azkaban|2004|142|Fantasy,Family,Adventure|GB|Alfonso Cuarón|Daniel Radcliffe;Emma Watson|A dangerous prisoner escapes, and he seems to be after Harry.
+Harry Potter and the Deathly Hallows – Part 2|2011|130|Fantasy,Adventure|GB|David Yates|Daniel Radcliffe;Emma Watson|The final battle for Hogwarts.
+Home Alone|1990|103|Comedy,Family|US|Chris Columbus|Macaulay Culkin;Joe Pesci|Left behind at Christmas, a kid defends the house from burglars.
+Mrs. Doubtfire|1993|125|Comedy,Family,Drama|US|Chris Columbus|Robin Williams;Sally Field|A divorced dad dresses up as a nanny to see his kids.
+Elf|2003|97|Comedy,Family|US|Jon Favreau|Will Ferrell;James Caan|A human raised by elves goes to New York to find his dad.
+The Princess Bride|1987|98|Fantasy,Comedy,Romance|US|Rob Reiner|Cary Elwes;Robin Wright|Pirates, giants, sword fights and true love.
+When Harry Met Sally...|1989|96|Romance,Comedy|US|Rob Reiner|Billy Crystal;Meg Ryan|Can men and women ever just be friends? Twelve years to find out.
+Stand by Me|1986|89|Drama,Adventure|US|Rob Reiner|Wil Wheaton;River Phoenix|Four boys go on a trek to find a body in the woods.
+Jumanji: Welcome to the Jungle|2017|119|Adventure,Comedy,Action|US|Jake Kasdan|Dwayne Johnson;Kevin Hart|Four teens get sucked into a video game as its avatars.
+Night at the Museum|2006|108|Comedy,Family,Fantasy|US|Shawn Levy|Ben Stiller;Robin Williams|A night guard discovers the museum exhibits come alive after dark.
+Free Guy|2021|115|Comedy,Action,Sci-Fi|US|Shawn Levy|Ryan Reynolds;Jodie Comer|A background character in a video game decides to become the hero.
+Matilda|1996|98|Comedy,Family,Fantasy|US|Danny DeVito|Mara Wilson;Danny DeVito|A brilliant girl with awful parents discovers she has special powers.
+Hook|1991|142|Adventure,Fantasy,Family|US|Steven Spielberg|Robin Williams;Dustin Hoffman|A grown-up Peter Pan must return to Neverland to save his kids.
+The Goonies|1985|114|Adventure,Comedy,Family|US|Richard Donner|Sean Astin;Josh Brolin|A gang of kids hunts for pirate treasure to save their homes.
+Ghostbusters|1984|105|Comedy,Fantasy|US|Ivan Reitman|Bill Murray;Dan Aykroyd|Three scientists start a ghost-catching business in New York.
+Groundhog Day|1993|101|Comedy,Romance,Fantasy|US|Harold Ramis|Bill Murray;Andie MacDowell|A grumpy weatherman relives the same day forever.
+Big|1988|104|Comedy,Fantasy,Romance|US|Penny Marshall|Tom Hanks;Elizabeth Perkins|A 12-year-old wishes to be big and wakes up as an adult.
+Ferris Bueller's Day Off|1986|103|Comedy|US|John Hughes|Matthew Broderick;Alan Ruck|A high schooler fakes being sick for one perfect day in Chicago.
+The Breakfast Club|1985|97|Comedy,Drama|US|John Hughes|Emilio Estevez;Molly Ringwald|Five very different teens spend a Saturday in detention.
+Superbad|2007|113|Comedy|US|Greg Mottola|Jonah Hill;Michael Cera|Two best friends try to survive one last party.
+Mean Girls|2004|97|Comedy|US|Mark Waters|Lindsay Lohan;Rachel McAdams|A new girl infiltrates the most popular clique in school.
+Clueless|1995|97|Comedy,Romance|US|Amy Heckerling|Alicia Silverstone;Paul Rudd|A rich Beverly Hills teen plays matchmaker.
+10 Things I Hate About You|1999|97|Comedy,Romance|US|Gil Junger|Julia Stiles;Heath Ledger|A guy is paid to date the school's most difficult girl.
+Legally Blonde|2001|96|Comedy,Romance|US|Robert Luketic|Reese Witherspoon;Luke Wilson|A sorority girl follows her ex to Harvard Law and surprises everyone.
+The Hangover|2009|100|Comedy|US|Todd Phillips|Bradley Cooper;Zach Galifianakis|Three friends wake up in Vegas with no groom and no memory.
+Bridesmaids|2011|125|Comedy,Romance|US|Paul Feig|Kristen Wiig;Maya Rudolph|A maid of honour's life falls apart as she plans her best friend's wedding.
+Step Brothers|2008|98|Comedy|US|Adam McKay|Will Ferrell;John C. Reilly|Two grown men still living at home become stepbrothers.
+Anchorman: The Legend of Ron Burgundy|2004|94|Comedy|US|Adam McKay|Will Ferrell;Christina Applegate|A 1970s news anchor meets his match: a female co-anchor.
+The Big Short|2015|130|Comedy,Drama|US|Adam McKay|Christian Bale;Steve Carell|A few outsiders see the 2008 housing crash coming and bet on it.
+Zoolander|2001|90|Comedy|US|Ben Stiller|Ben Stiller;Owen Wilson|A dim male model is brainwashed into an assassination plot.
+Meet the Parents|2000|108|Comedy,Romance|US|Jay Roach|Ben Stiller;Robert De Niro|A nervous nurse meets his girlfriend's ex-CIA father.
+Dumb and Dumber|1994|107|Comedy|US|Peter Farrelly|Jim Carrey;Jeff Daniels|Two lovable idiots drive across the country to return a briefcase.
+Ace Ventura: Pet Detective|1994|86|Comedy|US|Tom Shadyac|Jim Carrey;Courteney Cox|An eccentric pet detective hunts for a kidnapped dolphin.
+The Mask|1994|101|Comedy,Fantasy|US|Chuck Russell|Jim Carrey;Cameron Diaz|A shy bank clerk finds a mask that turns him into a cartoon.
+Liar Liar|1997|86|Comedy|US|Tom Shadyac|Jim Carrey;Maura Tierney|A lying lawyer suddenly can't tell a lie for 24 hours.
+Eternal Sunshine of the Spotless Mind|2004|108|Romance,Sci-Fi,Drama|US|Michel Gondry|Jim Carrey;Kate Winslet|A couple erase each other from their memories.
+School of Rock|2003|109|Comedy,Musical|US|Richard Linklater|Jack Black;Joan Cusack|A failed rocker poses as a substitute teacher and starts a band.
+Tropic Thunder|2008|107|Comedy,Action|US|Ben Stiller|Ben Stiller;Robert Downey Jr.|Spoiled actors filming a war movie end up in a real jungle conflict.
+21 Jump Street|2012|109|Comedy,Action,Crime|US|Phil Lord, Christopher Miller|Jonah Hill;Channing Tatum|Two cops go undercover as high school students.
+Knives Out|2019|130|Mystery,Comedy|US|Rian Johnson|Daniel Craig;Ana de Armas|A rich family, a dead author and a detective with an accent.
+Glass Onion: A Knives Out Mystery|2022|139|Mystery,Comedy|US|Rian Johnson|Daniel Craig;Janelle Monáe|A tech billionaire's murder-mystery party on a Greek island goes wrong.
+The Notebook|2004|123|Romance,Drama|US|Nick Cassavetes|Ryan Gosling;Rachel McAdams|A summer romance retold, decades later.
+Pretty Woman|1990|119|Romance,Comedy|US|Garry Marshall|Julia Roberts;Richard Gere|A rich businessman hires a free-spirited woman for a week in LA.
+Notting Hill|1999|124|Romance,Comedy|GB|Roger Michell|Julia Roberts;Hugh Grant|A London bookshop owner falls for the world's biggest movie star.
+Love Actually|2003|135|Romance,Comedy|GB|Richard Curtis|Hugh Grant;Emma Thompson|Ten love stories in London in the weeks before Christmas.
+About Time|2013|123|Romance,Comedy,Fantasy|GB|Richard Curtis|Domhnall Gleeson;Rachel McAdams|A young man can travel back in his own life. Bring tissues.
+Four Weddings and a Funeral|1994|117|Romance,Comedy|GB|Mike Newell|Hugh Grant;Andie MacDowell|A charming bachelor keeps running into the same American at weddings.
+Bridget Jones's Diary|2001|97|Romance,Comedy|GB|Sharon Maguire|Renée Zellweger;Colin Firth|A single thirty-something in London writes everything down.
+Pride & Prejudice|2005|129|Romance,Drama|GB|Joe Wright|Keira Knightley;Matthew Macfadyen|Elizabeth Bennet and Mr. Darcy misjudge each other.
+Atonement|2007|123|Romance,Drama,War|GB|Joe Wright|Keira Knightley;James McAvoy|A girl's lie tears two lovers apart on the eve of war.
+Sense and Sensibility|1995|136|Romance,Drama|GB|Ang Lee|Emma Thompson;Kate Winslet|Two sisters, one sensible and one passionate, look for love.
+Crazy, Stupid, Love.|2011|118|Romance,Comedy|US|Glenn Ficarra, John Requa|Steve Carell;Ryan Gosling|A newly single dad gets dating lessons from a smooth bachelor.
+500 Days of Summer|2009|95|Romance,Comedy,Drama|US|Marc Webb|Joseph Gordon-Levitt;Zooey Deschanel|A greeting-card writer looks back on a relationship that didn't work out.
+Silver Linings Playbook|2012|122|Romance,Comedy,Drama|US|David O. Russell|Bradley Cooper;Jennifer Lawrence|Two people with messy lives team up for a dance competition.
+A Star Is Born|2018|136|Romance,Drama,Musical|US|Bradley Cooper|Bradley Cooper;Lady Gaga|A famous musician discovers a young singer as his own career fades.
+The Proposal|2009|108|Romance,Comedy|US|Anne Fletcher|Sandra Bullock;Ryan Reynolds|A boss forces her assistant into a fake engagement to avoid deportation.
+Crazy Rich Asians|2018|120|Romance,Comedy|US|Jon M. Chu|Constance Wu;Henry Golding|A professor discovers her boyfriend's family is very, very rich.
+Me Before You|2016|110|Romance,Drama|GB|Thea Sharrock|Emilia Clarke;Sam Claflin|A cheerful carer changes the life of a man who has lost hope.
+The Fault in Our Stars|2014|126|Romance,Drama|US|Josh Boone|Shailene Woodley;Ansel Elgort|Two teenagers meet at a support group and fall in love.
+Before Sunrise|1995|101|Romance,Drama|US|Richard Linklater|Ethan Hawke;Julie Delpy|Two strangers meet on a train and spend one night walking around Vienna.
+Ghost|1990|127|Romance,Fantasy,Thriller|US|Jerry Zucker|Patrick Swayze;Demi Moore|A murdered man stays behind as a ghost to protect his girlfriend.
+Dirty Dancing|1987|100|Romance,Drama,Musical|US|Emile Ardolino|Patrick Swayze;Jennifer Grey|A teen on a family holiday falls for the resort's dance instructor.
+Grease|1978|110|Musical,Romance,Comedy|US|Randal Kleiser|John Travolta;Olivia Newton-John|A summer romance continues at high school, with lots of singing.
+Mamma Mia!|2008|108|Musical,Comedy,Romance|US|Phyllida Lloyd|Meryl Streep;Amanda Seyfried|A bride invites three possible dads to her Greek island wedding.
+The Greatest Showman|2017|105|Musical,Drama|US|Michael Gracey|Hugh Jackman;Zac Efron|A dreamer builds a circus, with big songs to match.
+Bohemian Rhapsody|2018|134|Drama,Musical|GB|Bryan Singer|Rami Malek;Lucy Boynton|The story of Queen and Freddie Mercury, up to Live Aid.
+Rocketman|2019|121|Drama,Musical|GB|Dexter Fletcher|Taron Egerton;Jamie Bell|Elton John's life as a colourful musical fantasy.
+Elvis|2022|159|Drama,Musical|AU|Baz Luhrmann|Austin Butler;Tom Hanks|The rise of Elvis Presley, told by his shady manager.
+Moulin Rouge!|2001|127|Musical,Romance,Drama|AU|Baz Luhrmann|Nicole Kidman;Ewan McGregor|A poor writer falls for the star of a Paris nightclub.
+The Great Gatsby|2013|143|Drama,Romance|AU|Baz Luhrmann|Leonardo DiCaprio;Carey Mulligan|A mysterious millionaire throws huge parties to win back a lost love.
+Barbie|2023|114|Comedy,Fantasy|US|Greta Gerwig|Margot Robbie;Ryan Gosling|A perfect doll starts thinking about death and visits the real world.
+Little Women|2019|135|Drama,Romance|US|Greta Gerwig|Saoirse Ronan;Emma Watson|Four sisters grow up in the years after the American Civil War.
+Lady Bird|2017|94|Comedy,Drama|US|Greta Gerwig|Saoirse Ronan;Laurie Metcalf|A headstrong teen in Sacramento clashes with her mother.
+Everything Everywhere All at Once|2022|139|Sci-Fi,Comedy,Action|US|Daniel Kwan, Daniel Scheinert|Michelle Yeoh;Ke Huy Quan|A tired laundromat owner fights across the multiverse.
+Poor Things|2023|141|Comedy,Fantasy,Romance|GB|Yorgos Lanthimos|Emma Stone;Mark Ruffalo|A woman brought back to life by a mad scientist sets out to see the world.
+The Favourite|2018|119|Comedy,Drama,History|GB|Yorgos Lanthimos|Olivia Colman;Emma Stone|Two cousins compete for the favour of a moody English queen.
+The Grand Budapest Hotel|2014|99|Comedy,Crime|US|Wes Anderson|Ralph Fiennes;Tony Revolori|A concierge, a lobby boy and a stolen painting.
+Fantastic Mr. Fox|2009|87|Animation,Comedy,Family|US|Wes Anderson|George Clooney;Meryl Streep|A sly fox can't resist one last heist against three farmers.
+Moonrise Kingdom|2012|94|Comedy,Romance|US|Wes Anderson|Jared Gilman;Kara Hayward|Two twelve-year-olds run away together on a New England island.
+The Holdovers|2023|133|Comedy,Drama|US|Alexander Payne|Paul Giamatti;Dominic Sessa|A grumpy teacher is stuck at school over Christmas with one student.
+Little Miss Sunshine|2006|101|Comedy,Drama|US|Jonathan Dayton, Valerie Faris|Abigail Breslin;Steve Carell|A messy family road trip to a kids' beauty pageant.
+Juno|2007|96|Comedy,Drama|US|Jason Reitman|Elliot Page;Michael Cera|A witty teenager deals with an unplanned pregnancy.
+Up in the Air|2009|109|Comedy,Drama,Romance|US|Jason Reitman|George Clooney;Vera Farmiga|A man who fires people for a living spends his life on planes.
+The Intouchables|2011|112|Comedy,Drama|FR|Olivier Nakache, Éric Toledano|François Cluzet;Omar Sy|A rich man in a wheelchair hires a carer from the projects.
+Amélie|2001|122|Romance,Comedy|FR|Jean-Pierre Jeunet|Audrey Tautou;Mathieu Kassovitz|A shy waitress in Paris secretly fixes other people's lives.
+CODA|2021|111|Drama,Comedy,Musical|US|Sian Heder|Emilia Jones;Troy Kotsur|The only hearing member of a deaf family dreams of singing.
+The Banshees of Inisherin|2022|114|Comedy,Drama|IE|Martin McDonagh|Colin Farrell;Brendan Gleeson|One day, a man's best friend simply stops talking to him.
+Three Billboards Outside Ebbing, Missouri|2017|115|Crime,Drama,Comedy|US|Martin McDonagh|Frances McDormand;Sam Rockwell|A grieving mother rents three billboards to shame the local police.
+In Bruges|2008|107|Crime,Comedy,Drama|GB|Martin McDonagh|Colin Farrell;Brendan Gleeson|Two hitmen hide out in a fairytale Belgian town after a job goes wrong.
+Snatch|2000|104|Crime,Comedy|GB|Guy Ritchie|Jason Statham;Brad Pitt|Boxers, gangsters and a stolen diamond collide in London.
+Lock, Stock and Two Smoking Barrels|1998|107|Crime,Comedy|GB|Guy Ritchie|Jason Flemyng;Jason Statham|Four friends owe a gangster a fortune after a rigged card game.
+The Gentlemen|2019|113|Crime,Comedy,Action|GB|Guy Ritchie|Matthew McConaughey;Charlie Hunnam|An American drug lord tries to sell his London weed empire.
+Baby Driver|2017|113|Action,Crime|US|Edgar Wright|Ansel Elgort;Lily James|A getaway driver times every chase to his playlist.
+Shaun of the Dead|2004|99|Comedy,Horror|GB|Edgar Wright|Simon Pegg;Nick Frost|A slacker plans to win back his girlfriend during a zombie outbreak.
+Hot Fuzz|2007|121|Comedy,Action,Crime|GB|Edgar Wright|Simon Pegg;Nick Frost|A top London cop is sent to a suspiciously perfect village.
+Scott Pilgrim vs. the World|2010|112|Comedy,Action,Romance|US|Edgar Wright|Michael Cera;Mary Elizabeth Winstead|To date the girl of his dreams, Scott has to defeat her seven evil exes.
+Get Out|2017|104|Horror,Thriller|US|Jordan Peele|Daniel Kaluuya;Allison Williams|Meeting the girlfriend's parents goes very wrong.
+Us|2019|116|Horror,Thriller|US|Jordan Peele|Lupita Nyong'o;Winston Duke|A family on holiday is attacked by their own doppelgängers.
+Nope|2022|130|Horror,Sci-Fi|US|Jordan Peele|Daniel Kaluuya;Keke Palmer|Siblings on a horse ranch spot something strange in the clouds.
+A Quiet Place|2018|90|Horror,Sci-Fi|US|John Krasinski|Emily Blunt;John Krasinski|Make a sound and the monsters find you.
+Hereditary|2018|127|Horror|US|Ari Aster|Toni Collette;Alex Wolff|A grieving family uncovers something dark. Not for the faint-hearted.
+Midsommar|2019|148|Horror|US|Ari Aster|Florence Pugh;Jack Reynor|A summer festival in rural Sweden turns into a nightmare in broad daylight.
+The Witch|2015|92|Horror|US|Robert Eggers|Anya Taylor-Joy;Ralph Ineson|A Puritan family in 1630s New England is haunted by something in the woods.
+It|2017|135|Horror|US|Andy Muschietti|Jaeden Martell;Bill Skarsgård|A group of kids faces a shape-shifting clown in their town.
+The Conjuring|2013|112|Horror|US|James Wan|Vera Farmiga;Patrick Wilson|Paranormal investigators help a family in a haunted farmhouse.
+Insidious|2010|103|Horror|US|James Wan|Patrick Wilson;Rose Byrne|A family moves house, but the haunting follows their son.
+Saw|2004|103|Horror,Mystery|US|James Wan|Cary Elwes;Leigh Whannell|Two men wake up chained in a bathroom with a deadly puzzle.
+Scream|1996|111|Horror,Mystery|US|Wes Craven|Neve Campbell;David Arquette|A masked killer who knows all the horror movie rules.
+A Nightmare on Elm Street|1984|91|Horror|US|Wes Craven|Heather Langenkamp;Johnny Depp|A killer stalks teenagers in their dreams.
+Halloween|1978|91|Horror|US|John Carpenter|Jamie Lee Curtis;Donald Pleasence|A masked killer comes home on Halloween night.
+The Thing|1982|109|Horror,Sci-Fi|US|John Carpenter|Kurt Russell;Wilford Brimley|A shape-shifting alien hides among researchers in Antarctica.
+The Exorcist|1973|122|Horror|US|William Friedkin|Ellen Burstyn;Linda Blair|A mother seeks help when her daughter is possessed.
+The Sixth Sense|1999|107|Horror,Mystery,Drama|US|M. Night Shyamalan|Bruce Willis;Haley Joel Osment|A child psychologist treats a boy who sees dead people.
+Signs|2002|106|Sci-Fi,Thriller,Horror|US|M. Night Shyamalan|Mel Gibson;Joaquin Phoenix|Crop circles appear on a farm, and a family hunkers down.
+The Others|2001|104|Horror,Mystery|ES|Alejandro Amenábar|Nicole Kidman;Fionnula Flanagan|A mother in a dark mansion believes her house is haunted.
+The Ring|2002|115|Horror,Mystery|US|Gore Verbinski|Naomi Watts;Martin Henderson|Watch the cursed tape, and you have seven days.
+The Babadook|2014|94|Horror,Drama|AU|Jennifer Kent|Essie Davis;Noah Wiseman|A widowed mother and her son are haunted by a creepy picture-book monster.
+It Follows|2014|100|Horror|US|David Robert Mitchell|Maika Monroe;Keir Gilchrist|Something slow and unstoppable is always walking towards her.
+Smile|2022|115|Horror,Mystery|US|Parker Finn|Sosie Bacon;Kyle Gallner|A therapist is haunted by a curse that hides behind a smile.
+Talk to Me|2022|95|Horror|AU|Danny Philippou, Michael Philippou|Sophie Wilde;Alexandra Jensen|Teens use an embalmed hand to talk to the dead, for fun at first.
+The Substance|2024|141|Horror,Sci-Fi|FR|Coralie Fargeat|Demi Moore;Margaret Qualley|A fading TV star tries a black-market drug that creates a younger self.
+Barbarian|2022|102|Horror,Thriller|US|Zach Cregger|Georgina Campbell;Bill Skarsgård|A woman finds her rental house has already been booked by a stranger.
+28 Days Later|2002|113|Horror,Sci-Fi|GB|Danny Boyle|Cillian Murphy;Naomie Harris|A man wakes up from a coma in an empty, infected London.
+Train to Busan|2016|118|Horror,Action,Thriller|KR|Yeon Sang-ho|Gong Yoo;Ma Dong-seok|A zombie outbreak hits a high-speed train from Seoul.
+Rosemary's Baby|1968|137|Horror,Mystery|US|Roman Polanski|Mia Farrow;John Cassavetes|A pregnant woman suspects her neighbours have sinister plans.
+Carrie|1976|98|Horror|US|Brian De Palma|Sissy Spacek;Piper Laurie|A bullied teen with telekinetic powers is pushed too far at prom.
+Misery|1990|107|Thriller,Horror|US|Rob Reiner|James Caan;Kathy Bates|An author is rescued after a crash by his number one fan.
+Gone Baby Gone|2007|114|Crime,Mystery,Drama|US|Ben Affleck|Casey Affleck;Michelle Monaghan|Two private detectives search for a missing girl in Boston.
+Argo|2012|120|Thriller,History,Drama|US|Ben Affleck|Ben Affleck;Bryan Cranston|The CIA rescues hostages from Iran using a fake movie as cover.
+The Town|2010|125|Crime,Thriller|US|Ben Affleck|Ben Affleck;Jeremy Renner|A bank robber falls for a manager from one of his heists.
+Nightcrawler|2014|117|Crime,Thriller|US|Dan Gilroy|Jake Gyllenhaal;Rene Russo|A creepy loner films crime scenes for TV news, and goes too far.
+Drive|2011|100|Crime,Thriller,Action|US|Nicolas Winding Refn|Ryan Gosling;Carey Mulligan|A quiet stunt driver who moonlights as a getaway driver.
+Uncut Gems|2019|135|Crime,Thriller|US|Josh Safdie, Benny Safdie|Adam Sandler;Julia Fox|A New York jeweller with gambling debts bets everything on a gemstone.
+Kon-Tiki|2012|118|Adventure,History,Drama|NO|Joachim Rønning, Espen Sandberg|Pål Sverre Hagen;Anders Baasmo Christiansen|Thor Heyerdahl crosses the Pacific on a wooden raft.
+Trollhunter|2010|103|Fantasy,Horror,Comedy|NO|André Øvredal|Otto Jespersen;Glenn Erland Tosterud|Students follow a man who hunts real trolls in the Norwegian woods.
+The Worst Person in the World|2021|128|Romance,Drama,Comedy|NO|Joachim Trier|Renate Reinsve;Anders Danielsen Lie|Four years in the life of Julie in Oslo, figuring out who she is.
+Oslo, August 31st|2011|95|Drama|NO|Joachim Trier|Anders Danielsen Lie;Hans Olav Brenner|A recovering addict spends one long day wandering through Oslo.
+Sentimental Value|2025|133|Drama,Comedy|NO|Joachim Trier|Renate Reinsve;Stellan Skarsgård|A film director comes back into his daughters' lives with a new script.
+Dead Snow|2009|91|Horror,Comedy|NO|Tommy Wirkola|Vegar Hoel;Charlotte Frogner|A cabin trip in the mountains meets zombie soldiers. Gory and silly.
+Headhunters|2011|100|Thriller,Crime|NO|Morten Tyldum|Aksel Hennie;Nikolaj Coster-Waldau|A recruiter who steals art picks the wrong target.
+The Wave|2015|105|Thriller,Drama|NO|Roar Uthaug|Kristoffer Joner;Ane Dahl Torp|A rockslide sends a tsunami down a Norwegian fjord.
+The Quake|2018|106|Thriller,Drama|NO|John Andreas Andersen|Kristoffer Joner;Ane Dahl Torp|A geologist fears a huge earthquake is about to hit Oslo.
+Troll|2022|101|Fantasy,Action,Adventure|NO|Roar Uthaug|Ine Marie Wilmann;Kim Falck|A giant troll wakes up inside a Norwegian mountain and heads for Oslo.
+Max Manus|2008|118|War,History,Drama|NO|Joachim Rønning, Espen Sandberg|Aksel Hennie;Agnes Kittelsen|The true story of a Norwegian resistance fighter in World War II.
+The King's Choice|2016|133|War,History,Drama|NO|Erik Poppe|Jesper Christensen;Anders Baasmo Christiansen|Three dramatic days in April 1940, when Norway's king had to choose.
+Elling|2001|89|Comedy,Drama|NO|Petter Næss|Per Christian Ellefsen;Sven Nordin|Two odd men from an institution try to manage life in an Oslo flat.
+Kitchen Stories|2003|95|Comedy,Drama|NO|Bent Hamer|Joachim Calmeyer;Tomas Norström|A Swedish researcher observes a lonely Norwegian farmer's kitchen habits.
+Thelma|2017|116|Thriller,Fantasy,Drama|NO|Joachim Trier|Eili Harboe;Kaya Wilkins|A shy student in Oslo discovers she has frightening powers.
+The Innocents|2021|117|Horror,Thriller,Fantasy|NO|Eskil Vogt|Rakel Lenora Fløttum;Alva Brynsmo Ramstad|Kids in a housing estate discover strange powers over the summer.
+Pathfinder|1987|86|Adventure,Thriller|NO|Nils Gaup|Mikkel Gaup;Nils Utsi|A Sámi boy leads a gang of raiders astray in the frozen north.
+Insomnia|1997|96|Thriller,Crime|NO|Erik Skjoldbjærg|Stellan Skarsgård;Sverre Anker Ousdal|A detective in the midnight sun can't sleep, or think straight.
+Ninjababy|2021|103|Comedy,Drama|NO|Yngvild Sve Flikke|Kristine Kujath Thorp;Arthur Berning|A young woman finds out she is six months pregnant, and a cartoon talks back.
+The Last King|2016|99|Action,History,Adventure|NO|Nils Gaup|Jakob Oftebro;Kristofer Hivju|Two warriors protect the infant heir to the throne through a snowy war.
+The Celebration|1998|105|Drama|DK|Thomas Vinterberg|Ulrich Thomsen;Henning Moritzen|A family birthday dinner where a son reveals a terrible secret.
+Another Round|2020|117|Drama,Comedy|DK|Thomas Vinterberg|Mads Mikkelsen;Thomas Bo Larsen|Four teachers test a theory about drinking a little every day.
+The Hunt|2012|115|Drama|DK|Thomas Vinterberg|Mads Mikkelsen;Thomas Bo Larsen|A kind teacher's life falls apart after a false accusation.
+Riders of Justice|2020|116|Action,Comedy,Drama|DK|Anders Thomas Jensen|Mads Mikkelsen;Nikolaj Lie Kaas|A soldier and three nerds hunt the gang they blame for a train crash.
+Adam's Apples|2005|94|Comedy,Drama|DK|Anders Thomas Jensen|Ulrich Thomsen;Mads Mikkelsen|A neo-Nazi on parole meets an endlessly optimistic priest.
+The Guilty|2018|85|Thriller,Crime|DK|Gustav Möller|Jakob Cedergren;Jessica Dinnage|An emergency dispatcher takes a call from a kidnapped woman.
+Flee|2021|89|Animation,Documentary|DK|Jonas Poher Rasmussen|Amin Nawabi;Daniel Karimyar|An animated documentary about one man's escape from Afghanistan.
+The Square|2017|151|Comedy,Drama|SE|Ruben Östlund|Claes Bang;Elisabeth Moss|A museum curator's life spirals after his phone is stolen.
+Triangle of Sadness|2022|147|Comedy,Drama|SE|Ruben Östlund|Harris Dickinson;Charlbi Dean|Models and billionaires on a luxury cruise. It doesn't go well.
+Force Majeure|2014|120|Comedy,Drama|SE|Ruben Östlund|Johannes Kuhnke;Lisa Loven Kongsli|A father's reaction to an avalanche shakes his family's ski holiday.
+Let the Right One In|2008|115|Horror,Romance,Drama|SE|Tomas Alfredson|Kåre Hedebrant;Lina Leandersson|A bullied boy befriends the strange girl next door. She's a vampire.
+The Girl with the Dragon Tattoo|2009|152|Crime,Mystery,Thriller|SE|Niels Arden Oplev|Noomi Rapace;Michael Nyqvist|A journalist and a hacker investigate a forty-year-old disappearance.
+A Man Called Ove|2015|116|Comedy,Drama|SE|Hannes Holm|Rolf Lassgård;Bahar Pars|A grumpy widower's routine is upended by his new neighbours.
+The Seventh Seal|1957|96|Drama,Fantasy|SE|Ingmar Bergman|Max von Sydow;Gunnar Björnstrand|A knight plays chess with Death during the plague.
+The Hundred-Year-Old Man Who Climbed Out of the Window and Disappeared|2013|114|Comedy,Adventure|SE|Felix Herngren|Robert Gustafsson;Iwar Wiklander|On his 100th birthday, a man climbs out of the window and starts an adventure.
+Border|2018|110|Fantasy,Romance,Drama|SE|Ali Abbasi|Eva Melander;Eero Milonoff|A customs officer who can smell fear meets someone just like her.
+Rams|2015|93|Drama,Comedy|IS|Grímur Hákonarson|Sigurður Sigurjónsson;Theodór Júlíusson|Two estranged brothers fight to save their sheep in an Icelandic valley.
+The Other Side of Hope|2017|100|Comedy,Drama|FI|Aki Kaurismäki|Sherwan Haji;Sakari Kuosmanen|A Syrian refugee in Helsinki gets help from a deadpan restaurant owner.
+Sisu|2022|91|Action,War|FI|Jalmari Helander|Jorma Tommila;Aksel Hennie|A gold prospector in Lapland takes on a Nazi squad. Very violent.
+Rare Exports: A Christmas Tale|2010|84|Fantasy,Horror,Comedy|FI|Jalmari Helander|Onni Tommila;Jorma Tommila|Diggers in Lapland unearth the real, not-so-jolly Santa.
+Parasite|2019|132|Thriller,Drama|KR|Bong Joon-ho|Song Kang-ho;Choi Woo-shik|A poor family slowly moves in on a rich one.
+Memories of Murder|2003|132|Crime,Mystery,Thriller|KR|Bong Joon-ho|Song Kang-ho;Kim Sang-kyung|Two detectives chase South Korea's first known serial killer.
+The Host|2006|119|Horror,Sci-Fi,Comedy|KR|Bong Joon-ho|Song Kang-ho;Bae Doona|A monster rises from Seoul's river and snatches a girl.
+Snowpiercer|2013|126|Sci-Fi,Action|KR|Bong Joon-ho|Chris Evans;Song Kang-ho|The last humans live on a train, and the back cars revolt.
+Okja|2017|121|Adventure,Sci-Fi,Drama|KR|Bong Joon-ho|Ahn Seo-hyun;Tilda Swinton|A girl fights to save her giant pig friend from a meat company.
+Oldboy|2003|120|Thriller,Mystery,Action|KR|Park Chan-wook|Choi Min-sik;Yoo Ji-tae|A man is locked in a room for 15 years, then released. Why?
+The Handmaiden|2016|145|Thriller,Romance,Drama|KR|Park Chan-wook|Kim Min-hee;Kim Tae-ri|A con man and a maid plot to rob a Japanese heiress.
+Decision to Leave|2022|138|Mystery,Romance,Thriller|KR|Park Chan-wook|Park Hae-il;Tang Wei|A detective falls for the widow he suspects of murder.
+Burning|2018|148|Mystery,Drama|KR|Lee Chang-dong|Yoo Ah-in;Steven Yeun|A young man suspects a rich stranger knows why his crush disappeared.
+I Saw the Devil|2010|144|Thriller,Horror,Crime|KR|Kim Jee-woon|Lee Byung-hun;Choi Min-sik|A secret agent hunts the serial killer who murdered his fiancée.
+Past Lives|2023|106|Romance,Drama|US|Celine Song|Greta Lee;Teo Yoo|Two childhood friends from Seoul meet again decades later in New York.
+Minari|2020|115|Drama|US|Lee Isaac Chung|Steven Yeun;Han Ye-ri|A Korean family starts a farm in rural Arkansas.
+Seven Samurai|1954|207|Action,Drama,Adventure|JP|Akira Kurosawa|Toshiro Mifune;Takashi Shimura|A poor village hires seven samurai to defend it from bandits.
+Rashomon|1950|88|Mystery,Crime,Drama|JP|Akira Kurosawa|Toshiro Mifune;Machiko Kyō|Four people tell four different versions of the same crime.
+Shoplifters|2018|121|Drama,Crime|JP|Hirokazu Kore-eda|Lily Franky;Sakura Ando|A family of small-time thieves takes in a little girl.
+Drive My Car|2021|179|Drama|JP|Ryusuke Hamaguchi|Hidetoshi Nishijima;Tōko Miura|A grieving actor and his quiet young driver slowly open up.
+Godzilla Minus One|2023|125|Sci-Fi,Action,Drama|JP|Takashi Yamazaki|Ryunosuke Kamiki;Minami Hamabe|In ruined post-war Japan, a former pilot faces Godzilla.
+Perfect Days|2023|124|Drama|JP|Wim Wenders|Kōji Yakusho;Tokio Emoto|A quiet Tokyo toilet cleaner finds joy in small daily routines.
+Shin Godzilla|2016|120|Sci-Fi,Action|JP|Hideaki Anno, Shinji Higuchi|Hiroki Hasegawa;Satomi Ishihara|Japan's government scrambles to handle a giant monster attack.
+One Cut of the Dead|2017|96|Comedy,Horror|JP|Shinichiro Ueda|Takayuki Hamatsu;Yuzuki Akiyama|A low-budget zombie shoot gets interrupted by real zombies. Stay for the second half.
+Crouching Tiger, Hidden Dragon|2000|120|Action,Romance,Fantasy|TW|Ang Lee|Chow Yun-fat;Michelle Yeoh|A legendary sword is stolen, and warriors fly over rooftops to get it back.
+Hero|2002|99|Action,History|CN|Zhang Yimou|Jet Li;Tony Leung Chiu-wai|A nameless warrior tells the king how he defeated three assassins.
+In the Mood for Love|2000|98|Romance,Drama|HK|Wong Kar-wai|Tony Leung Chiu-wai;Maggie Cheung|Two neighbours suspect their spouses are having an affair.
+Infernal Affairs|2002|101|Crime,Thriller|HK|Andrew Lau, Alan Mak|Andy Lau;Tony Leung Chiu-wai|A cop undercover in a triad, and a triad mole in the police.
+Kung Fu Hustle|2004|99|Action,Comedy|HK|Stephen Chow|Stephen Chow;Yuen Wah|A wannabe gangster meets kung fu masters hiding in a slum.
+Police Story|1985|101|Action,Comedy,Crime|HK|Jackie Chan|Jackie Chan;Brigitte Lin|A cop protects a witness, with jaw-dropping stunts.
+RRR|2022|187|Action,Drama,History|IN|S. S. Rajamouli|N. T. Rama Rao Jr.;Ram Charan|Two revolutionaries become friends in 1920s India. Huge, loud, joyful.
+3 Idiots|2009|170|Comedy,Drama|IN|Rajkumar Hirani|Aamir Khan;R. Madhavan|Two friends search for the college buddy who changed their lives.
+Lagaan|2001|224|Drama,Sport,Musical|IN|Ashutosh Gowariker|Aamir Khan;Gracy Singh|Villagers bet their taxes on a cricket match against British officers.
+Dangal|2016|161|Drama,Sport|IN|Nitesh Tiwari|Aamir Khan;Fatima Sana Shaikh|A former wrestler trains his daughters to become champions.
+Pan's Labyrinth|2006|118|Fantasy,War,Drama|MX|Guillermo del Toro|Ivana Baquero;Sergi López|A girl in war-time Spain escapes into a dark fairy-tale world.
+The Shape of Water|2017|123|Fantasy,Romance,Drama|US|Guillermo del Toro|Sally Hawkins;Doug Jones|A mute cleaner falls for a captured sea creature.
+Roma|2018|135|Drama|MX|Alfonso Cuarón|Yalitza Aparicio;Marina de Tavira|A year in the life of a housekeeper for a Mexico City family.
+Y Tu Mamá También|2001|106|Drama,Comedy,Romance|MX|Alfonso Cuarón|Gael García Bernal;Diego Luna|Two teenage friends take a road trip with an older woman.
+City of God|2002|130|Crime,Drama|BR|Fernando Meirelles|Alexandre Rodrigues;Leandro Firmino|Growing up in a violent Rio favela, a boy dreams of being a photographer.
+The Secret in Their Eyes|2009|129|Mystery,Crime,Romance|AR|Juan José Campanella|Ricardo Darín;Soledad Villamil|A retired investigator writes a novel about an unsolved murder.
+Wild Tales|2014|122|Comedy,Thriller|AR|Damián Szifron|Ricardo Darín;Oscar Martínez|Six short stories about people pushed over the edge.
+Society of the Snow|2023|144|Drama,Adventure,History|ES|J. A. Bayona|Enzo Vogrincic;Agustín Pardella|A rugby team survives a plane crash high in the Andes.
+The Impossible|2012|114|Drama,Thriller|ES|J. A. Bayona|Naomi Watts;Ewan McGregor|A family is torn apart by the 2004 tsunami in Thailand.
+The Platform|2019|94|Sci-Fi,Horror,Thriller|ES|Galder Gaztelu-Urrutia|Iván Massagué;Zorion Eguileor|A prison where food comes down on a platform, floor by floor.
+Volver|2006|121|Comedy,Drama|ES|Pedro Almodóvar|Penélope Cruz;Carmen Maura|A woman's dead mother appears to come back to set things right.
+Life Is Beautiful|1997|116|Comedy,Drama,War|IT|Roberto Benigni|Roberto Benigni;Nicoletta Braschi|A father turns life in a concentration camp into a game for his son.
+Cinema Paradiso|1988|155|Drama,Romance|IT|Giuseppe Tornatore|Philippe Noiret;Salvatore Cascio|A film director remembers the village cinema where he grew up.
+Call Me by Your Name|2017|132|Romance,Drama|IT|Luca Guadagnino|Timothée Chalamet;Armie Hammer|A summer romance between a teenager and a visiting student in Italy.
+Das Boot|1981|149|War,Drama,Thriller|DE|Wolfgang Petersen|Jürgen Prochnow;Herbert Grönemeyer|Life and fear aboard a German submarine in World War II.
+The Lives of Others|2006|137|Drama,Thriller|DE|Florian Henckel von Donnersmarck|Ulrich Mühe;Sebastian Koch|An East German spy bugs an artist's flat and starts to sympathise.
+Run Lola Run|1998|81|Action,Thriller|DE|Tom Tykwer|Franka Potente;Moritz Bleibtreu|Lola has twenty minutes to find 100,000 marks. Three tries.
+Good Bye, Lenin!|2003|121|Comedy,Drama|DE|Wolfgang Becker|Daniel Brühl;Katrin Saß|A son hides the fall of the Berlin Wall from his fragile mother.
+All Quiet on the Western Front|2022|148|War,Drama|DE|Edward Berger|Felix Kammerer;Albrecht Schuch|A young German soldier faces the horror of World War I.
+Conclave|2024|120|Thriller,Drama|GB|Edward Berger|Ralph Fiennes;Stanley Tucci|Cardinals gather to choose a new pope, and secrets come out.
+Anatomy of a Fall|2023|151|Drama,Mystery,Crime|FR|Justine Triet|Sandra Hüller;Swann Arlaud|A writer is accused of killing her husband in the French Alps.
+Portrait of a Lady on Fire|2019|122|Romance,Drama,History|FR|Céline Sciamma|Noémie Merlant;Adèle Haenel|A painter secretly paints a bride-to-be in 18th-century Brittany.
+La Haine|1995|98|Drama,Crime|FR|Mathieu Kassovitz|Vincent Cassel;Hubert Koundé|Twenty-four hours with three friends after a riot in the Paris suburbs.
+The Count of Monte Cristo|2024|178|Adventure,Drama|FR|Matthieu Delaporte, Alexandre de La Patellière|Pierre Niney;Bastien Bouillon|A wrongly jailed sailor escapes and plans an elaborate revenge.
+Lupin III: The Castle of Cagliostro|1979|100|Animation,Adventure,Comedy|JP|Hayao Miyazaki|Yasuo Yamada;Sumi Shimamoto|A gentleman thief rescues a princess from a counterfeiting count.
+The Triplets of Belleville|2003|80|Animation,Comedy|FR|Sylvain Chomet|Béatrice Bonifassi;Lina Boudreau|A grandmother and her dog rescue a kidnapped cyclist. Almost no dialogue.
+Persepolis|2007|96|Animation,Drama,History|FR|Marjane Satrapi, Vincent Paronnaud|Chiara Mastroianni;Catherine Deneuve|A girl grows up during the Iranian revolution, in black and white.
+A Separation|2011|123|Drama|IR|Asghar Farhadi|Leila Hatami;Peyman Moaadi|A couple's divorce sets off a painful chain of events in Tehran.
+Incendies|2010|131|Drama,Mystery,War|CA|Denis Villeneuve|Lubna Azabal;Mélissa Désormeaux-Poulin|Twins travel to the Middle East to uncover their mother's past.
+Flow|2024|85|Animation,Adventure,Family|LV|Gints Zilbalodis|-|A cat survives a great flood on a boat with other animals. No words needed.
+Anora|2024|139|Comedy,Drama,Romance|US|Sean Baker|Mikey Madison;Mark Eydelshteyn|A Brooklyn dancer impulsively marries the son of a Russian oligarch.
+The Brutalist|2024|215|Drama,History|US|Brady Corbet|Adrien Brody;Felicity Jones|A Hungarian architect rebuilds his life in post-war America.
+Wicked|2024|160|Musical,Fantasy|US|Jon M. Chu|Cynthia Erivo;Ariana Grande|The untold friendship of the witches of Oz, before Dorothy.
+Sinners|2025|137|Horror,Drama,Musical|US|Ryan Coogler|Michael B. Jordan;Hailee Steinfeld|Twin brothers open a juke joint in 1930s Mississippi, and evil comes to the party.
+Weapons|2025|128|Horror,Mystery|US|Zach Cregger|Julia Garner;Josh Brolin|Every child in one class runs out of their homes on the same night.
+F1|2025|155|Drama,Sport,Action|US|Joseph Kosinski|Brad Pitt;Damson Idris|A veteran racer returns to Formula 1 to mentor a hotshot rookie.
+Superman|2025|129|Action,Sci-Fi|US|James Gunn|David Corenswet;Rachel Brosnahan|A young Superman tries to do good in a world that doesn't trust him.
+KPop Demon Hunters|2025|100|Animation,Musical,Action|US|Maggie Kang, Chris Appelhans|Arden Cho;May Hong|A K-pop girl group secretly fights demons with their songs.
+One Battle After Another|2025|161|Action,Comedy,Thriller|US|Paul Thomas Anderson|Leonardo DiCaprio;Sean Penn|A burned-out ex-revolutionary has to protect his daughter from an old enemy.
+Challengers|2024|131|Romance,Drama,Sport|US|Luca Guadagnino|Zendaya;Josh O'Connor|A tennis love triangle that stretches across thirteen years.
+Civil War|2024|109|Action,Thriller,War|US|Alex Garland|Kirsten Dunst;Wagner Moura|Journalists drive across an America torn apart by civil war.
+Ex Machina|2014|108|Sci-Fi,Thriller|GB|Alex Garland|Domhnall Gleeson;Alicia Vikander|A programmer is invited to test whether a robot is truly conscious.
+Annihilation|2018|115|Sci-Fi,Horror,Mystery|US|Alex Garland|Natalie Portman;Oscar Isaac|A team of scientists enters a strange, shimmering zone.
+Her|2013|126|Romance,Sci-Fi,Drama|US|Spike Jonze|Joaquin Phoenix;Scarlett Johansson|A lonely writer falls in love with his computer's operating system.
+Being John Malkovich|1999|112|Comedy,Fantasy|US|Spike Jonze|John Cusack;Cameron Diaz|A puppeteer finds a hidden door into the actor John Malkovich's head.
+Lost in Translation|2003|102|Comedy,Drama,Romance|US|Sofia Coppola|Bill Murray;Scarlett Johansson|Two lonely Americans form an unlikely bond in Tokyo.
+The Iron Giant|1999|86|Animation,Sci-Fi,Family|US|Brad Bird|Eli Marienthal;Vin Diesel|A boy befriends a giant robot that fell from the sky.
+The Wild Robot|2024|102|Animation,Sci-Fi,Family|US|Chris Sanders|Lupita Nyong'o;Pedro Pascal|A robot stranded on an island raises an orphaned gosling.
+Puss in Boots: The Last Wish|2022|102|Animation,Adventure,Comedy|US|Joel Crawford|Antonio Banderas;Salma Hayek|Puss is down to his last life and hunts for a magical wishing star.
+The Super Mario Bros. Movie|2023|92|Animation,Adventure,Comedy|US|Aaron Horvath, Michael Jelenic|Chris Pratt;Anya Taylor-Joy|A plumber from Brooklyn falls into the Mushroom Kingdom.
+The Mitchells vs. the Machines|2021|113|Animation,Comedy,Sci-Fi|US|Mike Rianda|Abbi Jacobson;Danny McBride|A chaotic family road trip during a robot uprising.
+Klaus|2019|96|Animation,Family,Comedy|ES|Sergio Pablos|Jason Schwartzman;J. K. Simmons|A lazy postman in a frozen town befriends a reclusive toymaker.
+Nimona|2023|101|Animation,Fantasy,Action|US|Nick Bruno, Troy Quane|Chloë Grace Moretz;Riz Ahmed|A framed knight teams up with a chaotic shape-shifter.
+Luca|2021|95|Animation,Family,Comedy|US|Enrico Casarosa|Jacob Tremblay;Jack Dylan Grazer|A young sea monster spends a summer on land in an Italian seaside town.
+Turning Red|2022|100|Animation,Comedy,Family|US|Domee Shi|Rosalie Chiang;Sandra Oh|A 13-year-old turns into a giant red panda whenever she gets emotional.
+Elemental|2023|101|Animation,Romance,Family|US|Peter Sohn|Leah Lewis;Mamoudou Athie|A fiery young woman and a go-with-the-flow guy in a city of elements.
+Big Hero 6|2014|102|Animation,Action,Family|US|Don Hall, Chris Williams|Ryan Potter;Scott Adsit|A teen genius and his huggable robot form a team of heroes.
+Wreck-It Ralph|2012|101|Animation,Comedy,Family|US|Rich Moore|John C. Reilly;Sarah Silverman|A video-game bad guy wants to be a hero for once.
+Lilo & Stitch|2002|85|Animation,Family,Comedy|US|Chris Sanders, Dean DeBlois|Daveigh Chase;Chris Sanders|A lonely Hawaiian girl adopts a "dog" that is really an alien.
+Ice Age|2002|81|Animation,Comedy,Family|US|Chris Wedge|Ray Romano;John Leguizamo|A mammoth, a sloth and a tiger try to return a baby to its tribe.
+Hotel Transylvania|2012|91|Animation,Comedy,Family|US|Genndy Tartakovsky|Adam Sandler;Andy Samberg|Dracula's monster hotel is invaded by a human backpacker.
+Sing|2016|108|Animation,Musical,Comedy|US|Garth Jennings|Matthew McConaughey;Reese Witherspoon|A koala holds a singing competition to save his theatre.
+The Bad Guys|2022|100|Animation,Comedy,Crime|US|Pierre Perifel|Sam Rockwell;Marc Maron|A crew of animal criminals pretends to go good.
+Babe|1995|91|Family,Comedy,Drama|AU|Chris Noonan|James Cromwell;Christine Cavanaugh|A little pig on a farm dreams of herding sheep.
+Charlie and the Chocolate Factory|2005|115|Fantasy,Family,Comedy|US|Tim Burton|Johnny Depp;Freddie Highmore|A poor boy wins a tour of a strange chocolate factory.
+Edward Scissorhands|1990|105|Fantasy,Romance,Drama|US|Tim Burton|Johnny Depp;Winona Ryder|A gentle man with scissors for hands moves to the suburbs.
+Beetlejuice|1988|92|Comedy,Fantasy,Horror|US|Tim Burton|Michael Keaton;Winona Ryder|A ghost couple hires a crazy bio-exorcist to scare away the new owners.
+The Nightmare Before Christmas|1993|76|Animation,Musical,Fantasy|US|Henry Selick|Chris Sarandon;Catherine O'Hara|The king of Halloween Town tries to take over Christmas.
+Coraline|2009|100|Animation,Fantasy,Horror|US|Henry Selick|Dakota Fanning;Teri Hatcher|A girl finds a door to a better version of her home. Too good.
+Gattaca|1997|106|Sci-Fi,Drama,Thriller|US|Andrew Niccol|Ethan Hawke;Uma Thurman|In a world of designer babies, a natural-born man fakes his way to space.
+District 9|2009|112|Sci-Fi,Action|ZA|Neill Blomkamp|Sharlto Copley;Jason Cope|Aliens stranded in Johannesburg are pushed into a slum.
+Moon|2009|97|Sci-Fi,Drama,Mystery|GB|Duncan Jones|Sam Rockwell;Kevin Spacey|A lone worker on the Moon nears the end of his three-year contract.
+Looper|2012|119|Sci-Fi,Action|US|Rian Johnson|Joseph Gordon-Levitt;Bruce Willis|A hitman for the mob must kill his own older self.
+Source Code|2011|93|Sci-Fi,Thriller|US|Duncan Jones|Jake Gyllenhaal;Michelle Monaghan|A soldier relives the last eight minutes before a train bombing.
+Total Recall|1990|113|Sci-Fi,Action|US|Paul Verhoeven|Arnold Schwarzenegger;Sharon Stone|A worker buys fake memories of Mars and finds out they may be real.
+RoboCop|1987|102|Sci-Fi,Action,Crime|US|Paul Verhoeven|Peter Weller;Nancy Allen|A murdered cop is rebuilt as a cyborg in a crime-ridden Detroit.
+Predator|1987|107|Sci-Fi,Action,Horror|US|John McTiernan|Arnold Schwarzenegger;Carl Weathers|Elite soldiers in a jungle are hunted by an invisible alien.
+The Abyss|1989|140|Sci-Fi,Adventure,Thriller|US|James Cameron|Ed Harris;Mary Elizabeth Mastrantonio|A deep-sea oil crew encounters something unknown at the bottom of the ocean.
+Contact|1997|150|Sci-Fi,Drama,Mystery|US|Robert Zemeckis|Jodie Foster;Matthew McConaughey|A scientist picks up a message from space.
+Close Encounters of the Third Kind|1977|135|Sci-Fi,Drama|US|Steven Spielberg|Richard Dreyfuss;François Truffaut|An electrician becomes obsessed after seeing a UFO.
+War of the Worlds|2005|116|Sci-Fi,Thriller|US|Steven Spielberg|Tom Cruise;Dakota Fanning|A dock worker protects his kids during an alien invasion.
+I Am Legend|2007|101|Sci-Fi,Horror,Drama|US|Francis Lawrence|Will Smith;Alice Braga|The last man in New York and his dog, and what comes out at night.
+The Hunger Games|2012|142|Sci-Fi,Action,Adventure|US|Gary Ross|Jennifer Lawrence;Josh Hutcherson|A teen volunteers for a televised fight to the death.
+The Hunger Games: Catching Fire|2013|146|Sci-Fi,Action,Adventure|US|Francis Lawrence|Jennifer Lawrence;Josh Hutcherson|The victors are sent back into the arena for a special anniversary.
+Planet of the Apes|1968|112|Sci-Fi,Adventure|US|Franklin J. Schaffner|Charlton Heston;Roddy McDowall|Astronauts crash on a planet ruled by apes.
+Dawn of the Planet of the Apes|2014|130|Sci-Fi,Action,Drama|US|Matt Reeves|Andy Serkis;Jason Clarke|Ape leader Caesar tries to keep the peace with human survivors.
+Cloverfield|2008|85|Sci-Fi,Horror,Action|US|Matt Reeves|Michael Stahl-David;Lizzy Caplan|A goodbye party is interrupted by a monster attacking New York.
+Pacific Rim|2013|131|Sci-Fi,Action|US|Guillermo del Toro|Charlie Hunnam;Rinko Kikuchi|Giant robots fight giant sea monsters.
+Kingsman: The Secret Service|2014|129|Action,Comedy|GB|Matthew Vaughn|Taron Egerton;Colin Firth|A street kid is recruited into a very stylish spy agency.
+Kick-Ass|2010|117|Action,Comedy,Crime|GB|Matthew Vaughn|Aaron Taylor-Johnson;Chloë Grace Moretz|A teen with no powers decides to become a real superhero.
+Stardust|2007|127|Fantasy,Romance,Adventure|GB|Matthew Vaughn|Charlie Cox;Claire Danes|A young man crosses a magic wall to bring a fallen star to his crush.
+Point Break|1991|122|Action,Crime,Thriller|US|Kathryn Bigelow|Patrick Swayze;Keanu Reeves|An FBI agent goes undercover with a gang of surfing bank robbers.
+The Hurt Locker|2008|131|War,Thriller,Drama|US|Kathryn Bigelow|Jeremy Renner;Anthony Mackie|A reckless bomb disposal expert in Iraq.
+Zero Dark Thirty|2012|157|Thriller,History,War|US|Kathryn Bigelow|Jessica Chastain;Jason Clarke|A CIA analyst spends a decade hunting Osama bin Laden.
+Black Hawk Down|2001|144|War,Action,History|US|Ridley Scott|Josh Hartnett;Ewan McGregor|A US raid in Mogadishu goes terribly wrong.
+Platoon|1986|120|War,Drama|US|Oliver Stone|Charlie Sheen;Willem Dafoe|A young soldier in Vietnam is caught between two sergeants.
+Hacksaw Ridge|2016|139|War,Drama,History|US|Mel Gibson|Andrew Garfield;Vince Vaughn|A medic who refuses to carry a gun saves dozens at Okinawa.
+Braveheart|1995|178|History,War,Drama|US|Mel Gibson|Mel Gibson;Sophie Marceau|William Wallace leads the Scots against the English king.
+The Last of the Mohicans|1992|112|Adventure,Romance,War|US|Michael Mann|Daniel Day-Lewis;Madeleine Stowe|A frontiersman protects two sisters during a colonial war.
+Fury|2014|134|War,Action,Drama|US|David Ayer|Brad Pitt;Logan Lerman|A tank crew fights its way through Germany in the last days of the war.
+The Imitation Game|2014|114|Drama,History,Thriller|GB|Morten Tyldum|Benedict Cumberbatch;Keira Knightley|Alan Turing races to crack the Nazi Enigma code.
+The Theory of Everything|2014|123|Drama,Romance|GB|James Marsh|Eddie Redmayne;Felicity Jones|Stephen Hawking's love story and his life with motor neuron disease.
+Darkest Hour|2017|125|Drama,History,War|GB|Joe Wright|Gary Oldman;Kristin Scott Thomas|Churchill's first weeks as prime minister, with Britain on the edge.
+Jojo Rabbit|2019|108|Comedy,War,Drama|US|Taika Waititi|Roman Griffin Davis;Thomasin McKenzie|A Hitler Youth boy with an imaginary friend finds a girl hidden in his attic.
+Hunt for the Wilderpeople|2016|101|Comedy,Adventure,Drama|NZ|Taika Waititi|Sam Neill;Julian Dennison|A city kid and his grumpy foster uncle go on the run in the New Zealand bush.
+What We Do in the Shadows|2014|86|Comedy,Horror|NZ|Jemaine Clement, Taika Waititi|Jemaine Clement;Taika Waititi|A documentary crew follows vampire flatmates in Wellington.
+The Lord of the Rings: The Fellowship of the Ring|2001|178|Fantasy,Adventure|NZ|Peter Jackson|Elijah Wood;Ian McKellen|Nine companions set out to destroy one ring.
+The Lord of the Rings: The Two Towers|2002|179|Fantasy,Adventure|NZ|Peter Jackson|Elijah Wood;Viggo Mortensen|The fellowship is broken, and war comes to Rohan.
+The Lord of the Rings: The Return of the King|2003|201|Fantasy,Adventure|NZ|Peter Jackson|Elijah Wood;Viggo Mortensen|The last march on Mordor, and the long road home.
+The Hobbit: An Unexpected Journey|2012|169|Fantasy,Adventure|NZ|Peter Jackson|Martin Freeman;Ian McKellen|A homebody hobbit joins thirteen dwarves on a quest.
+King Kong|2005|187|Adventure,Action,Drama|NZ|Peter Jackson|Naomi Watts;Jack Black|A film crew finds a giant ape on a mysterious island.
+Free Solo|2018|100|Documentary,Sport|US|Elizabeth Chai Vasarhelyi, Jimmy Chin|Alex Honnold;Tommy Caldwell|A climber attempts El Capitan with no ropes. Sweaty palms guaranteed.
+Won't You Be My Neighbor?|2018|94|Documentary|US|Morgan Neville|Fred Rogers;Joanne Rogers|The life and kindness of children's TV host Fred Rogers.
+My Octopus Teacher|2020|85|Documentary|ZA|Pippa Ehrlich, James Reed|Craig Foster;-|A filmmaker forms a bond with an octopus in a South African kelp forest.
+March of the Penguins|2005|80|Documentary,Family|FR|Luc Jacquet|Morgan Freeman;-|Emperor penguins walk across Antarctica to raise their chicks.
+Senna|2010|106|Documentary,Sport|GB|Asif Kapadia|Ayrton Senna;Alain Prost|The life of Formula 1 legend Ayrton Senna, told in archive footage.
+Amy|2015|128|Documentary,Musical|GB|Asif Kapadia|Amy Winehouse;Mark Ronson|The life and music of Amy Winehouse.
+Man on Wire|2008|94|Documentary|GB|James Marsh|Philippe Petit;Jean-Louis Blondeau|A tightrope walker crosses between the Twin Towers in 1974.
+Searching for Sugar Man|2012|86|Documentary,Musical|SE|Malik Bendjelloul|Sixto Rodriguez;-|Two fans search for a forgotten musician who became a legend in South Africa.
+Jiro Dreams of Sushi|2011|81|Documentary|US|David Gelb|Jiro Ono;Yoshikazu Ono|An 85-year-old sushi master in Tokyo still chases perfection.
+The Social Dilemma|2020|94|Documentary|US|Jeff Orlowski|Tristan Harris;-|Tech insiders explain how social media is designed to hook you.
+Super Size Me|2004|100|Documentary,Comedy|US|Morgan Spurlock|Morgan Spurlock;-|A man eats only fast food for a month to see what happens.
+The Karate Kid|1984|126|Drama,Sport,Family|US|John G. Avildsen|Ralph Macchio;Pat Morita|A bullied teen learns karate from a wise handyman.
+Cool Runnings|1993|98|Comedy,Sport,Family|US|Jon Turteltaub|John Candy;Leon|Jamaica's first bobsled team heads to the Winter Olympics.
+Air|2023|112|Drama,Sport|US|Ben Affleck|Matt Damon;Ben Affleck|Nike bets everything on signing a rookie called Michael Jordan.
+The Fighter|2010|116|Drama,Sport|US|David O. Russell|Mark Wahlberg;Christian Bale|A boxer gets one more shot, with his troubled brother as trainer.
+I, Tonya|2017|119|Comedy,Drama,Sport|US|Craig Gillespie|Margot Robbie;Sebastian Stan|The messy story of figure skater Tonya Harding.
+Bend It Like Beckham|2002|112|Comedy,Sport,Drama|GB|Gurinder Chadha|Parminder Nagra;Keira Knightley|A British-Indian girl secretly joins a women's football team.
+The Wrestler|2008|109|Drama,Sport|US|Darren Aronofsky|Mickey Rourke;Marisa Tomei|An aging wrestler hangs on to past glory.
+Black Swan|2010|108|Thriller,Drama,Horror|US|Darren Aronofsky|Natalie Portman;Mila Kunis|A ballerina loses her grip on reality as she chases the perfect role.
+Requiem for a Dream|2000|102|Drama|US|Darren Aronofsky|Ellen Burstyn;Jared Leto|Four people in Coney Island fall deeper into addiction.
+Inside Llewyn Davis|2013|104|Drama,Musical,Comedy|US|Joel Coen, Ethan Coen|Oscar Isaac;Carey Mulligan|A week in the life of a broke folk singer in 1961 New York.
+O Brother, Where Art Thou?|2000|107|Comedy,Adventure,Musical|US|Joel Coen, Ethan Coen|George Clooney;John Turturro|Three escaped convicts sing their way across 1930s Mississippi.
+Ocean's Eleven|2001|116|Crime,Comedy|US|Steven Soderbergh|George Clooney;Brad Pitt|Eleven charming crooks rob three Las Vegas casinos at once.
+Erin Brockovich|2000|131|Drama|US|Steven Soderbergh|Julia Roberts;Albert Finney|A single mom takes on a power company poisoning a town's water.
+Contagion|2011|106|Thriller,Drama,Sci-Fi|US|Steven Soderbergh|Matt Damon;Kate Winslet|A deadly virus spreads around the world in days.
+Michael Clayton|2007|119|Thriller,Crime,Drama|US|Tony Gilroy|George Clooney;Tilda Swinton|A law firm "fixer" uncovers a cover-up at a chemical company.

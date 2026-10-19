@@ -1,0 +1,13 @@
+# Flags from tools/check-facts.mjs that a human has reviewed and found to be OK.
+# Format: KIND|Title|year|why it is fine
+DIRECTOR|The Matrix|1999|Directors now credited as Lana and Lilly Wachowski; the dataset uses an old name
+RUNTIME|The Bourne Identity|2002|Theatrical runtime is 119 min; dataset value is wrong
+RUNTIME|The Fifth Element|1997|Theatrical runtime is 126 min; dataset value is wrong
+RUNTIME|Fargo|1996|Runtime is 98 min; dataset value is wrong
+RUNTIME|The Big Lebowski|1998|Runtime is 117 min; dataset value is wrong
+DIRECTOR|Monsters, Inc.|2001|Pete Docter is the credited director (Silverman and Unkrich co-directed)
+RUNTIME|Anchorman: The Legend of Ron Burgundy|2004|Theatrical runtime is 94 min; dataset value is wrong
+DIRECTOR|Dumb and Dumber|1994|Peter Farrelly is the credited director
+RUNTIME|Atonement|2007|Runtime is 123 min; dataset value is wrong
+CAST|Searching for Sugar Man|2012|Same person (Sixto Rodriguez, credited as Rodriguez)
+CAST|Super Size Me|2004|Morgan Spurlock is the film's subject and director
