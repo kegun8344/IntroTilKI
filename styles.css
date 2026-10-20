@@ -433,6 +433,11 @@ select {
 .sendback h3 { font-weight: 700; font-size: 1.05rem; color: var(--bulb); margin-bottom: 4px; }
 .sendback p { margin: 0 0 12px; color: var(--text-muted); font-size: .95rem; }
 .sendback .link-box { margin: 10px 0 0; }
+.live-status { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 14px; padding: 4px 12px; border-radius: 999px;
+  background: var(--velvet-raised); color: var(--text-muted); font-size: .9rem; }
+.live-status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--text-muted); flex: none; }
+.live-status.is-on { color: var(--text); }
+.live-status.is-on::before { background: var(--yes); box-shadow: 0 0 0 3px color-mix(in srgb, var(--yes) 30%, transparent); }
 
 .list-block { margin-bottom: 26px; }
 .list-block h3, .facts h3 { font-weight: 700; font-size: 1.05rem; margin-bottom: 10px; }

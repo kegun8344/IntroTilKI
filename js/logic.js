@@ -280,8 +280,36 @@
       d: session.deck.join("."),
       a: session.votes.map(function (votes) { return votesToString(session.deck, votes); }),
       l: session.limit,
-      w: session.winner || undefined
+      w: session.winner || undefined,
+      r: session.room || undefined
     }));
+  }
+
+  // ---------------------------------------------------------------- live updates
+  // With a room id, phones also swap answers through a public message relay (ntfy.sh), so results
+  // show up everywhere without sending links back. The links still work on their own as a fallback.
+  var ROOM_RE = /^[A-Za-z0-9_-]{16,40}$/;
+  function liveVotes(deckIds, player, votes) {
+    return JSON.stringify({ v: 1, k: "votes", p: player, a: votesToString(deckIds, votes) });
+  }
+  function livePick(movieId) {
+    return JSON.stringify({ v: 1, k: "pick", w: movieId });
+  }
+  // Anyone who knows the room can post to it, so every message is checked against the game.
+  // Returns { kind: "votes", player, votes } or { kind: "pick", id }, or null if it doesn't fit.
+  function parseLive(text, deckIds, playerCount) {
+    try {
+      var o = JSON.parse(text);
+      if (!o || o.v !== 1) return null;
+      if (o.k === "votes") {
+        var p = o.p;
+        if (typeof p !== "number" || p % 1 !== 0 || p < 0 || p >= playerCount) return null;
+        if (typeof o.a !== "string" || o.a.length !== deckIds.length || !/^[yns]*$/.test(o.a)) return null;
+        return { kind: "votes", player: p, votes: votesFromString(deckIds, o.a) };
+      }
+      if (o.k === "pick" && typeof o.w === "string" && deckIds.indexOf(o.w) !== -1) return { kind: "pick", id: o.w };
+    } catch (e) { /* not ours */ }
+    return null;
   }
 
   // Returns a session, or null if the code is broken. Unknown movie ids are dropped.
@@ -305,6 +333,7 @@
       var limit = Number(o.l);
       var session = { players: players, deck: deck, votes: votes, limit: limit >= 0 && limit <= 50 ? limit : 3 };
       if (typeof o.w === "string" && deck.indexOf(o.w) !== -1) session.winner = o.w; // tonight's pick, if drawn
+      if (typeof o.r === "string" && ROOM_RE.test(o.r)) session.room = o.r;
       return session;
     } catch (e) {
       return null;
@@ -332,7 +361,8 @@
     superLeft: superLeft, computeResults: computeResults, pickWinner: pickWinner, funFacts: funFacts,
     createShowdown: createShowdown, showdownPair: showdownPair, showdownChoose: showdownChoose,
     showdownWinner: showdownWinner, showdownMatchesLeft: showdownMatchesLeft,
-    encodeSession: encodeSession, decodeSession: decodeSession, resultsToText: resultsToText
+    encodeSession: encodeSession, decodeSession: decodeSession, resultsToText: resultsToText,
+    liveVotes: liveVotes, livePick: livePick, parseLive: parseLive
   };
 
   if (typeof module !== "undefined" && module.exports) module.exports = api;

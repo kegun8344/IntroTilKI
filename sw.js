@@ -1,7 +1,7 @@
 // Service worker: makes the app work offline and installable.
 // Strategy: serve from cache right away, refresh the cache in the background.
 // Bump VERSION when files change so old caches are cleaned up.
-const VERSION = "mnm-v2.2.0";
+const VERSION = "mnm-v2.3.0";
 const FILES = [
   "./", "index.html", "about.html", "styles.css", "manifest.webmanifest",
   "js/movies.js", "js/logic.js", "js/app.js",
@@ -25,6 +25,7 @@ self.addEventListener("activate", event => {
 self.addEventListener("fetch", event => {
   const req = event.request;
   if (req.method !== "GET" || new URL(req.url).origin !== location.origin) return;
+  if ((req.headers.get("accept") || "").includes("text/event-stream")) return; // live streams are never cached
   event.respondWith(
     caches.open(VERSION).then(cache =>
       cache.match(req, { ignoreSearch: true }).then(cached => {

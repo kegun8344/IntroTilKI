@@ -173,6 +173,27 @@ test("the drawn winner travels in the results link, but only if it is in the dec
   assert.equal(L.decodeSession(L.encodeSession(base), MOVIES).winner, undefined);
 });
 
+test("the live room id travels in the link, and only a sane one is kept", () => {
+  const d = L.buildDeck(MOVIES, {}, 10, L.makeRng(3)).map(m => m.id);
+  const base = { players: ["A", "B"], deck: d, votes: [{}], limit: 3 };
+  assert.equal(L.decodeSession(L.encodeSession({ ...base, room: "Ab3_-xYz0123456789Qw" }), MOVIES).room, "Ab3_-xYz0123456789Qw");
+  assert.equal(L.decodeSession(L.encodeSession({ ...base, room: "../evil" }), MOVIES).room, undefined);
+  assert.equal(L.decodeSession(L.encodeSession(base), MOVIES).room, undefined);
+});
+
+test("live messages round-trip, and messages that don't fit the game are ignored", () => {
+  const d = ["a", "b", "c"];
+  const v = L.parseLive(L.liveVotes(d, 1, { a: "y", b: "s" }), d, 2);
+  assert.deepEqual(v, { kind: "votes", player: 1, votes: { a: "y", b: "s", c: "n" } });
+  assert.deepEqual(L.parseLive(L.livePick("b"), d, 2), { kind: "pick", id: "b" });
+  assert.equal(L.parseLive(L.livePick("zzz"), d, 2), null, "pick not in the deck");
+  assert.equal(L.parseLive(L.liveVotes(d, 2, {}), d, 2), null, "player out of range");
+  assert.equal(L.parseLive(L.liveVotes(["a", "b"], 0, {}), d, 2), null, "answers for another deck");
+  assert.equal(L.parseLive('{"v":1,"k":"votes","p":0,"a":"yx!"}', d, 2), null, "bad characters");
+  assert.equal(L.parseLive("hello from a stranger", d, 2), null);
+  assert.equal(L.parseLive('{"v":1,"k":"votes","p":0.5,"a":"yyy"}', d, 2), null);
+});
+
 test("decodeSession rejects garbage and drops unknown movie ids", () => {
   assert.equal(L.decodeSession("not-a-real-code", MOVIES), null);
   assert.equal(L.decodeSession("", MOVIES), null);

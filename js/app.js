@@ -43,6 +43,9 @@
     player: 0,
     index: 0,
     votes: [],              // one { id: "y"|"n"|"s" } per player
+    done: [],               // who has finished swiping
+    room: null,             // live-updates room id (link mode only)
+    pendingPick: null,      // a drawn movie that arrived before our results did
     undo: [],
     recent: {},             // ids shown this sitting, avoided on "new stack"
     results: null,
@@ -400,6 +403,10 @@
     state.deck = deck;
     deck.forEach(function (m) { state.recent[m.id] = true; });
     state.votes = state.names.map(function () { return {}; });
+    state.done = state.names.map(function () { return false; });
+    state.room = state.mode === "link" ? newRoomId() : null;
+    state.pendingPick = null;
+    liveClose();
     state.player = 0;
     state.results = null;
     state.winner = null;
@@ -437,6 +444,14 @@
       ? "The link shows the same results and the same movie on their phone."
       : "Their phone can't see your answers until you send this link. Draw tonight's movie first if you want them to get the same pick.";
     $("sendback-btn").textContent = "Send results to " + who;
+    $("sendback-btn").className = "btn btn-primary";
+    if (live.on) {
+      // the relay already delivered them; the link is only a backup
+      $("sendback-title").textContent = state.winner ? "Tonight's movie is on " + who + "'s phone too" : "The results are on " + who + "'s phone too";
+      $("sendback-text").textContent = "As long as the game is still open there. If it isn't, send this link.";
+      $("sendback-btn").textContent = "Send the link anyway";
+      $("sendback-btn").className = "btn btn-ghost";
+    }
     $("sendback-link").value = resultsLink();
   }
   // Keep the results in the address bar, so a reload shows them again instead of the old turn.
@@ -448,7 +463,101 @@
     if (!state.resultsFromLink) try { sessionStorage.setItem("mnm.own", url.split("#s=")[1]); } catch (e) { /* ignore */ }
   }
   function linkFor(session) {
-    return location.href.split("#")[0] + "#s=" + L.encodeSession(session);
+    return location.href.split("#")[0] + "#s=" + L.encodeSession(Object.assign({ room: state.room || undefined }, session));
+  }
+
+  // =====================================================================
+  // LIVE UPDATES (link mode)
+  // Phones that have the game open swap answers through ntfy.sh, a free public message relay
+  // (no account, no key). The room id in the link is the only "password". If the relay can't be
+  // reached, nothing breaks: the links still carry everything, exactly as before.
+  // =====================================================================
+  var RELAY = typeof window.MNM_RELAY === "string" ? window.MNM_RELAY : "https://ntfy.sh";
+  var live = { es: null, room: null, on: false, failed: false };
+
+  function newRoomId() {
+    try {
+      var bytes = crypto.getRandomValues(new Uint8Array(16)), bin = "";
+      for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+      return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    } catch (e) { return null; }
+  }
+  function topicUrl() { return RELAY + "/mnm-" + state.room; }
+
+  function liveConnect() {
+    if (state.mode !== "link" || !state.room || !RELAY || typeof EventSource === "undefined") { liveClose(); return; }
+    if (live.es && live.room === state.room) return;
+    liveClose();
+    live.room = state.room;
+    try { live.es = new EventSource(topicUrl() + "/sse?since=all"); } catch (e) { live.es = null; return; }
+    live.es.onopen = function () { live.on = true; live.failed = false; renderLive(); };
+    live.es.onerror = function () { live.on = false; live.failed = true; renderLive(); }; // EventSource retries by itself
+    live.es.onmessage = function (e) {
+      try { var msg = JSON.parse(e.data); if (msg.event === "message") onLive(msg.message); } catch (err) { /* not ours */ }
+    };
+  }
+  function liveClose() {
+    if (live.es) live.es.close();
+    live.es = null; live.room = null; live.on = false; live.failed = false;
+  }
+  function livePublish(text) {
+    if (state.mode !== "link" || !state.room || !RELAY || !window.fetch) return;
+    fetch(topicUrl(), { method: "POST", body: text, keepalive: true }).catch(function () { /* the link still works */ });
+  }
+
+  function deckIds() { return state.deck.map(function (m) { return m.id; }); }
+  function doneCount() { var n = 0; while (n < state.names.length && state.done[n]) n++; return n; }
+  // We are waiting for the others once our own turn is over and the results aren't on screen yet.
+  function waitingForOthers() {
+    return $("screen-send").hasAttribute("data-active") || ($("screen-invite").hasAttribute("data-active") && state.done[state.player]);
+  }
+
+  function onLive(text) {
+    var m = L.parseLive(text, deckIds(), state.names.length);
+    if (!m) return;
+    if (m.kind === "votes") {
+      if (state.done[m.player]) return; // already known (our own message, or a repeat)
+      state.votes[m.player] = m.votes;
+      state.done[m.player] = true;
+      if (waitingForOthers() && doneCount() === state.names.length) {
+        state.resultsFromLink = true; // they came from someone else, so there's nothing to send back
+        state.redrawn = false;
+        toast("Everyone is done!");
+        showResults();
+      } else {
+        renderLive();
+      }
+    } else if (m.kind === "pick") {
+      state.pendingPick = m.id;
+      applyPendingPick();
+    }
+  }
+  function applyPendingPick() {
+    if (!state.pendingPick || !$("screen-results").hasAttribute("data-active")) return;
+    var id = state.pendingPick;
+    state.pendingPick = null;
+    if (state.winner && state.winner.movie.id === id) return;
+    var item = state.pool.filter(function (it) { return it.movie.id === id; })[0];
+    if (!item) return;
+    landWinner(item, true);
+    toast("Tonight's movie: " + item.movie.title);
+  }
+
+  function renderLive() {
+    var on = live.on && state.mode === "link";
+    [["send-live", "screen-send"], ["sendback-live", "screen-results"]].forEach(function (pair) {
+      var p = $(pair[0]);
+      p.hidden = !(state.mode === "link" && state.room && RELAY);
+      p.classList.toggle("is-on", on);
+    });
+    var waitingOn = state.names[doneCount()];
+    var off = live.failed ? "Live updates are off. Send the link instead." : "Connecting live updates…";
+    $("send-live").textContent = on
+      ? (waitingOn ? "Live: waiting for " + waitingOn + ". Results show up here by themselves." : "Live: everyone is done.")
+      : off;
+    $("sendback-live").textContent = on ? "Live: phones with the game open update by themselves." : off;
+    if ($("screen-send").hasAttribute("data-active")) renderProgressPlayers($("send-players"), doneCount());
+    if ($("screen-results").hasAttribute("data-active")) updateSendback();
   }
 
   function openFromHash() {
@@ -466,6 +575,10 @@
     state.deck = s.deck.map(function (id) { return BY_ID[id]; });
     state.votes = s.players.map(function (_, i) { return s.votes[i] || {}; });
     var done = s.votes.length;
+    state.done = s.players.map(function (_, i) { return i < done; });
+    state.room = s.room || null;
+    state.pendingPick = null;
+    liveConnect();
 
     if (done >= s.players.length) {
       state.player = s.players.length - 1;
@@ -478,6 +591,13 @@
         var item = state.pool.filter(function (it) { return it.movie.id === s.winner; })[0];
         if (item) landWinner(item, true);
       }
+      return true;
+    }
+    // Our own turn is over (we reopened our page): wait for the others instead of swiping again.
+    var me = load("mnm.me", null);
+    if (me && state.room && me.room === state.room && me.player < done) {
+      state.player = me.player;
+      showSendScreen();
       return true;
     }
     state.player = done;
@@ -730,20 +850,18 @@
 
   function endTurn() {
     var last = state.player >= state.names.length - 1;
+    state.done[state.player] = true;
+    if (state.mode === "link") {
+      livePublish(L.liveVotes(deckIds(), state.player, myVotes()));
+      liveConnect();
+    }
     if (last) { showResults(); return; }
     var next = state.names[state.player + 1];
     if (state.mode === "link") {
-      var url = linkFor(sessionFromState());
-      $("send-to").textContent = next;
-      $("send-text").textContent = state.player + 2 >= state.names.length
-        ? next + " opens the link and swipes the same movies. When " + next + " is done, " + next + " gets a button to send the results back to you."
-        : next + " opens the link, swipes the same movies, and sends it on. The last person sends the results back to everyone.";
-      renderProgressPlayers($("send-players"), state.player + 1);
-      $("link-box").value = url;
-      $("here-btn").textContent = next + " is here: swipe on this phone instead";
-      $("share-btn").hidden = !navigator.share;
-      $("copy-link-btn").className = "btn " + (navigator.share ? "btn-ghost" : "btn-primary");
-      show("screen-send");
+      // a reload of this page should come back here, not to the next person's turn
+      if (state.room) save("mnm.me", { room: state.room, player: state.player });
+      try { history.replaceState(null, "", linkFor(sessionFromState())); } catch (e) { /* file:// */ }
+      showSendScreen();
     } else {
       $("handoff-from").textContent = state.names[state.player];
       $("handoff-to").textContent = next;
@@ -754,8 +872,25 @@
     }
   }
 
+  function showSendScreen() {
+    var n = doneCount();
+    var next = state.names[n] || state.names[state.player + 1];
+    var url = linkFor({ players: state.names, deck: deckIds(), votes: state.votes.slice(0, n), limit: SUPER_LIMIT });
+    $("send-to").textContent = next;
+    $("send-text").textContent = n + 1 >= state.names.length
+      ? next + " opens the link and swipes the same movies. When " + next + " is done, the results show up here, or " + next + " can send them back with a link."
+      : next + " opens the link, swipes the same movies, and sends it on. When everyone is done, the results show up on every phone.";
+    $("link-box").value = url;
+    $("here-btn").textContent = next + " is here: swipe on this phone instead";
+    $("share-btn").hidden = !navigator.share;
+    $("copy-link-btn").className = "btn " + (navigator.share ? "btn-ghost" : "btn-primary");
+    show("screen-send");
+    renderProgressPlayers($("send-players"), n);
+    renderLive();
+  }
+
   function nextPlayer() {
-    state.player++;
+    state.player = doneCount();
     startTurn();
   }
 
@@ -865,9 +1000,12 @@
     $("rematch-btn").textContent = state.joined ? "Plan your own movie night" : "New stack, same people";
 
     show("screen-results");
+    state.done = state.names.map(function () { return true; });
+    liveConnect();
     updateSendback();
     rememberResultsInUrl();
     addHistory();
+    applyPendingPick();
     if (m > 0) feedback("win");
   }
 
@@ -902,6 +1040,7 @@
     });
     updateLastHistory(item.movie.title);
     if (!quiet && state.resultsFromLink) state.redrawn = true;
+    if (!quiet) livePublish(L.livePick(item.movie.id));
     updateSendback();
     rememberResultsInUrl();
     if (!quiet) { feedback("win"); confetti(); }
@@ -1084,6 +1223,7 @@
     });
     $("rematch-btn").addEventListener("click", function () {
       if (state.joined) {
+        liveClose();
         history.replaceState(null, "", location.pathname + location.search);
         state.joined = false;
         renderPlayers(state.names.slice());
@@ -1094,6 +1234,7 @@
       }
     });
     $("settings-btn").addEventListener("click", function () {
+      liveClose();
       if (state.joined) history.replaceState(null, "", location.pathname + location.search);
       state.joined = false;
       syncFilterControls();

@@ -15,8 +15,42 @@ fs.mkdirSync(shots, { recursive: true });
 // ---------- tiny static server (service workers need http, not file://) ----------
 const TYPES = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json",
   ".webmanifest": "application/manifest+json", ".svg": "image/svg+xml", ".png": "image/png", ".woff2": "font/woff2" };
+// A tiny stand-in for ntfy.sh at /relay/<topic>: POST publishes, GET <topic>/sse streams (since=all replays).
+const relay = { topics: {}, subs: {}, posts: 0 };
+function relayHandle(req, res, p) {
+  const m = p.match(/^\/relay\/([\w-]+)(\/sse)?$/);
+  if (!m) { res.writeHead(404); return res.end(); }
+  const topic = m[1];
+  const cors = { "Access-Control-Allow-Origin": "*" };
+  if (req.method === "POST") {
+    let body = "";
+    req.on("data", c => body += c).on("end", () => {
+      relay.posts++;
+      const msg = { id: String(relay.posts), time: Math.floor(Date.now() / 1000), event: "message", topic, message: body };
+      (relay.topics[topic] ||= []).push(msg);
+      (relay.subs[topic] || []).forEach(r => r.write(`data: ${JSON.stringify(msg)}
+
+`));
+      res.writeHead(200, { ...cors, "Content-Type": "application/json" });
+      res.end(JSON.stringify(msg));
+    });
+    return;
+  }
+  res.writeHead(200, { ...cors, "Content-Type": "text/event-stream", "Cache-Control": "no-cache" });
+  res.write(`event: open
+data: ${JSON.stringify({ event: "open", topic })}
+
+`);
+  if (/since=all/.test(req.url)) (relay.topics[topic] || []).forEach(msg => res.write(`data: ${JSON.stringify(msg)}
+
+`));
+  (relay.subs[topic] ||= []).push(res);
+  req.on("close", () => { relay.subs[topic] = relay.subs[topic].filter(r => r !== res); });
+}
+
 const server = http.createServer((req, res) => {
   let p = decodeURIComponent(new URL(req.url, "http://x").pathname);
+  if (p.startsWith("/relay/")) return relayHandle(req, res, p);
   if (p.endsWith("/")) p += "index.html";
   const file = path.join(root, p);
   if (!file.startsWith(root) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) { res.writeHead(404); return res.end("not found"); }
@@ -33,11 +67,15 @@ const section = name => console.log("\n" + name);
 
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM || undefined });
 const errors = [];
-async function newPhone() {
+// relay: where live updates go. Default = a closed port, so the link-only fallback is what gets tested.
+const NO_RELAY = "http://127.0.0.1:9";
+async function newPhone({ relay = NO_RELAY } = {}) {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, hasTouch: false });
+  await ctx.addInitScript(r => { window.MNM_RELAY = r; }, relay);
   const page = await ctx.newPage();
   page.on("pageerror", e => errors.push(e.message));
-  page.on("console", m => { if (m.type() === "error") errors.push(m.text()); });
+  // a relay that can't be reached is expected in the fallback tests; anything else is a real error
+  page.on("console", m => { if (m.type() === "error" && !/ERR_CONNECTION_REFUSED|Failed to load resource|EventSource/.test(m.text())) errors.push(m.text()); });
   return { ctx, page };
 }
 
@@ -272,7 +310,7 @@ try {
   const exp2 = expected(Object.keys(hostVotes), [hostVotes, guestVotes]);
   check(sameSet(await listIds(guest.page, "#matches-list"), exp2.matches), `matches across two phones are correct (${exp2.matches.length})`);
   check(/Send results to Kåre/.test(await guest.page.textContent("#sendback-btn")), "the last person is asked to send the results back to Kåre");
-  check(/send the results back to you/.test(await host.page.textContent("#send-text")), "the host is told the results come back to them");
+  check(/results show up here/.test(await host.page.textContent("#send-text")), "the host is told the results come back to them");
   let guestWinner = null;
   if (!(await guest.page.isHidden("#draw-btn"))) {
     await guest.page.click("#draw-btn");
@@ -309,6 +347,54 @@ try {
   await broken.page.goto(BASE + "#s=thisIsNotAValidGame");
   check(await broken.page.isVisible("#screen-setup"), "a broken link falls back to the setup screen");
   check(/broken/.test(await broken.page.textContent("#toast")), "and explains the link is broken");
+
+  // =====================================================================
+  section("3b. Live updates between phones (relay)");
+  const RELAY = process.env.LIVE_RELAY || BASE + "relay"; // LIVE_RELAY=https://ntfy.sh tests the real relay
+  const lhost = await newPhone({ relay: RELAY });
+  await lhost.page.goto(BASE);
+  await lhost.page.fill("#player-list li:nth-child(1) input", "Ada");
+  await lhost.page.fill("#player-list li:nth-child(2) input", "Bo");
+  await lhost.page.click('#mode [data-mode="link"]');
+  await lhost.page.click('#deck-size [data-size="10"]');
+  await lhost.page.click("#start-btn");
+  const adaVotes = await playTurn(lhost.page, "Ada", m => (m.title.length % 3 === 0 ? "n" : "y"));
+  let liveOn = false;
+  for (let t = 0; t < 50 && !liveOn; t++) { await lhost.page.waitForTimeout(100); liveOn = await lhost.page.$eval("#send-live", p => !p.hidden && p.classList.contains("is-on")); }
+  check(liveOn, "host shows 'Live' while waiting");
+  check(/waiting for Bo/.test(await lhost.page.textContent("#send-live")), "and says who it is waiting for");
+  const liveLink = await lhost.page.inputValue("#link-box");
+  await lhost.page.reload();
+  await lhost.page.waitForTimeout(500);
+  check(await lhost.page.isVisible("#screen-send"), "a reload while waiting goes back to waiting (not Bo's turn)");
+
+  const lguest = await newPhone({ relay: RELAY });
+  await lguest.page.goto(liveLink);
+  await lguest.page.click("#invite-start");
+  const boVotes = await playTurn(lguest.page, "Bo", m => (m.title.length % 2 === 0 ? "n" : "y"));
+  check(await lguest.page.isVisible("#screen-results"), "Bo gets the results");
+  let arrived = false;
+  for (let t = 0; t < 30 && !arrived; t++) { await lhost.page.waitForTimeout(100); arrived = await lhost.page.isVisible("#screen-results"); }
+  check(arrived, "the results show up on Ada's phone by themselves (no link sent back)");
+  const exp3 = expected(Object.keys(adaVotes), [adaVotes, boVotes]);
+  check(sameSet(await listIds(lhost.page, "#matches-list"), exp3.matches) && sameSet(await listIds(lguest.page, "#matches-list"), exp3.matches),
+    `both phones show the right matches (${exp3.matches.length})`);
+  check(/phone too/.test(await lguest.page.textContent("#sendback-title")), "Bo is told the results are on Ada's phone too");
+  check(await lhost.page.isHidden("#sendback"), "Ada isn't asked to send anything");
+  if (!(await lguest.page.isHidden("#draw-btn"))) {
+    await lguest.page.click("#draw-btn");
+    await lguest.page.waitForTimeout(3000);
+    const boPick = await lguest.page.textContent("#admit-title");
+    let same = false;
+    for (let t = 0; t < 30 && !same; t++) { await lhost.page.waitForTimeout(100); same = (await lhost.page.textContent("#admit-title")) === boPick; }
+    check(same, `Bo's draw shows up on Ada's phone: ${boPick}`);
+  }
+  if (!process.env.LIVE_RELAY) check(relay.posts <= 4, `only a few relay messages were used (${relay.posts})`);
+  await lhost.page.screenshot({ path: path.join(shots, "12-live-host.png"), fullPage: true });
+
+  const fallback = await newPhone(); // relay unreachable
+  await fallback.page.goto(liveLink);
+  check(await fallback.page.isVisible("#screen-invite"), "with no relay, the same link still works");
 
   // =====================================================================
   section("4. Works offline after the first visit");

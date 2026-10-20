@@ -62,10 +62,22 @@ I asked for a much bigger app. Claude's plan, which I let it carry out:
 | 14 | **Me** | The "Admit all" text on the winner ticket was upside down | It now reads top to bottom, with a test |
 | 15 | Code review | In link mode, reloading the page on the results screen went back to "Your turn", so the last person had to swipe everything again | The results are kept in the address bar, the reload doesn't add a second history entry, and it still offers to send the results back. Reproduced first, then covered by browser checks |
 | 16 | Code review | Pressing "New stack" while the draw was still spinning let the old movie land later, with confetti over the next screen | Leaving the results screen cancels a running draw, with a browser check |
+| 17 | **Me** | "So after person 2 swipes, the results are only on person 2's phone?" Everyone else had to wait for a link | Live updates through a message relay (see section 6) |
+| 18 | Test against the real relay | While connecting, the live badge said "Offline" for a moment | A separate "Connecting…" state, and the test waits for the connection |
 
-Final result: **23/23 unit tests, 77/77 browser checks**, 570/570 movie lines valid, 0 unreviewed fact-check flags, and no JavaScript errors.
+Final result: **25/25 unit tests, 92/92 browser checks** (91/91 against the real ntfy.sh too), 570/570 movie lines valid, 0 unreviewed fact-check flags, and no JavaScript errors.
 
-## 6. My reflection
+## 6. Version 3: live results on every phone
+I asked if we could add "a server kind of thing" so the results show up on everyone's phone. My one rule: **players must not have to download anything, it has to just work in the web page, and the link stays as a fallback.**
+
+- Claude compared two options: a real database (Firebase/Supabase) or **ntfy.sh**, a free, open-source message relay. A database needs an account and config keys in the code, and the assignment says never to publish API keys, so we chose ntfy.sh: no account, no key.
+- How it works: the host's phone makes a random room id that travels in the link. When someone finishes swiping, their phone posts its answers to that room; every phone with the game open listens and shows the results when everyone is done. A drawn movie is shared the same way.
+- Anyone who knows the room name could post to it, so every message is checked against the game (right player numbers, the right number of answers, only movies in the deck) before it is used. This is unit tested.
+- If the relay can't be reached, nothing changes: the links still carry everything, exactly like version 2. The old browser checks now run with an unreachable relay to prove that.
+- Claude also built a tiny fake relay into the browser test, so two phones can be tested live without the internet, and ran the same test once against the real ntfy.sh.
+- Side quest that didn't make it: I asked for 1,000 more movies. Writing them by hand was slow, and data pulled automatically from Wikipedia/Wikidata had wrong lead actors, countries and genres, so I dropped it. Lesson: more data isn't better if it's wrong.
+
+## 7. My reflection
 <!-- Write a few sentences in your own words, for example:
 - What surprised you about building with AI?
 - What did the AI do well, and where did you have to step in or steer?
