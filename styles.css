@@ -294,12 +294,20 @@ select {
 }
 .face-back { transform: rotateY(180deg); padding: 24px 22px 18px; overflow-y: auto; }
 
+.face-front { container-type: inline-size; }
+.ticket-mark {
+  position: absolute; top: 46px; right: -6px;
+  display: flex; flex-direction: column; align-items: flex-end;
+  font-family: var(--display); line-height: .95;
+  color: rgba(43, 21, 32, .09);
+  letter-spacing: -.02em; text-transform: uppercase; white-space: nowrap;
+  pointer-events: none;
+}
+/* the genre fits the card; the year is always a bit more than half its size */
+.ticket-mark { font-size: min(6.4rem, calc(140cqw / var(--n, 4))); }
+.mark-year { font-size: .55em; margin-right: .1em; }
 .ticket-main { position: relative; flex: 1; padding: 26px 24px 18px; display: flex; flex-direction: column; }
-.ticket-tags { margin: 0 0 auto; padding-right: 44px; }
-.ticket-genres { margin: 0; font-family: var(--display); font-size: clamp(1.1rem, 5vw, 1.45rem); line-height: 1.15; color: rgba(43, 21, 32, .62); }
-.ticket-genres span { display: inline-block; white-space: nowrap; }
-.ticket-genres span:not(:last-child)::after { content: "\00a0·\00a0"; }
-.ticket-when { margin: 6px 0 0; font-weight: 700; font-size: 1rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.ticket-genres { margin: 0 0 auto; padding-right: 40px; font-weight: 700; font-size: .9rem; color: var(--ink-soft); }
 .ticket-title {
   font-family: var(--display);
   font-size: clamp(1.8rem, 8.5vw, 2.4rem);

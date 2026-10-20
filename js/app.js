@@ -693,14 +693,16 @@
     var inner = el("div", "ticket-inner");
     // ---- front
     var front = el("div", "face face-front");
+    // big faint watermark: the genre, with the year smaller underneath
+    var mark = el("div", "ticket-mark");
+    mark.setAttribute("aria-hidden", "true");
+    var word = movie.custom ? "Own pick" : movie.genres[0];
+    mark.style.setProperty("--n", Math.max(4, word.length)); // longer words get a smaller size so they fit
+    mark.appendChild(el("span", "mark-genre", word));
+    if (movie.year) mark.appendChild(el("span", "mark-year", String(movie.year)));
+    front.appendChild(mark);
     var main = el("div", "ticket-main");
-    // genre first and big, the year smaller underneath
-    var tags = el("div", "ticket-tags");
-    var genres = el("p", "ticket-genres");
-    (movie.custom ? ["Your own pick"] : movie.genres).forEach(function (g) { genres.appendChild(el("span", null, g)); });
-    tags.appendChild(genres);
-    if (movie.year) tags.appendChild(el("p", "ticket-when", String(movie.year)));
-    main.appendChild(tags);
+    main.appendChild(el("p", "ticket-genres", movie.custom ? "Your own pick" : movie.genres.join(", ")));
     main.appendChild(el("h2", "ticket-title" + (movie.title.length > 26 ? " is-long" : "") + (movie.title.length > 48 ? " is-longer" : ""), movie.title));
     if (movie.pitch) main.appendChild(el("p", "ticket-pitch", movie.pitch));
     front.appendChild(main);
