@@ -3,7 +3,7 @@
   "use strict";
 
   // Must match the ?v= in index.html and VERSION in sw.js.
-  var APP_VERSION = "2.6.0";
+  var APP_VERSION = "2.7.0";
   window.APP_VERSION = APP_VERSION;
 
   var L = window.MatchLogic;
@@ -693,13 +693,14 @@
     var inner = el("div", "ticket-inner");
     // ---- front
     var front = el("div", "face face-front");
-    if (movie.year) {
-      var yr = el("span", "ticket-year", String(movie.year));
-      yr.setAttribute("aria-hidden", "true");
-      front.appendChild(yr);
-    }
     var main = el("div", "ticket-main");
-    main.appendChild(el("p", "ticket-genres", movie.custom ? "Your own pick" : movie.genres.join(", ")));
+    // genre first and big, the year smaller underneath
+    var tags = el("div", "ticket-tags");
+    var genres = el("p", "ticket-genres");
+    (movie.custom ? ["Your own pick"] : movie.genres).forEach(function (g) { genres.appendChild(el("span", null, g)); });
+    tags.appendChild(genres);
+    if (movie.year) tags.appendChild(el("p", "ticket-when", String(movie.year)));
+    main.appendChild(tags);
     main.appendChild(el("h2", "ticket-title" + (movie.title.length > 26 ? " is-long" : "") + (movie.title.length > 48 ? " is-longer" : ""), movie.title));
     if (movie.pitch) main.appendChild(el("p", "ticket-pitch", movie.pitch));
     front.appendChild(main);
