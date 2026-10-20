@@ -304,10 +304,13 @@ select {
   pointer-events: none;
 }
 /* the genre fits the card; the year is always a bit more than half its size */
-.ticket-mark { font-size: min(6.4rem, calc(140cqw / var(--n, 4))); }
-.mark-year { font-size: .55em; margin-right: .1em; }
+/* each genre fits the card; with 2 or 3 genres the lines get a lower maximum so they stay above the title */
+.mark-genre { --cap: 6.4rem; font-size: min(var(--cap), calc(140cqw / var(--n, 4))); }
+.ticket-mark[data-lines="2"] .mark-genre { --cap: 4.4rem; }
+.ticket-mark[data-lines="3"] .mark-genre { --cap: 3.3rem; }
 .ticket-main { position: relative; flex: 1; padding: 26px 24px 18px; display: flex; flex-direction: column; }
-.ticket-genres { margin: 0 0 auto; padding-right: 40px; font-weight: 700; font-size: .9rem; color: var(--ink-soft); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ticket-when { margin: 0 0 auto; padding-right: 40px; font-weight: 700; font-size: .9rem; color: var(--ink-soft); }
 .ticket-title {
   font-family: var(--display);
   font-size: clamp(1.8rem, 8.5vw, 2.4rem);

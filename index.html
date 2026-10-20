@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <link rel="stylesheet" href="styles.css?v=2.7.0">
+  <link rel="stylesheet" href="styles.css?v=2.8.0">
 </head>
 <body>
   <main id="app">
@@ -264,15 +264,15 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <!-- ?v= must match APP_VERSION in js/app.js and VERSION in sw.js (a unit test checks this) -->
-  <script src="js/movies.js?v=2.7.0"></script>
-  <script src="js/logic.js?v=2.7.0"></script>
-  <script src="js/app.js?v=2.7.0"></script>
+  <script src="js/movies.js?v=2.8.0"></script>
+  <script src="js/logic.js?v=2.8.0"></script>
+  <script src="js/app.js?v=2.8.0"></script>
   <script>
     // Update guard: an old offline copy (service worker) can hand out an old app.js together with
     // this new page, so new buttons do nothing. If the script is older than the page, clear the old
     // copies once and reload, so the phone gets the whole new version.
     (function () {
-      var expected = "2.7.0";
+      var expected = "2.8.0";
       if (window.APP_VERSION === expected) return;
       try { if (sessionStorage.getItem("mnm-update") === expected) return; sessionStorage.setItem("mnm-update", expected); } catch (e) { return; }
       var jobs = [];

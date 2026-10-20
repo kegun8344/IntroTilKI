@@ -3,7 +3,7 @@
   "use strict";
 
   // Must match the ?v= in index.html and VERSION in sw.js.
-  var APP_VERSION = "2.7.0";
+  var APP_VERSION = "2.8.0";
   window.APP_VERSION = APP_VERSION;
 
   var L = window.MatchLogic;
@@ -693,16 +693,23 @@
     var inner = el("div", "ticket-inner");
     // ---- front
     var front = el("div", "face face-front");
-    // big faint watermark: the genre, with the year smaller underneath
+    // big faint watermark: every genre on its own line, each sized to fit the card
+    var words = movie.custom ? ["Own pick"] : movie.genres;
     var mark = el("div", "ticket-mark");
     mark.setAttribute("aria-hidden", "true");
-    var word = movie.custom ? "Own pick" : movie.genres[0];
-    mark.style.setProperty("--n", Math.max(4, word.length)); // longer words get a smaller size so they fit
-    mark.appendChild(el("span", "mark-genre", word));
-    if (movie.year) mark.appendChild(el("span", "mark-year", String(movie.year)));
+    mark.dataset.lines = words.length; // more lines = a smaller maximum size, so they never reach the title
+    words.forEach(function (w) {
+      var line = el("span", "mark-genre", w);
+      line.style.setProperty("--n", Math.max(4, w.length)); // longer words get a smaller size
+      mark.appendChild(line);
+    });
     front.appendChild(mark);
     var main = el("div", "ticket-main");
-    main.appendChild(el("p", "ticket-genres", movie.custom ? "Your own pick" : movie.genres.join(", ")));
+    // the year sits small at the top; the genres are still read out to screen readers
+    var top = el("p", "ticket-when", movie.year ? String(movie.year) : "Your own pick");
+    var sr = el("span", "sr-only", movie.custom ? "" : ", " + movie.genres.join(", "));
+    top.appendChild(sr);
+    main.appendChild(top);
     main.appendChild(el("h2", "ticket-title" + (movie.title.length > 26 ? " is-long" : "") + (movie.title.length > 48 ? " is-longer" : ""), movie.title));
     if (movie.pitch) main.appendChild(el("p", "ticket-pitch", movie.pitch));
     front.appendChild(main);
