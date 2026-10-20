@@ -85,10 +85,8 @@ const sampleOverflow = async page => {
   maxOverflow = Math.max(maxOverflow, extra);
 };
 const topCard = page => page.$("#stack .ticket:not(.is-next)");
-const topMovie = page => page.$eval("#stack .ticket:not(.is-next)", n => {
-  const m = window.MOVIES.find(x => x.id === n.dataset.id);
-  return { id: m.id, title: m.title };
-});
+const topMovie = page => page.$eval("#stack .ticket:not(.is-next)", n =>
+  ({ id: n.dataset.id, title: n.querySelector(".ticket-title").textContent }));
 
 async function vote(page, kind, how) {
   if (how === "drag") {
@@ -395,6 +393,60 @@ try {
   const fallback = await newPhone(); // relay unreachable
   await fallback.page.goto(liveLink);
   check(await fallback.page.isVisible("#screen-invite"), "with no relay, the same link still works");
+
+  // =====================================================================
+  section("3c. Your own movies");
+  const OWN = ["Flåklypa Grand Prix (1975)", "Vår egen film", "The Holiday (2006)", "Kon-Tiki", "Some home video"];
+  const own = await newPhone();
+  await own.page.goto(BASE);
+  await own.page.fill("#player-list li:nth-child(1) input", "Åse");
+  await own.page.fill("#player-list li:nth-child(2) input", "Per");
+  await own.page.click('#source [data-source="own"]');
+  check(await own.page.isHidden("#catalogue-options") && await own.page.isVisible("#own-list"), "'Our own list' swaps the filters for a text box");
+  await own.page.fill("#own-list", "Just one");
+  check(await own.page.isDisabled("#start-btn") && /at least 2/.test(await own.page.textContent("#pool-count")), "it needs at least 2 movies");
+  await own.page.fill("#own-list", OWN.join("\n") + "\nKon-Tiki\n\n");
+  check(/5 movies on your list/.test(await own.page.textContent("#pool-count")), "repeats and blank lines are skipped (5 movies)");
+  await own.page.click("#start-btn");
+  const titles = new Set();
+  const ownA = await playTurn(own.page, "Åse", (m, i) => {
+    titles.add(m.title);
+    return m.title === "Kon-Tiki" ? "n" : "y";
+  });
+  check(sameSet([...titles], ["Flåklypa Grand Prix", "Vår egen film", "The Holiday", "Kon-Tiki", "Some home video"]), "everyone swipes exactly the list");
+  await own.page.click("#handoff-btn");
+  await own.page.click("#stack .ticket:not(.is-next) .info-btn");
+  await own.page.waitForTimeout(400);
+  const backText = await own.page.textContent("#stack .ticket:not(.is-next) .face-back");
+  check(/From your own list/.test(backText) && !(await own.page.$("#stack .ticket:not(.is-next) .seen-btn")), "the back of an own ticket has links but no catalogue facts");
+  await own.page.click("#stack .ticket:not(.is-next) .face-back");
+  await own.page.waitForTimeout(400);
+  const ownB = await playTurn(own.page, "Per", m => (m.title === "Some home video" ? "n" : "y"));
+  const expOwn = expected(Object.keys(ownA), [ownA, ownB]);
+  check(sameSet(await listIds(own.page, "#matches-list"), expOwn.matches), `own-list matches are correct (${expOwn.matches.length})`);
+  check(/your own pick/.test(await own.page.textContent("#matches-list")), "results say 'your own pick' instead of runtime and genres");
+  await own.page.click("#draw-btn");
+  await own.page.waitForTimeout(3000);
+  const ownWinner = await own.page.textContent("#admit-title");
+  check(["Vår egen film", "The Holiday", "Flåklypa Grand Prix"].includes(ownWinner), "the draw picks from the own list: " + ownWinner);
+  check(/from your own list/.test(await own.page.textContent("#admit-meta")), "the winner ticket says it is from your own list");
+  await own.page.screenshot({ path: path.join(shots, "13-own-results.png"), fullPage: true });
+  await own.page.reload();
+  check(await own.page.inputValue("#own-list") === OWN.join("\n") + "\nKon-Tiki\n\n" && await own.page.isVisible("#own-list"), "the list and the choice are remembered");
+
+  // own list on two phones: the titles travel in the link
+  await own.page.click('#mode [data-mode="link"]');
+  await own.page.click("#start-btn");
+  await playTurn(own.page, "Åse", () => "y");
+  const ownLink = await own.page.inputValue("#link-box");
+  const ownGuest = await newPhone();
+  await ownGuest.page.goto(ownLink);
+  check(/5 movies/.test(await ownGuest.page.textContent("#invite-text")), "the link brings the whole list to the other phone");
+  await ownGuest.page.click("#invite-start");
+  const seenTitles = new Set();
+  await playTurn(ownGuest.page, "Per", m => { seenTitles.add(m.title); return "y"; });
+  check(seenTitles.has("Vår egen film") && seenTitles.has("Flåklypa Grand Prix") && seenTitles.size === 5, "with æøå intact");
+  check((await listIds(ownGuest.page, "#matches-list")).length === 5, "and the results work on the other phone");
 
   // =====================================================================
   section("4. Works offline after the first visit");

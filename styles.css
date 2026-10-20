@@ -114,6 +114,9 @@ a { color: inherit; }
 
 /* ---------- setup form ---------- */
 .setup { display: grid; gap: 22px; }
+#catalogue-options { display: grid; gap: 22px; }
+#catalogue-options[hidden], #own-panel[hidden] { display: none; }
+#own-panel { display: grid; gap: 8px; }
 fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 legend, .label { display: block; font-weight: 700; margin-bottom: 8px; padding: 0; }
 .hint, .hint-line { font-weight: 400; color: var(--text-muted); }
@@ -132,7 +135,7 @@ legend, .label { display: block; font-weight: 700; margin-bottom: 8px; padding: 
   font: inherit; font-size: 1.4rem; line-height: 1; cursor: pointer;
 }
 
-input[type="text"], select, .link-box {
+input[type="text"], select, .link-box, .own-list {
   width: 100%;
   font: inherit;
   color: var(--text);
@@ -142,7 +145,8 @@ input[type="text"], select, .link-box {
   padding: 11px 12px;
   min-height: 46px;
 }
-input[type="text"]::placeholder { color: var(--text-faint); }
+input[type="text"]::placeholder, .own-list::placeholder { color: var(--text-faint); }
+.own-list { resize: vertical; min-height: 9em; line-height: 1.45; }
 select {
   appearance: none;
   background-image: linear-gradient(45deg, transparent 50%, var(--text-muted) 50%), linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
@@ -336,6 +340,7 @@ select {
 }
 
 .back-title { font-family: var(--display); font-size: 1.25rem; line-height: 1.15; margin-bottom: 14px; }
+.back-own { margin: 0 0 14px; color: inherit; opacity: .8; }
 .back-facts { margin: 0 0 16px; display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; font-size: .95rem; }
 .back-facts dt { font-weight: 500; color: var(--ink-soft); }
 .back-facts dd { margin: 0; font-weight: 700; }

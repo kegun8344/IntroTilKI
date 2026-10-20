@@ -115,6 +115,39 @@
     return shuffle(filterMovies(movies, options), rng).slice(0, size);
   }
 
+  // ---------------------------------------------------------------- your own movies
+  // A group can swipe its own list instead of the catalogue. These movies only have a title
+  // (and maybe a year), and they travel in the share link so other phones get the same list.
+  var CUSTOM_MAX = 50, CUSTOM_TITLE_MAX = 80;
+
+  // Stable id from title + year (FNV-1a), so the same list gives the same ids on every phone.
+  function customId(title, year) {
+    var h = 0x811c9dc5, s = title.toLowerCase() + "|" + (year || "");
+    for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }
+    return "u" + h.toString(36);
+  }
+  function makeCustomMovie(title, year) {
+    var t = String(title).replace(/\s+/g, " ").trim().slice(0, CUSTOM_TITLE_MAX);
+    var y = Number(year);
+    y = y >= 1880 && y <= 2100 && y % 1 === 0 ? y : null;
+    return { id: customId(t, y), title: t, year: y, runtime: null, genres: [], country: null,
+      director: "", cast: [], pitch: "", custom: true };
+  }
+  // One movie per line. "The Holiday (2006)" keeps the year. Blank lines and repeats are skipped.
+  function parseCustomList(text) {
+    var out = [], seen = {};
+    String(text || "").split(/\r?\n/).forEach(function (line) {
+      var m = line.trim().match(/^(.*?)\s*\((\d{4})\)$/);
+      var title = (m ? m[1] : line).trim(), year = m ? m[2] : null;
+      if (!title || out.length >= CUSTOM_MAX) return;
+      var movie = makeCustomMovie(title, year);
+      if (seen[movie.id]) return;
+      seen[movie.id] = true;
+      out.push(movie);
+    });
+    return out;
+  }
+
   // ---------------------------------------------------------------- answers
   // How many "must watch" answers a player has left.
   function superLeft(votes, limit) {
@@ -281,7 +314,9 @@
       a: session.votes.map(function (votes) { return votesToString(session.deck, votes); }),
       l: session.limit,
       w: session.winner || undefined,
-      r: session.room || undefined
+      r: session.room || undefined,
+      c: session.custom && session.custom.length
+        ? session.custom.map(function (m) { return m.year ? [m.title, m.year] : [m.title]; }) : undefined
     }));
   }
 
@@ -322,6 +357,15 @@
       var allIds = o.d.split(".");
       var known = {};
       movies.forEach(function (m) { known[m.id] = true; });
+      // the group's own movies come with the link
+      var custom = [];
+      if (Array.isArray(o.c)) {
+        o.c.slice(0, CUSTOM_MAX).forEach(function (row) {
+          if (!Array.isArray(row) || typeof row[0] !== "string" || !row[0].trim()) return;
+          var m = makeCustomMovie(row[0], row[1]);
+          if (!known[m.id]) { known[m.id] = true; custom.push(m); }
+        });
+      }
       var deck = allIds.filter(function (id) { return known[id]; });
       if (!deck.length) return null;
       var votes = o.a.slice(0, players.length).map(function (str) {
@@ -334,6 +378,7 @@
       var session = { players: players, deck: deck, votes: votes, limit: limit >= 0 && limit <= 50 ? limit : 3 };
       if (typeof o.w === "string" && deck.indexOf(o.w) !== -1) session.winner = o.w; // tonight's pick, if drawn
       if (typeof o.r === "string" && ROOM_RE.test(o.r)) session.room = o.r;
+      if (custom.length) session.custom = custom.filter(function (m) { return deck.indexOf(m.id) !== -1; });
       return session;
     } catch (e) {
       return null;
@@ -343,11 +388,12 @@
   // ---------------------------------------------------------------- text export
   function resultsToText(names, results, winner) {
     var lines = ["Movie night: " + names.join(", ")];
-    if (winner) lines.push("Tonight we watch: " + winner.movie.title + " (" + winner.movie.year + ")");
+    var name = function (m) { return m.title + (m.year ? " (" + m.year + ")" : ""); };
+    if (winner) lines.push("Tonight we watch: " + name(winner.movie));
     if (results.matches.length) {
       lines.push("", "Everyone said yes:");
       results.matches.forEach(function (m) {
-        lines.push("- " + m.movie.title + " (" + m.movie.year + ")" + (m.perfect ? ", everyone's must watch" : ""));
+        lines.push("- " + name(m.movie) + (m.perfect ? ", everyone's must watch" : ""));
       });
     } else {
       lines.push("", "No movie got a yes from everyone this time.");
@@ -362,7 +408,8 @@
     createShowdown: createShowdown, showdownPair: showdownPair, showdownChoose: showdownChoose,
     showdownWinner: showdownWinner, showdownMatchesLeft: showdownMatchesLeft,
     encodeSession: encodeSession, decodeSession: decodeSession, resultsToText: resultsToText,
-    liveVotes: liveVotes, livePick: livePick, parseLive: parseLive
+    liveVotes: liveVotes, livePick: livePick, parseLive: parseLive,
+    CUSTOM_MAX: CUSTOM_MAX, makeCustomMovie: makeCustomMovie, parseCustomList: parseCustomList
   };
 
   if (typeof module !== "undefined" && module.exports) module.exports = api;

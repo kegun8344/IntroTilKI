@@ -25,7 +25,16 @@
     "Mystery": "#bfb2e0", "Romance": "#ff9fb4", "Sci-Fi": "#93e4f2", "Sport": "#9fe0b8",
     "Thriller": "#e8c992", "War": "#c9c2b0", "Western": "#f0b98a"
   };
-  function colorFor(movie) { return GENRE_COLORS[movie.genres[0]] || "#ffb3c7"; }
+  var OWN_COLORS = ["#ffb3c7", "#7fd8cc", "#f6c343", "#a6c8ff", "#b2e57a", "#ffd2a1", "#cdb8f2", "#93e4f2"];
+  function colorFor(movie) {
+    if (movie.custom) return OWN_COLORS[parseInt(movie.id.slice(1), 36) % OWN_COLORS.length]; // own movies have no genre
+    return GENRE_COLORS[movie.genres[0]] || "#ffb3c7";
+  }
+  // Short facts line for lists: "1999, 2 h 16 min, Sci-Fi, Action", or "2006, your own pick".
+  function metaLine(m) {
+    if (m.custom) return (m.year ? m.year + ", " : "") + "your own pick";
+    return m.year + ", " + formatRuntime(m.runtime) + ", " + m.genres.slice(0, 2).join(", ");
+  }
 
   var $ = function (id) { return document.getElementById(id); };
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -35,6 +44,7 @@
   // =====================================================================
   var state = {
     mode: "phone",          // "phone" = pass one phone, "link" = each on own phone
+    source: "catalogue",    // "catalogue" or "own" (the group's own list)
     names: [],
     options: clone(DEFAULT_OPTIONS),
     deckSize: 20,
@@ -98,7 +108,7 @@
     toastTimer = setTimeout(function () { t.classList.remove("is-shown"); }, 2400);
   }
   function trailerUrl(m) {
-    return "https://www.youtube.com/results?search_query=" + encodeURIComponent(m.title + " " + m.year + " trailer");
+    return "https://www.youtube.com/results?search_query=" + encodeURIComponent(m.title + (m.year ? " " + m.year : "") + " trailer");
   }
   function streamUrl(m) {
     return "https://www.justwatch.com/no/search?q=" + encodeURIComponent(m.title);
@@ -330,10 +340,32 @@
     };
   }
 
+  // ---------- your own movies ----------
+  function ownMovies() { return L.parseCustomList($("own-list").value); }
+  function register(movies) { movies.forEach(function (m) { BY_ID[m.id] = m; }); }
+  function setSource(source) {
+    state.source = source;
+    document.querySelectorAll("#source button").forEach(function (b) {
+      b.setAttribute("aria-pressed", b.dataset.source === source ? "true" : "false");
+    });
+    $("own-panel").hidden = source !== "own";
+    $("catalogue-options").hidden = source === "own";
+    filtersChanged();
+  }
+
   function filtersChanged() {
-    var n = L.filterMovies(MOVIES, currentFilter()).length;
     var p = $("pool-count");
     var start = $("start-btn");
+    if (state.source === "own") {
+      var own = ownMovies().length;
+      p.textContent = own < 2 ? "Add at least 2 movies, one per line."
+        : own + " movies on your list. Everyone swipes all of them.";
+      p.classList.toggle("pool-empty", own < 2);
+      start.disabled = own < 2;
+      saveSettings();
+      return;
+    }
+    var n = L.filterMovies(MOVIES, currentFilter()).length;
     if (n === 0) {
       p.textContent = "No movies fit these filters. Remove a genre, pick another vibe, or reset filters.";
       p.classList.add("pool-empty");
@@ -365,7 +397,8 @@
   var restoring = false;
   function saveSettings() {
     if (restoring) return;
-    save(KEYS.settings, { names: readNames(false), mode: state.mode, options: state.options, deckSize: state.deckSize });
+    save(KEYS.settings, { names: readNames(false), mode: state.mode, options: state.options, deckSize: state.deckSize,
+      source: state.source, ownList: $("own-list").value });
   }
   function restoreSettings() {
     restoring = true;
@@ -379,10 +412,13 @@
         fromYear: o.fromYear || 0, toYear: o.toYear || 0, maxRuntime: o.maxRuntime || 0, hideSeen: o.hideSeen !== false
       };
     }
+    $("own-list").value = typeof s.ownList === "string" ? s.ownList : "";
+    state.source = s.source === "own" ? "own" : "catalogue";
     restoring = false;
     syncFilterControls();
     setMode(s.mode === "link" ? "link" : "phone");
     setDeckSize([10, 20, 30, 50].indexOf(s.deckSize) !== -1 ? s.deckSize : 20);
+    setSource(state.source);
   }
 
   function startGame() {
@@ -394,11 +430,19 @@
   }
 
   function newRound() {
-    // Prefer movies not shown yet this sitting; fall back if that leaves too few.
-    var fresh = L.filterMovies(MOVIES, currentFilter(state.recent));
-    var deck = fresh.length >= state.deckSize ? L.buildDeck(MOVIES, currentFilter(state.recent), state.deckSize)
-      : L.buildDeck(MOVIES, currentFilter(), state.deckSize);
-    if (deck.length === 0) { show("screen-setup"); filtersChanged(); return; }
+    var deck;
+    if (state.source === "own") {
+      // your own list: everyone swipes all of it
+      deck = L.shuffle(ownMovies());
+      register(deck);
+      if (deck.length < 2) { show("screen-setup"); filtersChanged(); return; }
+    } else {
+      // Prefer movies not shown yet this sitting; fall back if that leaves too few.
+      var fresh = L.filterMovies(MOVIES, currentFilter(state.recent));
+      deck = fresh.length >= state.deckSize ? L.buildDeck(MOVIES, currentFilter(state.recent), state.deckSize)
+        : L.buildDeck(MOVIES, currentFilter(), state.deckSize);
+      if (deck.length === 0) { show("screen-setup"); filtersChanged(); return; }
+    }
     if (/^#s=/.test(location.hash)) history.replaceState(null, "", location.pathname + location.search);
     state.deck = deck;
     deck.forEach(function (m) { state.recent[m.id] = true; });
@@ -463,7 +507,8 @@
     if (!state.resultsFromLink) try { sessionStorage.setItem("mnm.own", url.split("#s=")[1]); } catch (e) { /* ignore */ }
   }
   function linkFor(session) {
-    return location.href.split("#")[0] + "#s=" + L.encodeSession(Object.assign({ room: state.room || undefined }, session));
+    var custom = state.deck.filter(function (m) { return m.custom; }); // own movies travel in the link
+    return location.href.split("#")[0] + "#s=" + L.encodeSession(Object.assign({ room: state.room || undefined, custom: custom }, session));
   }
 
   // =====================================================================
@@ -572,6 +617,7 @@
     state.joined = true;
     state.resultsFromLink = false;
     state.names = s.players;
+    if (s.custom) register(s.custom);
     state.deck = s.deck.map(function (id) { return BY_ID[id]; });
     state.votes = s.players.map(function (_, i) { return s.votes[i] || {}; });
     var done = s.votes.length;
@@ -643,16 +689,21 @@
     var inner = el("div", "ticket-inner");
     // ---- front
     var front = el("div", "face face-front");
-    var yr = el("span", "ticket-year", String(movie.year));
-    yr.setAttribute("aria-hidden", "true");
-    front.appendChild(yr);
+    if (movie.year) {
+      var yr = el("span", "ticket-year", String(movie.year));
+      yr.setAttribute("aria-hidden", "true");
+      front.appendChild(yr);
+    }
     var main = el("div", "ticket-main");
-    main.appendChild(el("p", "ticket-genres", movie.genres.join(", ")));
+    main.appendChild(el("p", "ticket-genres", movie.custom ? "Your own pick" : movie.genres.join(", ")));
     main.appendChild(el("h2", "ticket-title" + (movie.title.length > 26 ? " is-long" : "") + (movie.title.length > 48 ? " is-longer" : ""), movie.title));
-    main.appendChild(el("p", "ticket-pitch", movie.pitch));
+    if (movie.pitch) main.appendChild(el("p", "ticket-pitch", movie.pitch));
     front.appendChild(main);
     var stub = el("div", "ticket-stub");
-    [["Year", movie.year], ["Length", formatRuntime(movie.runtime)], ["Made in", countryName(movie.country)]].forEach(function (pair) {
+    var stubFacts = movie.custom
+      ? [["Year", movie.year || "?"], ["From", "Your list"]]
+      : [["Year", movie.year], ["Length", formatRuntime(movie.runtime)], ["Made in", countryName(movie.country)]];
+    stubFacts.forEach(function (pair) {
       var s = el("span");
       s.appendChild(el("small", null, pair[0]));
       s.appendChild(document.createTextNode(pair[1]));
@@ -668,19 +719,23 @@
     // ---- back
     var back = el("div", "face face-back");
     back.setAttribute("aria-hidden", "true");
-    back.appendChild(el("h3", "back-title", movie.title + " (" + movie.year + ")"));
-    var dl = el("dl", "back-facts");
-    [["Directed by", movie.director], ["Starring", movie.cast.length ? movie.cast.join(", ") : "No credited cast"],
-      ["Made in", countryName(movie.country)], ["Genres", movie.genres.join(", ")], ["Length", formatRuntime(movie.runtime)]]
-      .forEach(function (row) { dl.appendChild(el("dt", null, row[0])); dl.appendChild(el("dd", null, row[1])); });
-    back.appendChild(dl);
+    back.appendChild(el("h3", "back-title", movie.title + (movie.year ? " (" + movie.year + ")" : "")));
+    if (movie.custom) {
+      back.appendChild(el("p", "back-own", "From your own list. Look up the trailer or where to stream it:"));
+    } else {
+      var dl = el("dl", "back-facts");
+      [["Directed by", movie.director], ["Starring", movie.cast.length ? movie.cast.join(", ") : "No credited cast"],
+        ["Made in", countryName(movie.country)], ["Genres", movie.genres.join(", ")], ["Length", formatRuntime(movie.runtime)]]
+        .forEach(function (row) { dl.appendChild(el("dt", null, row[0])); dl.appendChild(el("dd", null, row[1])); });
+      back.appendChild(dl);
+    }
     var links = el("div", "back-links");
     links.appendChild(externalLink("Watch trailer", trailerUrl(movie)));
     links.appendChild(externalLink("Where to stream", streamUrl(movie)));
     back.appendChild(links);
     var seenBtn = el("button", "seen-btn", "Seen it: skip and hide in future stacks");
     seenBtn.type = "button";
-    back.appendChild(seenBtn);
+    if (!movie.custom) back.appendChild(seenBtn); // the seen list is for the catalogue
     back.appendChild(el("p", "back-hint", "Tap the card to flip back"));
     inner.appendChild(back);
     t.appendChild(inner);
@@ -740,7 +795,8 @@
     var startX = 0, startY = 0, dx = 0, dy = 0, dragging = false, pointerId = null, startT = 0;
 
     card.querySelector(".info-btn").addEventListener("click", function (e) { e.stopPropagation(); flip(card); });
-    card.querySelector(".seen-btn").addEventListener("click", function (e) {
+    var seenBtn = card.querySelector(".seen-btn");
+    if (seenBtn) seenBtn.addEventListener("click", function (e) {
       e.stopPropagation();
       seen[movie.id] = true;
       save(KEYS.seen, seen);
@@ -930,7 +986,7 @@
     li.dataset.id = m.id;
     var info = el("span");
     info.appendChild(el("span", "r-title", m.title));
-    info.appendChild(el("span", "r-meta", m.year + ", " + formatRuntime(m.runtime) + ", " + m.genres.slice(0, 2).join(", ")));
+    info.appendChild(el("span", "r-meta", metaLine(m)));
     li.appendChild(info);
     li.appendChild(el("span", "r-badge", badge));
     return li;
@@ -997,7 +1053,8 @@
     $("draw-btn").textContent = "Draw tonight's movie";
     $("showdown-btn").hidden = state.pool.length < 3;
     $("draw-hint").textContent = state.pool.length > 8 ? "The showdown uses your top 8." : "";
-    $("rematch-btn").textContent = state.joined ? "Plan your own movie night" : "New stack, same people";
+    $("rematch-btn").textContent = state.joined ? "Plan your own movie night"
+      : state.source === "own" ? "Swipe the list again" : "New stack, same people";
 
     show("screen-results");
     state.done = state.names.map(function () { return true; });
@@ -1015,7 +1072,9 @@
     admit.classList.remove("is-spinning");
     $("admit-who").textContent = state.names.join(" & ").replace(/ & (?=.* & )/g, ", ") + (state.names.length === 2 ? " are" : " are all") + " watching";
     $("admit-title").textContent = item.movie.title;
-    $("admit-meta").textContent = item.movie.year + ", " + formatRuntime(item.movie.runtime) + ", directed by " + item.movie.director;
+    var mv = item.movie;
+    $("admit-meta").textContent = mv.custom ? (mv.year ? mv.year + ", " : "") + "from your own list"
+      : mv.year + ", " + formatRuntime(mv.runtime) + ", directed by " + mv.director;
     var links = $("admit-links");
     links.innerHTML = "";
     links.appendChild(externalLink("Watch trailer", trailerUrl(item.movie)));
@@ -1029,7 +1088,7 @@
       watched.textContent = "Marked as seen";
       syncFilterControls();
     });
-    links.appendChild(watched);
+    if (!item.movie.custom) links.appendChild(watched);
     admit.hidden = false;
     void admit.offsetWidth;
     admit.classList.add("is-landed");
@@ -1114,10 +1173,10 @@
       var b = el("button", "duel-card");
       b.type = "button";
       b.style.setProperty("--tk", colorFor(m));
-      b.appendChild(el("span", "duel-genres", m.genres.join(", ")));
+      b.appendChild(el("span", "duel-genres", m.custom ? "Your own pick" : m.genres.join(", ")));
       b.appendChild(el("span", "duel-title", m.title));
-      b.appendChild(el("span", "duel-pitch", m.pitch));
-      b.appendChild(el("span", "duel-meta", m.year + ", " + formatRuntime(m.runtime)));
+      if (m.pitch) b.appendChild(el("span", "duel-pitch", m.pitch));
+      b.appendChild(el("span", "duel-meta", m.custom ? (m.year ? String(m.year) : "") : m.year + ", " + formatRuntime(m.runtime)));
       b.addEventListener("click", function () {
         feedback("y");
         state.showdown = L.showdownChoose(state.showdown, i);
@@ -1185,6 +1244,10 @@
     document.querySelectorAll("#mode button").forEach(function (b) {
       b.addEventListener("click", function () { setMode(b.dataset.mode); });
     });
+    document.querySelectorAll("#source button").forEach(function (b) {
+      b.addEventListener("click", function () { setSource(b.dataset.source); });
+    });
+    $("own-list").addEventListener("input", filtersChanged);
     document.querySelectorAll("#deck-size button").forEach(function (b) {
       b.addEventListener("click", function () { setDeckSize(Number(b.dataset.size)); });
     });
