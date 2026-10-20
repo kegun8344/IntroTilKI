@@ -507,10 +507,3 @@ select {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
-
-/* ---------- about page ---------- */
-.about h2 { font-family: var(--body); font-weight: 700; font-size: 1.15rem; margin: 28px 0 8px; color: var(--bulb); }
-.about p, .about li { color: var(--text); max-width: 38em; }
-.about ol { padding-left: 1.3em; display: grid; gap: 8px; }
-.about em { font-style: normal; font-weight: 700; }
-.about a:not(.btn) { color: var(--bulb); }

@@ -409,13 +409,7 @@ try {
   await off.ctx.setOffline(false);
 
   // =====================================================================
-  section("5. About page");
-  await page.goto(BASE + "about.html");
-  check(/How this app was made/.test(await page.textContent("h1")), "about page loads");
-  await page.click("text=Back to the app");
-  check(await page.isVisible("#screen-setup"), "and links back to the app");
-
-  section("6. Quality checks");
+  section("5. Quality checks");
   check(maxOverflow === 0, `no horizontal scrollbar while swiping (extra width ${maxOverflow}px)`);
   check(errors.length === 0, "no JavaScript errors" + (errors.length ? ": " + errors.join(" | ") : ""));
 } catch (e) {
