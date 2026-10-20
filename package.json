@@ -7,7 +7,8 @@
     "test": "node --test tests/logic.test.js tests/data.test.mjs",
     "build:movies": "node tools/build-movies.mjs",
     "check:facts": "node tools/check-facts.mjs",
-    "test:e2e": "node tests/e2e.mjs . screenshots"
+    "test:e2e": "node tests/e2e.mjs . screenshots",
+    "test:update": "node tests/update.mjs"
   },
   "devDependencies": {
     "playwright": "1.56.0"

@@ -2,6 +2,10 @@
 (function () {
   "use strict";
 
+  // Must match the ?v= in index.html and VERSION in sw.js.
+  var APP_VERSION = "2.6.0";
+  window.APP_VERSION = APP_VERSION;
+
   var L = window.MatchLogic;
   var MOVIES = window.MOVIES;
   var COUNTRIES = window.COUNTRIES || {};

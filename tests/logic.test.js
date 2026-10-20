@@ -240,3 +240,18 @@ test("resultsToText lists the winner and the matches", () => {
   assert.match(txt, /Movie night: Kim, Sam/);
   assert.match(txt, /Tonight we watch: Alpha \(1985\)/);
 });
+
+// ---------- release version ----------
+test("index.html, app.js and sw.js agree on the version (stops old and new files mixing after an update)", () => {
+  const fs = require("node:fs"), path = require("node:path");
+  const read = f => fs.readFileSync(path.join(__dirname, "..", f), "utf8");
+  const app = read("js/app.js").match(/var APP_VERSION = "([\d.]+)"/)[1];
+  const sw = read("sw.js").match(/const VERSION = "mnm-v([\d.]+)"/)[1];
+  const html = read("index.html");
+  const queries = [...html.matchAll(/\?v=([\d.]+)"/g)].map(m => m[1]);
+  const guard = html.match(/var expected = "([\d.]+)"/)[1];
+  assert.equal(sw, app);
+  assert.equal(guard, app);
+  assert.ok(queries.length >= 4, "styles and all scripts carry ?v=");
+  queries.forEach(v => assert.equal(v, app));
+});
