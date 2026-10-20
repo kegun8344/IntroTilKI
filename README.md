@@ -11,7 +11,7 @@
 | ![Send the link to the next person](docs/screenshots/4-send-link.png) | ![Head-to-head showdown](docs/screenshots/5-showdown.png) | ![Matches and tonight's movie](docs/screenshots/6-results.png) |
 
 ## How it works
-1. Add 2–6 people, pick a vibe (feel-good, scary, date night and more) and any filters you want.
+1. Add 2–6 people, pick a vibe (feel-good, scary, date night and more) and any filters you want. Or skip the catalogue and type in your own list of movies, one per line.
 2. Everyone swipes the same movies: right for yes, left to skip, up for "must watch" (max 3 each). Tap a ticket to flip it for the director, cast, a trailer and where to stream it.
 3. The results show what everyone said yes to and what almost made it, plus fun facts about the group.
 4. Draw tonight's movie (must-watch picks get extra tickets), or settle it with a head-to-head showdown.

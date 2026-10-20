@@ -194,6 +194,28 @@ test("live messages round-trip, and messages that don't fit the game are ignored
   assert.equal(L.parseLive('{"v":1,"k":"votes","p":0.5,"a":"yyy"}', d, 2), null);
 });
 
+test("own movie list: one per line, optional (year), no blanks or repeats, max 50", () => {
+  const list = L.parseCustomList("Inception\n\n  The Holiday (2006)  \ninception\nKon-Tiki (2012)\nBad (99)");
+  assert.deepEqual(list.map(m => [m.title, m.year]), [["Inception", null], ["The Holiday", 2006], ["Kon-Tiki", 2012], ["Bad (99)", null]]);
+  assert.ok(list.every(m => m.custom && m.genres.length === 0));
+  assert.equal(L.parseCustomList("Same\nSame").length, 1);
+  assert.equal(L.parseCustomList(Array.from({ length: 70 }, (_, i) => "Movie " + i).join("\n")).length, 50);
+  assert.equal(L.parseCustomList("x".repeat(200))[0].title.length, 80);
+  assert.equal(L.makeCustomMovie("Up", 2009).id, L.makeCustomMovie("up", 2009).id, "ids don't depend on case");
+});
+
+test("own movies travel in the link, with æøå, and the text export skips missing years", () => {
+  const own = L.parseCustomList("Flåklypa Grand Prix (1975)\nVår film\nThird one");
+  const session = { players: ["Åse", "Bo"], deck: own.map(m => m.id), votes: [{ [own[0].id]: "y", [own[1].id]: "s" }], limit: 3, custom: own };
+  const back = L.decodeSession(L.encodeSession(session), MOVIES);
+  assert.deepEqual(back.deck, session.deck);
+  assert.deepEqual(back.custom.map(m => [m.title, m.year]), own.map(m => [m.title, m.year]));
+  assert.equal(back.votes[0][own[1].id], "s");
+  const text = L.resultsToText(["Åse", "Bo"], { matches: [{ movie: own[1], perfect: false }] }, { movie: own[1] });
+  assert.match(text, /Tonight we watch: Vår film\n/);
+  assert.match(text, /- Vår film$/m);
+});
+
 test("decodeSession rejects garbage and drops unknown movie ids", () => {
   assert.equal(L.decodeSession("not-a-real-code", MOVIES), null);
   assert.equal(L.decodeSession("", MOVIES), null);

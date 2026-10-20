@@ -1,7 +1,7 @@
 // Service worker: makes the app work offline and installable.
 // Strategy: serve from cache right away, refresh the cache in the background.
 // Bump VERSION when files change so old caches are cleaned up.
-const VERSION = "mnm-v2.4.0";
+const VERSION = "mnm-v2.5.0";
 const FILES = [
   "./", "index.html", "styles.css", "manifest.webmanifest",
   "js/movies.js", "js/logic.js", "js/app.js",

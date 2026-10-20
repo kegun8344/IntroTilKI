@@ -38,6 +38,21 @@
         </fieldset>
 
         <fieldset class="field">
+          <legend>Which movies?</legend>
+          <div class="segmented segmented-wide" id="source">
+            <button type="button" data-source="catalogue" aria-pressed="true">Our catalogue</button>
+            <button type="button" data-source="own" aria-pressed="false">Our own list</button>
+          </div>
+        </fieldset>
+
+        <label class="field" id="own-panel" hidden>
+          <span class="label">Your movies <span class="hint">(one per line, up to 50)</span></span>
+          <textarea id="own-list" class="own-list" rows="7" spellcheck="false"
+            placeholder="For example:&#10;The Holiday (2006)&#10;Kon-Tiki&#10;That movie Ola keeps talking about"></textarea>
+        </label>
+
+        <div id="catalogue-options">
+        <fieldset class="field">
           <legend>Tonight's vibe</legend>
           <div class="chips" id="vibe-chips"></div>
         </fieldset>
@@ -89,6 +104,7 @@
             <button type="button" data-size="50">50</button>
           </div>
         </fieldset>
+        </div>
 
         <p class="pool" id="pool-count" aria-live="polite"></p>
         <button type="submit" class="btn btn-primary" id="start-btn">Start swiping</button>
