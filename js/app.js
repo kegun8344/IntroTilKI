@@ -3,7 +3,7 @@
   "use strict";
 
   // Must match the ?v= in index.html and VERSION in sw.js.
-  var APP_VERSION = "2.8.0";
+  var APP_VERSION = "2.9.0";
   window.APP_VERSION = APP_VERSION;
 
   var L = window.MatchLogic;
@@ -1238,7 +1238,31 @@
   // =====================================================================
   // wiring
   // =====================================================================
+  // ---------- no zooming ----------
+  // The viewport tag and touch-action stop zooming on Android and most browsers, but iOS Safari
+  // ignores both on purpose, so its pinch and double-tap gestures are blocked here.
+  function blockZoom() {
+    var stop = function (e) { e.preventDefault(); };
+    ["gesturestart", "gesturechange", "gestureend"].forEach(function (type) { // iOS-only pinch events
+      document.addEventListener(type, stop, { passive: false });
+    });
+    document.addEventListener("touchmove", function (e) {
+      if (e.touches.length > 1 || (e.scale !== undefined && e.scale !== 1)) e.preventDefault(); // two fingers
+    }, { passive: false });
+    var lastTap = 0;
+    document.addEventListener("touchend", function (e) {
+      var now = Date.now(), quick = now - lastTap < 350;
+      lastTap = now;
+      if (!quick || e.touches.length || e.changedTouches.length !== 1) return;
+      if (e.target.closest && e.target.closest("input, textarea, select")) return; // let text fields work normally
+      // A second quick tap would zoom. Cancel that, but still treat it as a normal tap.
+      e.preventDefault();
+      if (typeof e.target.click === "function") e.target.click();
+    }, { passive: false });
+  }
+
   function init() {
+    blockZoom();
     buildFilterControls();
     restoreSettings();
     renderHistory();

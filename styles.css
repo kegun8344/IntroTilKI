@@ -33,6 +33,10 @@
 
 html { -webkit-text-size-adjust: 100%; }
 
+/* No pinch or double-tap zoom: the page can still scroll. (iOS ignores this and the viewport tag,
+   so app.js blocks its gestures too.) */
+html, body { touch-action: pan-x pan-y; }
+
 /* Cards fly off-screen when swiped. Clip anything sideways so the page
    never gets wider than the screen (no horizontal scrollbar flicker). */
 html, body { overflow-x: hidden; overflow-x: clip; }
